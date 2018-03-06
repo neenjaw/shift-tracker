@@ -8,6 +8,8 @@ class Category {
     //object properties
     public $id;
     public $category;
+    public $date_created;
+    public $date_updated;
 
     //constructor
     public function __construct($db) {

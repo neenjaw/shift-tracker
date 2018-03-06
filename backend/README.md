@@ -19,7 +19,7 @@
   - ❌ search
 - staff
   - ❌ create
-  - ❌ read
+  - ✅ read
   - ❌ update
   - ❌ delete
 - user
