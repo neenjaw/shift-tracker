@@ -11,8 +11,11 @@
   - ✅ user
   - ✅ assignment
   - ✅ role
+  - ✅ mod
 - shift
-  - ❌ MariaDB Table
+  - ✅ MariaDB Table
+  - ❌ foreign keys
+  - ✅ unique index
   - ❌ create
   - ❌ read
   - ❌ read_one
@@ -20,32 +23,48 @@
   - ❌ update
   - ❌ delete
   - ❌ search
-- staff
-  - ❌ MariaDB Table
+- staff_member
+  - ✅ MariaDB Table
+  - ❌ foreign keys
+  - ✅ unique index
   - ❌ create
   - ✅ read
   - ❌ update
   - ❌ delete
 - user
-  - ❌ MariaDB Table
+  - ✅ MariaDB Table
+  - ✅ unique index
   - ❌ create
   - ❌ read
   - ❌ update
   - ❌ delete
 - category
   - ✅ MariaDB Table
+  - ✅ unique index
   - ❌ create
   - ❌ read
   - ❌ update
   - ❌ delete
 - role
   - ✅ MariaDB Table
+  - ✅ unique index
   - ❌ create
   - ✅ read
   - ❌ update
   - ❌ delete
 - assigntmnet
   - ✅ MariaDB Table
+  - ✅ unique index
+  - ❌ create
+  - ✅ read
+  - ❌ update
+  - ❌ delete
+- mod
+  - ✅ MariaDB Table
+  - ✅ unique index
+  - ✅ shift_to_mod table
+    - ❌ foreign keys
+    - ✅ unique index
   - ❌ create
   - ✅ read
   - ❌ update

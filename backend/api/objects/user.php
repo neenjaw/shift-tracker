@@ -11,8 +11,8 @@ class User {
     public $username;
     public $password;
 
-    public $authorization_level;
     public $active;
+    public $admin;
     
     public $date_created;
     public $date_updated;

@@ -1,9 +1,9 @@
 <?php
 
-class Category {
+class Mod {
     //db connection and table name
     private $conn;
-    private $table_name = "categories";
+    private $table_name = "mods";
 
     //object properties
     public $id;
@@ -19,11 +19,11 @@ class Category {
     function read() {
         // select all query
         $sql = "SELECT
-                    c.id, c.name, c.date_created, c.date_updated
+                    m.id, m.name, m.date_created, m.date_updated
                 FROM
-                    {$this->table_name} c
+                    {$this->table_name} m
                 ORDER BY
-                    c.name ASC";
+                    m.name ASC";
     
         // prepare query statement
         $stmt = $this->conn->prepare($sql);

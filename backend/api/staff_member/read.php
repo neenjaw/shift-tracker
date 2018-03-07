@@ -5,25 +5,25 @@ header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/staff.php';
+include_once '../objects/staff_member.php';
  
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
 
 // initialize object
-$staff = new Staff($db);
+$staff_member = new StaffMember($db);
  
 // query products
-$stmt = $staff->read();
+$stmt = $staff_member->read();
 $num = $stmt->rowCount();
  
 // check if more than 0 record found
 if($num>=0){
  
     // products array
-    $staff_arr = (object) array();
-    $staff_arr->records = array();
+    $staff_member_arr = (object) array();
+    $staff_member_arr->records = array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -34,7 +34,7 @@ if($num>=0){
         // just $name only
         extract($row);
  
-        $a_staff = array(
+        $one_staff_member = array(
             "id" => $id,
             "first_name" => $first_name,
             "last_name" => $last_name,
@@ -46,12 +46,12 @@ if($num>=0){
             "updated_by" => $updated_by,
         );
  
-        array_push($staff_arr->records, $a_staff);
+        array_push($staff_member_arr->records, $one_staff_member);
     }
  
-    $staff_arr->response = "OK";
+    $staff_member_arr->response = "OK";
 
-    echo json_encode($staff_arr);
+    echo json_encode($staff_member_arr);
 
 } else {
 

@@ -1,6 +1,6 @@
 <?php
 
-class Staff {
+class StaffMember {
     //db connection and table name
     private $conn;
     private $table_name = "staff";
@@ -24,11 +24,11 @@ class Staff {
         $this->conn = $db;
     }
 
-    // read products
+    // read staff
     function read() {
         // select all query
         $sql = "SELECT
-                    c.category as category_name, s.id, s.first_name, s.last_name, s.category_id, 
+                    c.name as category_name, s.id, s.first_name, s.last_name, s.category_id, 
                     s.active, s.date_created, s.date_updated, s.created_by, s.updated_by
                 FROM
                     {$this->table_name} s
@@ -40,7 +40,7 @@ class Staff {
                     s.last_name ASC, s.first_name ASC";
     
         // prepare query statement
-        $stmt = $this->conn->prepare($query);
+        $stmt = $this->conn->prepare($sql);
     
         // execute query
         $stmt->execute();

@@ -5,25 +5,25 @@ header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/assignment.php';
+include_once '../objects/role.php';
  
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
 
 // initialize object
-$assignment = new Assignment($db);
+$role = new Role($db);
  
 // query products
-$stmt = $assignment->read();
+$stmt = $role->read();
 $num = $stmt->rowCount();
  
 // check if more than 0 record found
 if($num>=0){
  
     // products array
-    $assignment_arr = (object) array();
-    $assignment_arr->records = array();
+    $role_arr = (object) array();
+    $role_arr->records = array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -34,25 +34,25 @@ if($num>=0){
         // just $name only
         extract($row);
  
-        $one_assignment = array(
+        $one_role = array(
             "id" => $id,
             "name" => $name,
             "date_created" => $date_created,
             "date_updated" => $date_updated
         );
  
-        array_push($assignment_arr->records, $one_assignment);
+        array_push($role_arr->records, $one_role);
     }
  
-    $assignment_arr->response = "OK";
+    $role_arr->response = "OK";
 
-    echo json_encode($assignment_arr);
+    echo json_encode($role_arr);
 
 } else {
 
     $result = (object) array();
     $result->response = "ERROR";
-    $result->message = "There was a problem retrieving the assignment records";
+    $result->message = "There was a problem retrieving the role records";
     
     echo json_encode($result);
 
