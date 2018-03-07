@@ -9,7 +9,10 @@
   - ✅ shift
   - ✅ staff
   - ✅ user
+  - ✅ assignment
+  - ✅ role
 - shift
+  - ❌ MariaDB Table
   - ❌ create
   - ❌ read
   - ❌ read_one
@@ -18,22 +21,32 @@
   - ❌ delete
   - ❌ search
 - staff
+  - ❌ MariaDB Table
   - ❌ create
   - ✅ read
   - ❌ update
   - ❌ delete
 - user
+  - ❌ MariaDB Table
   - ❌ create
   - ❌ read
   - ❌ update
   - ❌ delete
 - category
+  - ✅ MariaDB Table
   - ❌ create
   - ❌ read
   - ❌ update
   - ❌ delete
 - role
+  - ✅ MariaDB Table
   - ❌ create
-  - ❌ read
+  - ✅ read
+  - ❌ update
+  - ❌ delete
+- assigntmnet
+  - ✅ MariaDB Table
+  - ❌ create
+  - ✅ read
   - ❌ update
   - ❌ delete

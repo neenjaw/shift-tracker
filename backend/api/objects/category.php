@@ -7,7 +7,7 @@ class Category {
 
     //object properties
     public $id;
-    public $category;
+    public $name;
     public $date_created;
     public $date_updated;
 

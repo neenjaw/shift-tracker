@@ -1,9 +1,9 @@
 <?php
 
-class Role {
+class Assignment {
     //db connection and table name
     private $conn;
-    private $table_name = "roles";
+    private $table_name = "assignments";
 
     //object properties
     public $id;
