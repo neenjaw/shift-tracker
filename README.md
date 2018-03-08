@@ -3,6 +3,7 @@
 [source](https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html)
 
 - config
+  - ❌ authorization
   - ❌ core
   - ✅ database
 - objects
@@ -14,7 +15,7 @@
   - ✅ mod
 - shift
   - ✅ MariaDB Table
-  - ❌ foreign keys
+  - ✅ foreign keys
   - ✅ unique index
   - ❌ create
   - ❌ read
@@ -25,7 +26,7 @@
   - ❌ search
 - staff_member
   - ✅ MariaDB Table
-  - ❌ foreign keys
+  - ✅ foreign keys
   - ✅ unique index
   - ❌ create
   - ✅ read
@@ -52,7 +53,7 @@
   - ✅ read
   - ❌ update
   - ❌ delete
-- assigntmnet
+- assignment
   - ✅ MariaDB Table
   - ✅ unique index
   - ❌ create
@@ -63,7 +64,7 @@
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ shift_to_mod table
-    - ❌ foreign keys
+    - ✅ foreign keys
     - ✅ unique index
   - ❌ create
   - ✅ read
