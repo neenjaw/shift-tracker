@@ -33,6 +33,26 @@ class Assignment {
     
         return $stmt;
     }
+
+    function update($id, $update_name) {
+        
+        $sql = "UPDATE 
+                    {$this->table_name}
+                SET
+                    name=:name
+                WHERE
+                    id=:id";
+
+        $stmt = $this->conn->prepare($sql);
+                    
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':name', $update_name, PDO::PARAM_STR);
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
 }
 
 ?>

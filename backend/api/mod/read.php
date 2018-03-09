@@ -6,20 +6,18 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../config/database.php';
 include_once '../objects/mod.php';
- 
-// instantiate database and product object
-$database = new Database();
-$db = $database->getConnection();
+    
+try {
+    // instantiate database and product object
+    $database = new Database();
+    $db = $database->getConnection();
 
-// initialize object
-$mod = new Mod($db);
- 
-// query products
-$stmt = $mod->read();
-$num = $stmt->rowCount();
- 
-// check if more than 0 record found
-if($num >= 0){
+    // initialize object
+    $mod = new Mod($db);
+    
+    // query products
+    $stmt = $mod->read();
+    $num = $stmt->rowCount();
  
     // products array
     $mod_arr = (object) array();
@@ -48,11 +46,11 @@ if($num >= 0){
 
     echo json_encode($mod_arr);
 
-} else {
+} catch (Exception $e) {
 
     $result = (object) array();
     $result->response = "ERROR";
-    $result->message = "There was a problem retrieving the mod records";
+    $result->message = $e->getMessage();
     
     echo json_encode($result);
 

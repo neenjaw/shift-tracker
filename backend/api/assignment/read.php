@@ -7,20 +7,18 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../config/database.php';
 include_once '../objects/assignment.php';
  
-// instantiate database and product object
-$database = new Database();
-$db = $database->getConnection();
+try {
+    // instantiate database and product object
+    $database = new Database();
+    $db = $database->getConnection();
 
-// initialize object
-$assignment = new Assignment($db);
- 
-// query products
-$stmt = $assignment->read();
-$num = $stmt->rowCount();
- 
-// check if more than 0 record found
-if($num>=0){
- 
+    // initialize object
+    $assignment = new Assignment($db);
+    
+    // query products
+    $stmt = $assignment->read();
+    $num = $stmt->rowCount();
+    
     // products array
     $assignment_arr = (object) array();
     $assignment_arr->records = array();
@@ -48,11 +46,11 @@ if($num>=0){
 
     echo json_encode($assignment_arr);
 
-} else {
+} catch (Exception $e) {
 
     $result = (object) array();
     $result->response = "ERROR";
-    $result->message = "There was a problem retrieving the assignment records";
+    $result->message = $e->getMessage();
     
     echo json_encode($result);
 

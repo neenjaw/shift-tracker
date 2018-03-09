@@ -7,19 +7,17 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../config/database.php';
 include_once '../objects/user.php';
  
-// instantiate database and product object
-$database = new Database();
-$db = $database->getConnection();
+try {
+    // instantiate database and product object
+    $database = new Database();
+    $db = $database->getConnection();
 
-// initialize object
-$user = new User($db);
- 
-// query products
-$stmt = $user->read();
-$num = $stmt->rowCount();
- 
-// check if more than 0 record found
-if($num>=0){
+    // initialize object
+    $user = new User($db);
+    
+    // query products
+    $stmt = $user->read();
+    $num = $stmt->rowCount();
  
     // products array
     $user_arr = (object) array();
@@ -52,11 +50,11 @@ if($num>=0){
 
     echo json_encode($user_arr);
 
-} else {
+} catch (Exception $e) {
 
     $result = (object) array();
     $result->response = "ERROR";
-    $result->message = "There was a problem retrieving the staff records";
+    $result->message = $e->getMessage();
     
     echo json_encode($result);
 

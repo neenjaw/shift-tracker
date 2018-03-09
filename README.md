@@ -1,6 +1,6 @@
-# shfittracker rest api -- php
+# shfittracker rest-ish api -- php
 
-[source](https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html)
+Modelled after [code of a ninja's tutorial](https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html).
 
 - config
   - ❌ authorization
@@ -38,28 +38,28 @@
   - ✅ create
   - ✅ read
   - ✅ check_password
-  - ❌ update
-  - ❌ delete
+  - ✅ update
+  - ✅ delete
 - category
   - ✅ MariaDB Table
   - ✅ unique index
   - ❌ create
   - ❌ read
-  - ❌ update
+  - ✅ update
   - ❌ delete
 - role
   - ✅ MariaDB Table
   - ✅ unique index
   - ❌ create
   - ✅ read
-  - ❌ update
+  - ✅ update
   - ❌ delete
 - assignment
   - ✅ MariaDB Table
   - ✅ unique index
   - ❌ create
   - ✅ read
-  - ❌ update
+  - ✅ update
   - ❌ delete
 - mod
   - ✅ MariaDB Table
@@ -69,5 +69,5 @@
     - ✅ unique index
   - ❌ create
   - ✅ read
-  - ❌ update
+  - ✅ update
   - ❌ delete
