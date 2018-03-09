@@ -35,8 +35,9 @@
 - user
   - ✅ MariaDB Table
   - ✅ unique index
-  - ❌ create
-  - ❌ read
+  - ✅ create
+  - ✅ read
+  - ✅ check_password
   - ❌ update
   - ❌ delete
 - category
