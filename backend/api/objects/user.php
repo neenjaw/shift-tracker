@@ -134,11 +134,11 @@ class User {
         $sql = "DELETE FROM
                     {$this->table_name}
                 WHERE
-                    id=:uid";
+                    id=:id";
 
         $stmt = $this->conn->prepare($sql);
                     
-        $stmt->bindParam(':uid', $id);
+        $stmt->bindParam(':id', $id);
     
         // execute query
         $stmt->execute();

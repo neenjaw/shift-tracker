@@ -46,21 +46,21 @@ Modelled after [code of a ninja's tutorial](https://www.codeofaninja.com/2017/02
   - ❌ create
   - ❌ read
   - ✅ update
-  - ❌ delete
+  - ✅ delete
 - role
   - ✅ MariaDB Table
   - ✅ unique index
   - ❌ create
   - ✅ read
   - ✅ update
-  - ❌ delete
+  - ✅ delete
 - assignment
   - ✅ MariaDB Table
   - ✅ unique index
   - ❌ create
   - ✅ read
   - ✅ update
-  - ❌ delete
+  - ✅ delete
 - mod
   - ✅ MariaDB Table
   - ✅ unique index
@@ -70,4 +70,4 @@ Modelled after [code of a ninja's tutorial](https://www.codeofaninja.com/2017/02
   - ❌ create
   - ✅ read
   - ✅ update
-  - ❌ delete
+  - ✅ delete

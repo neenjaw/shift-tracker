@@ -9,7 +9,7 @@ include_once '../config/database.php';
 include_once '../objects/role.php';
 
 try {
-    if (!isset($_POST['rid'])) {
+    if (!isset($_POST['id'])) {
         throw new Exception('Role id not provided.');
     }
 
@@ -17,7 +17,7 @@ try {
         throw new Exception('Role name not provided.');
     }
 
-    $update_rid = trim($_POST['rid']);
+    $update_id = trim($_POST['id']);
     $update_name = trim($_POST['name']);
     
     // instantiate database and product object
@@ -28,7 +28,7 @@ try {
     $role = new Role($db);
     
     // query products
-    $stmt = $role->update($update_rid, $update_name);
+    $stmt = $role->update($update_id, $update_name);
 
     $num = $stmt->rowCount();
 
@@ -36,7 +36,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Role {$update_rid} updated.";
+        $result->message = "Role {$update_id} updated.";
     } else {
         $result->message = "No role records updated.";
     }

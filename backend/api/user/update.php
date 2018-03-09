@@ -9,7 +9,7 @@ include_once '../config/database.php';
 include_once '../objects/user.php';
 
 try {
-    if (!isset($_POST['uid'])) {
+    if (!isset($_POST['id'])) {
         throw new Exception('User id not provided.');
     }
 
@@ -46,7 +46,7 @@ try {
         throw new Exception("User not provided to record who updated by");
     }
   
-    $update_uid = trim($_POST['uid']);
+    $update_id = trim($_POST['id']);
     $update_data = (object) array();
     if ($submit_username) $update_data->username = trim($_POST['username']);
     if ($submit_password) $update_data->password = trim(password_hash($_POST['password'], PASSWORD_DEFAULT));
@@ -84,7 +84,7 @@ try {
     $user = new User($db);
     
     // query products
-    $stmt = $user->update($update_uid, $update_data, $update_by);
+    $stmt = $user->update($update_id, $update_data, $update_by);
 
     $num = $stmt->rowCount();
 

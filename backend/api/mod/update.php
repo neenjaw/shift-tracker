@@ -9,7 +9,7 @@ include_once '../config/database.php';
 include_once '../objects/mod.php';
 
 try {
-    if (!isset($_POST['mid'])) {
+    if (!isset($_POST['id'])) {
         throw new Exception('Mod id not provided.');
     }
 
@@ -17,7 +17,7 @@ try {
         throw new Exception('Mod name not provided.');
     }
 
-    $update_mid = trim($_POST['mid']);
+    $update_id = trim($_POST['id']);
     $update_name = trim($_POST['name']);
     
     // instantiate database and product object
@@ -28,7 +28,7 @@ try {
     $mod = new Mod($db);
     
     // query products
-    $stmt = $mod->update($update_mid, $update_name);
+    $stmt = $mod->update($update_id, $update_name);
 
     $num = $stmt->rowCount();
 
@@ -36,7 +36,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Mod {$update_mid} updated.";
+        $result->message = "Mod {$update_id} updated.";
     } else {
         $result->message = "No mod records updated.";
     }

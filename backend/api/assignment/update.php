@@ -9,7 +9,7 @@ include_once '../config/database.php';
 include_once '../objects/assignment.php';
 
 try {
-    if (!isset($_POST['aid'])) {
+    if (!isset($_POST['id'])) {
         throw new Exception('assignment id not provided.');
     }
 
@@ -17,7 +17,7 @@ try {
         throw new Exception('assignment name not provided.');
     }
 
-    $update_aid = trim($_POST['aid']);
+    $update_id = trim($_POST['id']);
     $update_name = trim($_POST['name']);
     
     // instantiate database and product object
@@ -28,7 +28,7 @@ try {
     $assignment = new Assignment($db);
     
     // query products
-    $stmt = $category->update($update_aid, $update_name);
+    $stmt = $category->update($update_id, $update_name);
 
     $num = $stmt->rowCount();
 
@@ -36,7 +36,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "assignment {$update_aid} updated.";
+        $result->message = "assignment {$update_id} updated.";
     } else {
         $result->message = "No assignment records updated.";
     }

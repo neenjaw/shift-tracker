@@ -53,6 +53,22 @@ class Mod {
     
         return $stmt;
     }
+
+    function delete($id) {
+        $sql = "DELETE FROM
+                    {$this->table_name}
+                WHERE
+                    id=:id";
+
+        $stmt = $this->conn->prepare($sql);
+                    
+        $stmt->bindParam(':id', $id);
+    
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }
 
 ?>
