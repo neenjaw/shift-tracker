@@ -43,31 +43,36 @@ Modelled after [code of a ninja's tutorial](https://www.codeofaninja.com/2017/02
 - category
   - ✅ MariaDB Table
   - ✅ unique index
-  - ❌ create
-  - ❌ read
+  - ✅ create
+  - ✅ read
   - ✅ update
   - ✅ delete
 - role
   - ✅ MariaDB Table
   - ✅ unique index
-  - ❌ create
+  - ✅ create
   - ✅ read
   - ✅ update
   - ✅ delete
 - assignment
   - ✅ MariaDB Table
   - ✅ unique index
-  - ❌ create
+  - ✅ create
   - ✅ read
   - ✅ update
   - ✅ delete
 - mod
   - ✅ MariaDB Table
   - ✅ unique index
-  - ✅ shift_to_mod table
-    - ✅ foreign keys
-    - ✅ unique index
-  - ❌ create
+  - ✅ create
+  - ✅ read
+  - ✅ update
+  - ✅ delete
+- shift_to_mod
+  - ✅ MariaDB Table
+  - ✅ foreign keys
+  - ✅ unique index
+  - ✅ create
   - ✅ read
   - ✅ update
   - ✅ delete

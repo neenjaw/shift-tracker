@@ -66,7 +66,12 @@ try {
 
     $result = (object) array();
     $result->response = "OK";
-    $result->message = "User {$submitted_user} created.";
+    
+    if ($num > 0) {
+        $result->message = "User {$submitted_user} created.";
+    } else {
+        $result->message = "User not created.";
+    }
 
     echo json_encode($result);
 

@@ -5,38 +5,36 @@ header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
 include_once '../config/database.php';
-include_once '../objects/category.php';
-
+include_once '../objects/shift_to_mod.php';
+ 
 try {
-
-    if (!isset($_POST['name'])) {
-        throw new Exception("new category name not provided");
+    if (!isset($_POST['id'])) {
+        throw new Exception("id not provided");
     }
-  
-    $submitted_name = trim($_POST['name']);
+    
+    $submitted_id = trim($_POST['id']);
 
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
-    $category = new Category($db);
+    $shift_to_mod = new ShiftToMod($db);
     
     // query products
-    $stmt = $category->create($submitted_name);
-
+    $stmt = $shift_to_mod->delete($submitted_id);
     $num = $stmt->rowCount();
-
-    $result = (object) array();
-    $result->response = "OK";
-
+ 
+    // products array
+    $shift_to_mod_arr = (object) array();
+    $shift_to_mod_arr->response = "OK";
     if ($num > 0) {
-        $result->message = "Category {$submitted_name} created.";
+        $shift_to_mod_arr->message = "Shift to mod with id {$submitted_id} deleted.";
     } else {
-        $result->message = "Category not created.";
+        $shift_to_mod_arr->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
     }
 
-    echo json_encode($result);
+    echo json_encode($role_arr);
 
 } catch (Exception $e) {
 
@@ -47,5 +45,4 @@ try {
     echo json_encode($result);
 
 }
-
 ?>

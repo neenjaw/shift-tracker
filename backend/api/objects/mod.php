@@ -16,6 +16,24 @@ class Mod {
         $this->conn = $db;
     }
 
+    function create($name) {
+        //query
+        $sql = "INSERT INTO
+                    {$this->table_name} (`name`)
+                VALUES
+                    (:name)";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function read() {
         // select all query
         $sql = "SELECT
