@@ -6,9 +6,9 @@ The backend consists of simple REST api endpoints (create, read, update, delete)
 
 Each endpoint reads the body of the request and interprets it as a JSON object to process and act on.  It then returns a JSON object as a response in the following format:
 
-```json
+```javascript
 
-{
+jsonResponse = {
   "response":"OK", // or "ERROR"
   "message":"brief description of returned result", // or of the error encountered
   "records": [] // an array of the records returned for read/GET requests
