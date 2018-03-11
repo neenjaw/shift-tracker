@@ -34,7 +34,7 @@ try {
     if ($num > 0) {
         $result->message = "User with id {$user->id} deleted.";
     } else {
-        $result->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
+        $result->message = "Nothing deleted.";
     }
 
     echo json_encode($result);

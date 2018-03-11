@@ -39,9 +39,11 @@ jsonResponse = {
   - ✅ foreign keys
   - ✅ unique index
   - ❌ create
+  - ❌ create_many
   - ❌ read
   - ❌ read_one
-  - ❌ read_report
+  - ❌ read_shift_report
+  - ❌ read_date_range
   - ❌ update
   - ❌ delete
   - ❌ search
@@ -49,10 +51,10 @@ jsonResponse = {
   - ✅ MariaDB Table
   - ✅ foreign keys
   - ✅ unique index
-  - ❌ create
+  - ✅ create
   - ✅ read
-  - ❌ update
-  - ❌ delete
+  - ✅ update
+  - ✅ delete
 - user
   - ✅ MariaDB Table
   - ✅ unique index

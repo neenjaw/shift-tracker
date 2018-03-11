@@ -3,7 +3,7 @@
 class StaffMember {
     //db connection and table name
     private $conn;
-    private $table_name = "staff";
+    private $table_name = "staff_members";
 
     //object properties
     public $id;
@@ -62,8 +62,8 @@ class StaffMember {
         $stmt->bindParam(':ln', $this->last_name,   PDO::PARAM_STR);
         $stmt->bindParam(':ci', $this->category_id, PDO::PARAM_INT);
         $stmt->bindParam(':ac', $this->active,      PDO::PARAM_INT);
-        $stmt->bindParam(':cb', $this->creadted_by, PDO::PARAM_STR);
-        
+        $stmt->bindParam(':cb', $this->created_by, PDO::PARAM_STR);
+
         // execute query
         $stmt->execute();
     

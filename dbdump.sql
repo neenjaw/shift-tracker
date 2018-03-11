@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `shift_to_mod` (
   CONSTRAINT `fk_shift_id` FOREIGN KEY (`shift_id`) REFERENCES `shifts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
--- Dumping data for table tracker.shift_to_mod: ~0 rows (approximately)
+-- Dumping data for table tracker.shift_to_mod: ~4 rows (approximately)
 /*!40000 ALTER TABLE `shift_to_mod` DISABLE KEYS */;
 INSERT INTO `shift_to_mod` (`id`, `shift_id`, `mod_id`, `date_created`, `date_updated`) VALUES
 	(1, 19, 24, '2018-03-09 14:03:18', '2018-03-09 14:03:18'),

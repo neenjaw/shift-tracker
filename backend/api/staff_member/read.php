@@ -20,8 +20,8 @@ try {
     $num = $stmt->rowCount();
     
     // products array
-    $staff_member_arr = (object) array();
-    $staff_member_arr->records = array();
+    $result = (object) array();
+    $result->records = array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -44,12 +44,12 @@ try {
             "updated_by" => $updated_by,
         );
  
-        array_push($staff_member_arr->records, $one_staff_member);
+        array_push($result->records, $one_staff_member);
     }
  
-    $staff_member_arr->response = "OK";
+    $result->response = "OK";
 
-    echo json_encode($staff_member_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 
