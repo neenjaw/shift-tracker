@@ -99,3 +99,28 @@ jsonResponse = {
   - ✅ read
   - ✅ update
   - ✅ delete
+
+## Progress - frontend
+
+- ❌ processes
+  - ❌ auth state
+  - ❌ ajax query lib
+- ❌ pages
+  - ❌ landing
+  - ❌ index
+    - ❌ date range table
+    - ❌ dynamic shift edit
+  - ❌ shifts
+    - ❌ add unit shift
+    - ❌ add single shift
+    - ❌ find shift
+    - ❌ shift report
+  - ❌ staff member
+    - ❌ add
+    - ❌ review/report
+    - ❌ edit/delete
+  - ❌ admin panel
+    - ❌ add user
+    - ❌ change password
+    - ❌ remove user
+    - ❌ change auth
