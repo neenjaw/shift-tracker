@@ -19,6 +19,7 @@ jsonResponse = {
 ## Ideas
 
 1. convert all read to return ___ object and not the PDOstatement object
+2. make use of `$_SERVER['REQUEST_METHOD']` to differentiate GET, PUT, POST, DELETE methods, create unified endpoint
 
 ## Progress - backend
 
