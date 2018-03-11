@@ -9,26 +9,29 @@ include_once '../config/database.php';
 include_once '../objects/assignment.php';
 
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception('assignment id not provided.');
-    }
-
-    if (!isset($_POST['name'])) {
-        throw new Exception('assignment name not provided.');
-    }
-
-    $update_id = trim($_POST['id']);
-    $update_name = trim($_POST['name']);
-    
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $assignment = new Assignment($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $assignment->id = trim($data->id);
+    } else {
+        throw new Exception("assignment id not provided for update");
+    }
+
+    if (isset($data->name)) {
+        $assignment->name = trim($data->name);
+    } else {
+        throw new Exception("assignment name not provided for update");
+    }
     
     // query products
-    $stmt = $category->update($update_id, $update_name);
+    $stmt = $assignment->update();
 
     $num = $stmt->rowCount();
 
@@ -36,7 +39,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "assignment {$update_id} updated.";
+        $result->message = "assignment {$assignment->id} updated.";
     } else {
         $result->message = "No assignment records updated.";
     }

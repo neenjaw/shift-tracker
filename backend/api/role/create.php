@@ -12,21 +12,23 @@ include_once '../objects/role.php';
 
 try {
 
-    if (!isset($_POST['name'])) {
-        throw new Exception("new role name not provided");
-    }
-  
-    $submitted_name = trim($_POST['name']);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $role = new Role($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->name)) {
+        $role->name = trim($data->name);
+    } else {
+        throw new Exception("role name not provided for create");
+    }
     
     // query products
-    $stmt = $role->create($submitted_name);
+    $stmt = $role->create();
 
     $num = $stmt->rowCount();
 
@@ -34,7 +36,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Role {$submitted_name} created.";
+        $result->message = "Role {$role->name} created.";
     } else {
         $result->message = "Role not created.";
     }

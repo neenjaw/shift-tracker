@@ -12,58 +12,73 @@ include_once '../objects/user.php';
 
 try {
 
-    if (!isset($_POST['username'])) {
-        throw new Exception("Username not provided");
-    }
-
-    if (!isset($_POST['password'])) {
-        throw new Exception("Password not provided");
-    }
-
-    if (!isset($_POST['repeatpw'])) {
-        throw new Exception("Repeat password not provided");
-    }
-
-    if (!isset($_POST['creator'])) {
-        throw new Exception("Creator not provided");
-    }
-  
-    $submitted_user = trim($_POST['username']);
-    $submitted_password = trim($_POST['password']);
-    $submitted_repeatpw = trim($_POST['repeatpw']);
-    $submitted_creator = trim($_POST['creator']);
-
-    $submitted_admin = 0;
-    
-    if (isset($_POST['admin'])) {
-        if ($_POST['admin'] === 'true') $submitted_admin = 1;
-    }
-
-    $submitted_active = 1;
-    
-    if (isset($_POST['active'])) {
-        if ($_POST['active'] === 'false') $submitted_active = 0;
-    }
-
-    if ($submitted_password !== $submitted_repeatpw) {
-        throw new Exception('Submitted passwords do not match');
-    }
-
-    if (preg_match('/[a-zA-Z0-9]{8,16}/', $submitted_password) !== 1) {
-        throw new Exception('Password does not conform.');
-    }
-
-    $hashed_password = password_hash($submitted_password, PASSWORD_DEFAULT);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $user = new User($db);
-    
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    //set the username
+    if (isset($data->username)) {
+        $user->username = trim($data->username);
+    } else {
+        throw new Exception("username not provided for create");
+    }
+
+    //set the password
+    if (isset($data->password)) {
+        $data->password = trim($data->password);
+
+        if (preg_match('/[a-zA-Z0-9]{8,16}/', $data->password) !== 1) {
+            throw new Exception('Password does not conform.');
+        }
+
+        $user->password = password_hash($data->password, PASSWORD_DEFAULT);
+    } else {
+        throw new Exception("password not provided for create");
+    }
+
+    //check the repeated pw
+    if (isset($data->repeatpw)) {
+        $data->repeatpw = trim($data->repeatpw);
+
+        if ($data->repeatpw !== $data->password) {
+            throw new Exception('Submitted passwords do not match');
+        }        
+    } else {
+        throw new Exception("repeatpw not provided for create");
+    }
+
+    //check for the creator
+    if (isset($data->created_by)) {
+        $user->created_by = trim($data->created_by);
+    } else {
+        throw new Exception("created_by not provided for create");
+    }
+
+    //check for admin flag
+    if (isset($data->admin)) {
+        if ($data->admin === 'true') {
+            $user->admin = 1;
+        }
+    } else {
+        $user->admin = 0;
+    }
+
+    //check for active flag
+    if (isset($data->active)) {
+        if ($data->active === 'false') {
+            $user->active = 0;
+        }
+    } else {
+        $user->active = 1;
+    }
+
     // query products
-    $stmt = $user->create($submitted_user, $hashed_password, $submitted_active, $submitted_admin, $submitted_creator);
+    $stmt = $user->create();
 
     $num = $stmt->rowCount();
 
@@ -71,7 +86,7 @@ try {
     $result->response = "OK";
     
     if ($num > 0) {
-        $result->message = "User {$submitted_user} created.";
+        $result->message = "User {$user->username} created.";
     } else {
         $result->message = "User not created.";
     }

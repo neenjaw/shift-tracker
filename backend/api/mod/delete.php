@@ -8,11 +8,6 @@ include_once '../config/database.php';
 include_once '../objects/mod.php';
  
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception("id not provided");
-    }
-    
-    $submitted_id = trim($_POST['id']);
 
     // instantiate database and product object
     $database = new Database();
@@ -21,20 +16,28 @@ try {
     // initialize object
     $mod = new Mod($db);
     
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $mod->id = trim($data->id);
+    } else {
+        throw new Exception("mod id not provided for delete");
+    }
+    
     // query products
-    $stmt = $mod->delete($submitted_id);
+    $stmt = $mod->delete();
     $num = $stmt->rowCount();
  
     // products array
-    $mod_arr = (object) array();
-    $mod_arr->response = "OK";
+    $result = (object) array();
+    $result->response = "OK";
     if ($num > 0) {
-        $mod_arr->message = "Mod with id {$submitted_id} deleted.";
+        $result->message = "Mod with id {$mod->id} deleted.";
     } else {
-        $mod_arr->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
+        $result->message = "Nothing deleted.";
     }
 
-    echo json_encode($role_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

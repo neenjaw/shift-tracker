@@ -12,12 +12,6 @@ include_once '../objects/category.php';
 
 try {
 
-    if (!isset($_POST['name'])) {
-        throw new Exception("new category name not provided");
-    }
-  
-    $submitted_name = trim($_POST['name']);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
@@ -25,8 +19,16 @@ try {
     // initialize object
     $category = new Category($db);
     
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->name)) {
+        $category->name = trim($data->name);
+    } else {
+        throw new Exception("category name not provided for create");
+    }
+  
     // query products
-    $stmt = $category->create($submitted_name);
+    $stmt = $category->create();
 
     $num = $stmt->rowCount();
 
@@ -34,7 +36,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Category {$submitted_name} created.";
+        $result->message = "Category {$category->name} created.";
     } else {
         $result->message = "Category not created.";
     }

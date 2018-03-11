@@ -8,33 +8,35 @@ include_once '../config/database.php';
 include_once '../objects/category.php';
  
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception("id not provided");
-    }
-    
-    $submitted_id = trim($_POST['id']);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $category = new Category($db);
+       
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $category->id = trim($data->id);
+    } else {
+        throw new Exception("category id not provided for delete");
+    }
     
     // query products
-    $stmt = $category->delete($submitted_id);
+    $stmt = $category->delete();
     $num = $stmt->rowCount();
  
     // products array
-    $category_arr = (object) array();
-    $category_arr->response = "OK";
+    $result = (object) array();
+    $result->response = "OK";
     if ($num > 0) {
-        $category_arr->message = "Category with id {$submitted_id} deleted.";
+        $result->message = "Category with id {$category->id} deleted.";
     } else {
-        $category_arr->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
+        $result->message = "Nothing deleted.";
     }
 
-    echo json_encode($role_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

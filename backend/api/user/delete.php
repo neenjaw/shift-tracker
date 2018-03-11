@@ -8,11 +8,6 @@ include_once '../config/database.php';
 include_once '../objects/user.php';
  
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception("id not provided");
-    }
-    
-    $submitted_id = trim($_POST['id']);
 
     // instantiate database and product object
     $database = new Database();
@@ -20,21 +15,29 @@ try {
 
     // initialize object
     $user = new User($db);
+       
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $user->id = trim($data->id);
+    } else {
+        throw new Exception("user id not provided for delete");
+    }
     
     // query products
-    $stmt = $user->delete($submitted_id);
+    $stmt = $user->delete();
     $num = $stmt->rowCount();
  
     // products array
-    $user_arr = (object) array();
-    $user_arr->response = "OK";
+    $result = (object) array();
+    $result->response = "OK";
     if ($num > 0) {
-        $user_arr->message = "Role with id {$submitted_id} deleted.";
+        $result->message = "User with id {$user->id} deleted.";
     } else {
-        $user_arr->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
+        $result->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
     }
 
-    echo json_encode($user_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

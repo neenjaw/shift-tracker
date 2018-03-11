@@ -9,72 +9,6 @@ include_once '../config/database.php';
 include_once '../objects/user.php';
 
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception('User id not provided.');
-    }
-
-    $submit_username = false;
-    if (isset($_POST['username'])) {
-        $submit_username = true;
-    }
-
-    $submit_password = false;
-    if (isset($_POST['password'])) {
-        $submit_password = true;
-
-        if (preg_match('/[a-zA-Z0-9]{8,16}/', $_POST['password']) !== 1) {
-            throw new Exception('Password does not conform.');
-        }
-    }
-
-    $submit_repeatpw = false;
-    if (isset($_POST['repeatpw'])) {
-        $submit_repeatpw = true;
-    }
-
-    if ($submit_password && !$submit_repeatpw) {
-        throw new Exception('If supplying a password, must provide repeat pw.');
-    }
-
-    if ($submit_password && $submit_repeatpw) {
-        if ($_POST['password'] !== $_POST['repeatpw']) {
-            throw new Exception('Submitted passwords do not match');
-        }
-    }
-
-    if (!isset($_POST['update-by'])) {
-        throw new Exception("User not provided to record who updated by");
-    }
-  
-    $update_id = trim($_POST['id']);
-    $update_data = (object) array();
-    if ($submit_username) $update_data->username = trim($_POST['username']);
-    if ($submit_password) $update_data->password = trim(password_hash($_POST['password'], PASSWORD_DEFAULT));
-    $update_by = trim($_POST['update-by']);
-    
-    if (isset($_POST['admin'])) {
-        if ($_POST['admin'] === 'true') { 
-            $update_data->admin = 1;
-        } elseif ($_POST['admin'] === 'false') {
-            $update_data->admin = 0;
-        } else {
-            throw new Exception("Admin flag value does not conform");            
-        }
-    }
-
-    if (isset($_POST['active'])) {
-        if ($_POST['active'] === 'true') { 
-            $update_data->active = 1;
-        } elseif ($_POST['active'] === 'false') {
-            $update_data->active = 0;
-        } else {
-            throw new Exception("Active flag value does not conform");            
-        }
-    }
-
-    if (count(get_object_vars($update_data)) === 0) {
-        throw new Exception('Nothing to update.');
-    }
 
     // instantiate database and product object
     $database = new Database();
@@ -82,9 +16,69 @@ try {
 
     // initialize object
     $user = new User($db);
+       
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $user->id = trim($data->id);
+    } else {
+        throw new Exception("user id not provided for update");
+    }
+
+    if (isset($data->updated_by)) {
+        $user->updated_by = trim($data->updated_by);
+    } else {
+        throw new Exception("user updated_by not provided for update");
+    }
+
+    if (isset($data->username)) {
+        $user->username = trim($data->username);
+    }
+
+    if (isset($data->password)) {
+        $data->password = trim($data->password);
+
+        if (preg_match('/[a-zA-Z0-9]{8,16}/', $data->password) !== 1) {
+            throw new Exception('Password does not conform.');
+        } else {
+            $user->password = password_hash($data->password, PASSWORD_DEFAULT);
+        }
+
+        if (!isset($data->repeatpw)) {
+            throw new Exception('if password to be updated, must submit repeatpw');            
+        } else {
+            $data->repeatpw = trim($data->repeatpw);
+
+            if ($data->repeatpw !== $data->password) {
+                throw new Exception('password and repeatpw do not match.');            
+            }
+        }
+    }
+
+    //check for admin flag
+    if (isset($data->admin)) {
+        if ($data->admin === 'true') {
+            $user->admin = 1;
+        } elseif ($data->admin === 'false') {
+            $user->admin = 0;
+        } else {
+            throw new Exception("admin flag value does not conform");            
+        }
+    } 
+
+    //check for active flag
+    if (isset($data->active)) {
+        if ($data->active === 'true') {
+            $user->active = 1;
+        } elseif ($data->active === 'false') {
+            $user->active = 0;
+        } else {
+            throw new Exception("active flag value does not conform");            
+        }
+    } 
     
     // query products
-    $stmt = $user->update($update_id, $update_data, $update_by);
+    $stmt = $user->update();
 
     $num = $stmt->rowCount();
 
@@ -92,7 +86,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "User {$update_uid} updated.";
+        $result->message = "User {$user->id} updated.";
     } else {
         $result->message = "No user records updated.";
     }

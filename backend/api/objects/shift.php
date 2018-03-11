@@ -13,6 +13,8 @@ class Shift {
     public $staff_id;
     public $role_id;
     public $assignment_id;
+
+    public $mods;
     
     public $date_created;
     public $date_updated;

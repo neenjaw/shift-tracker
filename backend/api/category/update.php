@@ -9,26 +9,29 @@ include_once '../config/database.php';
 include_once '../objects/category.php';
 
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception('Category id not provided.');
-    }
-
-    if (!isset($_POST['name'])) {
-        throw new Exception('Category name not provided.');
-    }
-
-    $update_id = trim($_POST['id']);
-    $update_name = trim($_POST['name']);
-    
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $category = new Category($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $category->id = trim($data->id);
+    } else {
+        throw new Exception("category id not provided for update");
+    }
+
+    if (isset($data->name)) {
+        $category->name = trim($data->name);
+    } else {
+        throw new Exception("category name not provided for update");
+    }
     
     // query products
-    $stmt = $category->update($update_id, $update_name);
+    $stmt = $category->update();
 
     $num = $stmt->rowCount();
 
@@ -36,7 +39,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Category {$update_id} updated.";
+        $result->message = "Category {$category->id} updated.";
     } else {
         $result->message = "No category records updated.";
     }

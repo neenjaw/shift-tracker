@@ -9,26 +9,27 @@ include_once '../objects/user.php';
 
 try {
 
-    if (!isset($_POST['username'])) {
-        throw new Exception("Username not provided");
-    }
-
-    if (!isset($_POST['password'])) {
-        throw new Exception("Password not provided");
-    }
-    
-    $submitted_user = trim($_POST['username']);
-    $submitted_password = trim($_POST['password']);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $user = new User($db);
+
+    if (isset($data->username)) {
+        $user->username = trim($data->username);
+    } else {
+        throw new Exception("user username not provided for delete");
+    }
+
+    if (isset($data->password)) {
+        $user->password = trim($data->password);
+    } else {
+        throw new Exception("user password not provided for delete");
+    }
     
     // query products
-    $stmt = $user->read_one_by_username($submitted_user);
+    $stmt = $user->read_one_by_username();
 
     $num = $stmt->rowCount();
  
@@ -37,7 +38,7 @@ try {
     $result = (object) array();
     $result->response = "OK";
 
-    $authorized = password_verify($submitted_password, $row['password']);
+    $authorized = password_verify($user->password, $row['password']);
 
     if ($authorized) {
 

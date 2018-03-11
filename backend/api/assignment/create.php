@@ -10,23 +10,29 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 include_once '../objects/assignment.php';
 
+// TODO: see below
+// 1. move obj init to the top of try
+// 2. add $data json decode
+// 3. reformat data validation 
+
 try {
-
-    if (!isset($_POST['name'])) {
-        throw new Exception("new assignment name not provided");
-    }
-  
-    $submitted_name = trim($_POST['name']);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $assignment = new Assignment($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->name)) {
+        $assignment->name = trim($data->name);
+    } else {
+        throw new Exception("assignment name not provided for create");
+    }
     
     // query products
-    $stmt = $assignment->create($submitted_name);
+    $stmt = $assignment->create();
 
     $num = $stmt->rowCount();
 
@@ -34,7 +40,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Assignment {$submitted_name} created.";
+        $result->message = "Assignment {$assignment->name} created.";
     } else {
         $result->message = "Assignment not created.";
     }

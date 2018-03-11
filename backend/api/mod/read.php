@@ -20,8 +20,8 @@ try {
     $num = $stmt->rowCount();
  
     // products array
-    $mod_arr = (object) array();
-    $mod_arr->records = array();
+    $result = (object) array();
+    $result->records = array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -39,12 +39,12 @@ try {
             "date_updated" => $date_updated
         );
  
-        array_push($mod_arr->records, $one_mod);
+        array_push($result->records, $one_mod);
     }
  
-    $mod_arr->response = "OK";
+    $result->response = "OK";
 
-    echo json_encode($mod_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

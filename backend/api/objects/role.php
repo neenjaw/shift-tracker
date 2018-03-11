@@ -16,7 +16,7 @@ class Role {
         $this->conn = $db;
     }
 
-    function create($name) {
+    function create() {
         //query
         $sql = "INSERT INTO
                     {$this->table_name} (`name`)
@@ -26,7 +26,14 @@ class Role {
         // prepare query statement
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        //make sure required properties defined
+        if (!isset($this->name)) throw new Exception('name must be provided');
+
+        //sanitize
+        $this->name = htmlspecialchars(strip_tags($this->name));
+
+        //bind
+        $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
         
         // execute query
         $stmt->execute();
@@ -52,7 +59,7 @@ class Role {
         return $stmt;
     }
 
-    function update($id, $update_name) {
+    function update() {
         
         $sql = "UPDATE 
                     {$this->table_name}
@@ -62,9 +69,18 @@ class Role {
                     id=:id";
 
         $stmt = $this->conn->prepare($sql);
-                    
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':name', $update_name, PDO::PARAM_STR);
+         
+        //make sure required properties defined
+        if (!isset($this->id))   throw new Exception('id must be provided');
+        if (!isset($this->name)) throw new Exception('name must be provided');
+
+        //sanitize
+        $this->id   = htmlspecialchars(strip_tags($this->id));
+        $this->name = htmlspecialchars(strip_tags($this->name));
+
+        //bind
+        $stmt->bindParam(':id',   $this->id,   PDO::PARAM_INT);
+        $stmt->bindParam(':name', $this->name, PDO::PARAM_STR);
     
         // execute query
         $stmt->execute();
@@ -72,15 +88,22 @@ class Role {
         return $stmt;
     }
 
-    function delete($id) {
+    function delete() {
         $sql = "DELETE FROM
                     {$this->table_name}
                 WHERE
                     id=:id";
 
         $stmt = $this->conn->prepare($sql);
-                    
-        $stmt->bindParam(':id', $id);
+                          
+        //make sure required properties defined
+        if (!isset($this->id)) throw new Exception('id must be provided');
+
+        //sanitize
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        //bind
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
     
         // execute query
         $stmt->execute();

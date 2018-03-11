@@ -8,11 +8,6 @@ include_once '../config/database.php';
 include_once '../objects/role.php';
  
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception("id not provided");
-    }
-    
-    $submitted_id = trim($_POST['id']);
 
     // instantiate database and product object
     $database = new Database();
@@ -20,21 +15,29 @@ try {
 
     // initialize object
     $role = new Role($db);
+       
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $role->id = trim($data->id);
+    } else {
+        throw new Exception("role id not provided for delete");
+    }
     
     // query products
-    $stmt = $role->delete($submitted_id);
+    $stmt = $role->delete();
     $num = $stmt->rowCount();
  
     // products array
-    $role_arr = (object) array();
-    $role_arr->response = "OK";
+    $result = (object) array();
+    $result->response = "OK";
     if ($num > 0) {
-        $role_arr->message = "Role with id {$submitted_id} deleted.";
+        $result->message = "Role with id {$role->id} deleted.";
     } else {
-        $role_arr->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
+        $result->message = "Nothing deleted.";
     }
 
-    echo json_encode($role_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

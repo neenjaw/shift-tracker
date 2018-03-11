@@ -20,8 +20,8 @@ try {
     $num = $stmt->rowCount();
     
     // products array
-    $assignment_arr = (object) array();
-    $assignment_arr->records = array();
+    $result = (object) array();
+    $result->records = array();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -39,12 +39,12 @@ try {
             "date_updated" => $date_updated
         );
  
-        array_push($assignment_arr->records, $one_assignment);
+        array_push($result->records, $one_assignment);
     }
  
-    $assignment_arr->response = "OK";
+    $result->response = "OK";
 
-    echo json_encode($assignment_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

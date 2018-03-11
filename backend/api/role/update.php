@@ -9,16 +9,6 @@ include_once '../config/database.php';
 include_once '../objects/role.php';
 
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception('Role id not provided.');
-    }
-
-    if (!isset($_POST['name'])) {
-        throw new Exception('Role name not provided.');
-    }
-
-    $update_id = trim($_POST['id']);
-    $update_name = trim($_POST['name']);
     
     // instantiate database and product object
     $database = new Database();
@@ -26,9 +16,23 @@ try {
 
     // initialize object
     $role = new Role($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $role->id = trim($data->id);
+    } else {
+        throw new Exception("role id not provided for update");
+    }
+
+    if (isset($data->name)) {
+        $role->name = trim($data->name);
+    } else {
+        throw new Exception("role name not provided for update");
+    }
     
     // query products
-    $stmt = $role->update($update_id, $update_name);
+    $stmt = $role->update();
 
     $num = $stmt->rowCount();
 
@@ -36,7 +40,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Role {$update_id} updated.";
+        $result->message = "Role {$role->id} updated.";
     } else {
         $result->message = "No role records updated.";
     }

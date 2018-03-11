@@ -12,21 +12,23 @@ include_once '../objects/mod.php';
 
 try {
 
-    if (!isset($_POST['name'])) {
-        throw new Exception("new mod name not provided");
-    }
-  
-    $submitted_name = trim($_POST['name']);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
 
     // initialize object
     $mod = new Mod($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->name)) {
+        $mod->name = trim($data->name);
+    } else {
+        throw new Exception("mod name not provided for create");
+    }
     
     // query products
-    $stmt = $mod->create($submitted_name);
+    $stmt = $mod->create();
 
     $num = $stmt->rowCount();
 
@@ -34,7 +36,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Mod {$submitted_name} created.";
+        $result->message = "Mod {$mod->name} created.";
     } else {
         $result->message = "Mod not created.";
     }

@@ -9,16 +9,6 @@ include_once '../config/database.php';
 include_once '../objects/mod.php';
 
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception('Mod id not provided.');
-    }
-
-    if (!isset($_POST['name'])) {
-        throw new Exception('Mod name not provided.');
-    }
-
-    $update_id = trim($_POST['id']);
-    $update_name = trim($_POST['name']);
     
     // instantiate database and product object
     $database = new Database();
@@ -26,9 +16,23 @@ try {
 
     // initialize object
     $mod = new Mod($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->id)) {
+        $mod->id = trim($data->id);
+    } else {
+        throw new Exception("mod id not provided for update");
+    }
+
+    if (isset($data->name)) {
+        $mod->name = trim($data->name);
+    } else {
+        throw new Exception("mod name not provided for update");
+    }
     
     // query products
-    $stmt = $mod->update($update_id, $update_name);
+    $stmt = $mod->update();
 
     $num = $stmt->rowCount();
 
@@ -36,7 +40,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Mod {$update_id} updated.";
+        $result->message = "Mod {$mod->id} updated.";
     } else {
         $result->message = "No mod records updated.";
     }
