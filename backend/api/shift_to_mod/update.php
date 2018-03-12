@@ -9,28 +9,6 @@ include_once '../config/database.php';
 include_once '../objects/shift_to_mod.php';
 
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception('User id not provided.');
-    }
-
-    $submit_shift_id = false;
-    if (isset($_POST['shift-id'])) {
-        $submit_shift_id = true;
-    }
-
-    $submit_mod_id = false;
-    if (isset($_POST['mod-id'])) {
-        $submit_mod_id = true;
-    }
-  
-    $update_id = trim($_POST['id']);
-    $update_data = (object) array();
-    if ($submit_shift_id) $update_data->shift_id = trim($_POST['shift-id']);
-    if ($submit_mod_id) $update_data->mod_id = trim($_POST['mod-id']);
-
-    if (count(get_object_vars($update_data)) === 0) {
-        throw new Exception('Nothing to update.');
-    }
     
     // instantiate database and product object
     $database = new Database();
@@ -38,9 +16,40 @@ try {
 
     // initialize object
     $shift_to_mod = new ShiftToMod($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+    
+    //set id
+    if (isset($data->id)) {
+        $shift_to_mod->id = trim($data->id);
+
+        if (filter_var($shift_to_mod->id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('id does not conform');
+        }
+    } else {
+        throw new Exception('id not provided for update');
+    }
+
+    //set shift_id
+    if (isset($data->shift_id)) {
+        $shift_to_mod->shift_id = trim($data->shift_id);
+
+        if (filter_var($shift_to_mod->shift_id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('shift id does not conform');
+        }
+    }
+
+    //set mod_id
+    if (isset($data->mod_id)) {
+        $shift_to_mod->mod_id = trim($data->mod_id);
+
+        if (filter_var($shift_to_mod->mod_id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('mod id does not conform');
+        }
+    }
     
     // query products
-    $stmt = $shift_to_mod->update($update_id, $update_data);
+    $stmt = $shift_to_mod->update();
 
     $num = $stmt->rowCount();
 
@@ -48,7 +57,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Shift to mod record {$update_id} updated.";
+        $result->message = "Shift to mod record {$shift_to_mod->id} updated.";
     } else {
         $result->message = "No shift to mod records updated.";
     }

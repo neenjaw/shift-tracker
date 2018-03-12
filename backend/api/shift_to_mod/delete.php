@@ -8,11 +8,6 @@ include_once '../config/database.php';
 include_once '../objects/shift_to_mod.php';
  
 try {
-    if (!isset($_POST['id'])) {
-        throw new Exception("id not provided");
-    }
-    
-    $submitted_id = trim($_POST['id']);
 
     // instantiate database and product object
     $database = new Database();
@@ -20,9 +15,21 @@ try {
 
     // initialize object
     $shift_to_mod = new ShiftToMod($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+    
+    if (isset($data->id)) {
+        $shift_to_mod->id = trim($data->id);
+
+        if (filter_var($shift_to_mod->id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('id does not conform');
+        }
+    } else {
+        throw new Exception('id not provided for delete');
+    }
     
     // query products
-    $stmt = $shift_to_mod->delete($submitted_id);
+    $stmt = $shift_to_mod->delete();
     $num = $stmt->rowCount();
  
     // products array

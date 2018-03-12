@@ -12,17 +12,6 @@ include_once '../objects/shift_to_mod.php';
 
 try {
 
-    if (!isset($_POST['shift-id'])) {
-        throw new Exception("shift id not provided");
-    }
-
-    if (!isset($_POST['mod-id'])) {
-        throw new Exception("mod id not provided");
-    }
-  
-    $submitted_shift_id = trim($_POST['shift-id']);
-    $submitted_mod_id = trim($_POST['mod-id']);
-
     // instantiate database and product object
     $database = new Database();
     $db = $database->getConnection();
@@ -30,8 +19,30 @@ try {
     // initialize object
     $shift_to_mod = new ShiftToMod($db);
     
+    $data = json_decode(file_get_contents('php://input'));
+
+    if (isset($data->shift_id)) {
+        $shift_to_mod->shift_id = trim($data->shift_id);
+
+        if (filter_var($shift_to_mod->shift_id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('shift id does not conform');
+        }
+    } else {
+        throw new Exception('shift id not provided for create');
+    }
+
+    if (isset($data->mod_id)) {
+        $shift_to_mod->mod_id = trim($data->mod_id);
+
+        if (filter_var($shift_to_mod->mod_id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('mod id does not conform');
+        }
+    } else {
+        throw new Exception('mod id not provided for create');
+    }
+
     // query products
-    $stmt = $shift_to_mod->create($submitted_shift_id, $submitted_mod_id);
+    $stmt = $shift_to_mod->create();
 
     $num = $stmt->rowCount();
 
@@ -39,7 +50,7 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
-        $result->message = "Shift to mod ({$submitted_shift_id} <-> {$submitted_mod_id}) created.";
+        $result->message = "Shift to mod ({$shift_to_mod->shift_id} <-> {$shift_to_mod->mod_id}) created.";
     } else {
         $result->message = "Shift to mod not created.";
     }

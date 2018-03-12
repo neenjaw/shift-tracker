@@ -17,18 +17,30 @@ class ShiftToMod {
         $this->conn = $db;
     }
 
-    function create($new_shift_id, $new_mod_id) {
+    function create() {
         //query
         $sql = "INSERT INTO
                     {$this->table_name} (`shift_id`, `mod_id`)
                 VALUES
-                    (:shiftId, :modId)";
+                    (:shift_id, :mod_id)";
 
         // prepare query statement
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(':shiftId', $new_shift_id, PDO::PARAM_INT);
-        $stmt->bindParam(':modId', $new_mod_id, PDO::PARAM_INT);
+        //make sure required properties defined
+        if (!isset($this->shift_id)) throw new Exception('shift_id must be provided');
+        if (!isset($this->mod_id))   throw new Exception('mod_id must be provided');
+       
+        if (filter_var($this->shift_id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('shift_id does not conform');
+        }
+
+        if (filter_var($this->mod_id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('mod_id does not conform');
+        }
+
+        $stmt->bindParam(':shift_id', $this->shift_id, PDO::PARAM_INT);
+        $stmt->bindParam(':mod_id', $this->mod_id, PDO::PARAM_INT);
         
         // execute query
         $stmt->execute();
@@ -54,7 +66,7 @@ class ShiftToMod {
         return $stmt;
     }
 
-    function update($id, $updates) {
+    function update() {
         
         //to facilitate dynamic update query generation in safe bound parameter format
         $col_names = array('shift_id',     'mod_id');
@@ -62,16 +74,23 @@ class ShiftToMod {
         $dat_types = array(PDO::PARAM_INT, PDO::PARAM_INT);
         $sub_check = array(false,          false);
 
+        $any_sub = false;
         $update_str_arr = array();
 
+        //make sure non-optional data is set
+        if (!isset($this->id)) throw new Exception('id must be provided');
+
         for ($i = 0; $i < count($col_names); $i++) {
-            if (property_exists($updates, $col_names[$i])) {
+            if (isset($this->{$col_names[$i]})) {
+                $any_sub = true;
                 $sub_check[$i] = true;
                 array_push($update_str_arr, "{$col_names[$i]}={$dat_param[$i]}");
             }
         }      
 
         $update_str = implode(', ', $update_str_arr);
+
+        if (!$any_sub) throw new Exception('no data was submitted for shift to mod update.');
         
         $sql = "UPDATE 
                     {$this->table_name}
@@ -82,12 +101,12 @@ class ShiftToMod {
 
         $stmt = $this->conn->prepare($sql);
                     
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
 
         //if the data was submitted, then bind the data to the parameter
         for ($i=0; $i < count($col_names); $i++) { 
             if ($sub_check[$i] === true) {
-                $stmt->bindParam($dat_param[$i], $updates->{$col_names[$i]}, $dat_types[$i]);
+                $stmt->bindParam($dat_param[$i], $this->{$col_names[$i]}, $dat_types[$i]);
             }
         }
     
@@ -97,15 +116,24 @@ class ShiftToMod {
         return $stmt;
     }
 
-    function delete($id) {
+    function delete() {
         $sql = "DELETE FROM
                     {$this->table_name}
                 WHERE
                     id=:id";
 
         $stmt = $this->conn->prepare($sql);
-                    
-        $stmt->bindParam(':id', $id);
+
+        //make sure required properties defined
+        if (!isset($this->id))  throw new Exception('id must be provided');
+        
+        //validate format
+        if (filter_var($this->id, FILTER_VALIDATE_INT) === false) {
+            throw new Exception('id does not conform');
+        }
+
+        //bind
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     
         // execute query
         $stmt->execute();

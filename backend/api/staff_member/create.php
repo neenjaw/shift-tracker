@@ -36,13 +36,11 @@ try {
     }
 
     if (isset($data->category_id)) {
-        $data->category_id = trim($data->category_id);
+        $staff_member->category_id = trim($data->category_id);
 
-        if (filter_var($data->category_id, FILTER_VALIDATE_INT) === false) {
+        if (filter_var($staff_member->category_id, FILTER_VALIDATE_INT) === false) {
             throw new Exception('category id does not conform');
         }
-
-        $staff_member->category_id = $data->category_id;
     } else {
         throw new Exception('category id not provided for create');
     }
