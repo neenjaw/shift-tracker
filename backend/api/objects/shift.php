@@ -108,15 +108,20 @@ class Shift {
         // select all query
         $sql = "SELECT
                     s.id, s.shift_date, s.shift_d_or_n, 
+                    
                     s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
+                    
                     s.role_id, r.name as role_name,
+                    
                     s.assignment_id, a.name as assignment_name,
+                    
+                    sm.shift_mods,
 
                     s.date_created, s.date_updated, s.created_by, s.updated_by
                 FROM
                     {$this->table_name} s
                 LEFT JOIN
-                    staff f
+                    staff_members f
                 ON 
                     s.staff_id = f.id
                 LEFT JOIN
@@ -124,9 +129,31 @@ class Shift {
                 ON
                     s.role_id = r.id
                 LEFT JOIN
-                    assignment a
+                    assignments a
                 ON
                     s.assignment_id = a.id 
+                LEFT JOIN
+                    (
+                        SELECT
+                            sm.shift_id as id,
+                            CONCAT(
+                                '[',
+                                GROUP_CONCAT(
+                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                ),
+                                ']'
+                            ) as shift_mods
+                        FROM
+                            shift_to_mod sm
+                        LEFT JOIN
+                            mods m
+                        ON
+                            sm.mod_id = m.id
+                        GROUP BY
+                            sm.shift_id
+                    ) sm
+                ON
+                    s.id = sm.id
                 ORDER BY
                     s.shift_date DESC";
     
@@ -143,15 +170,20 @@ class Shift {
                 // select all query
         $sql = "SELECT
                     s.id, s.shift_date, s.shift_d_or_n, 
+                    
                     s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
+                    
                     s.role_id, r.name as role_name,
+                    
                     s.assignment_id, a.name as assignment_name,
+                    
+                    sm.shift_mods,
 
                     s.date_created, s.date_updated, s.created_by, s.updated_by
                 FROM
                     {$this->table_name} s
                 LEFT JOIN
-                    staff f
+                    staff_members f
                 ON 
                     s.staff_id = f.id
                 LEFT JOIN
@@ -159,9 +191,31 @@ class Shift {
                 ON
                     s.role_id = r.id
                 LEFT JOIN
-                    assignment a
+                    assignments a
                 ON
                     s.assignment_id = a.id 
+                LEFT JOIN
+                    (
+                        SELECT
+                            sm.shift_id as id,
+                            CONCAT(
+                                '[',
+                                GROUP_CONCAT(
+                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                ),
+                                ']'
+                            ) as shift_mods
+                        FROM
+                            shift_to_mod sm
+                        LEFT JOIN
+                            mods m
+                        ON
+                            sm.mod_id = m.id
+                        GROUP BY
+                            sm.shift_id
+                    ) sm
+                ON
+                    s.id = sm.id
                 WHERE
                     s.id=:id
                 ORDER BY
@@ -209,12 +263,13 @@ class Shift {
                     s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
                     s.role_id, r.name as role_name,
                     s.assignment_id, a.name as assignment_name,
+                    sm.shift_mods,
 
                     s.date_created, s.date_updated, s.created_by, s.updated_by
                 FROM
                     {$this->table_name} s
                 LEFT JOIN
-                    staff f
+                    staff_members f
                 ON 
                     s.staff_id = f.id
                 LEFT JOIN
@@ -222,9 +277,31 @@ class Shift {
                 ON
                     s.role_id = r.id
                 LEFT JOIN
-                    assignment a
+                    assignments a
                 ON
                     s.assignment_id = a.id 
+                LEFT JOIN
+                    (
+                        SELECT
+                            sm.shift_id as id,
+                            CONCAT(
+                                '[',
+                                GROUP_CONCAT(
+                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                ),
+                                ']'
+                            ) as shift_mods
+                        FROM
+                            shift_to_mod sm
+                        LEFT JOIN
+                            mods m
+                        ON
+                            sm.mod_id = m.id
+                        GROUP BY
+                            sm.shift_id
+                    ) sm
+                ON
+                    s.id = sm.id
                 WHERE
                     s.shift_date {$date_condition}
                 ORDER BY

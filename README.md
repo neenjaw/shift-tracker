@@ -24,6 +24,7 @@ jsonResponse = {
 ## Hangups
 
 - I don't have a solution for shift tags yet... (eg. evd, crrt)
+  - *SOLUTION* decided to create a JSON object in the query for the tags, so that they can be displayed well later with relevant meta-data
 
 ## Progress - backend
 

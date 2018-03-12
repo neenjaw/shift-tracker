@@ -43,6 +43,7 @@ try {
             "role_name"        => $role_name,
             "assignment_id"    => $assignment_id,
             "assignment_name"  => $assignment_name,
+            "shift_mods"       => $shift_mods,
             "date_created"     => $date_created,
             "date_updated"     => $date_updated,
             "created_by"       => $created_by,
