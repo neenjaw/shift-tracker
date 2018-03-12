@@ -1,4 +1,4 @@
-# shfittracker rest-ish api -- php
+# shift-tracker rest-ish api -- php
 
 Modelled after [code of a ninja's tutorial](https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html).  Basically divided into a frontend and backend php project.  The backend is 'separate' for semantics and maintainability but dependent on the session initiated by the front-end for authentication and authorization.
 
@@ -26,6 +26,12 @@ jsonResponse = {
 - I don't have a solution for shift tags yet... (eg. evd, crrt)
   - *SOLUTION* decided to create a JSON object in the query for the tags, so that they can be displayed well later with relevant meta-data
 
+## Progress - key
+
+✅ complete
+❌ not started
+➖ in progress
+
 ## Progress - backend
 
 - config
@@ -46,9 +52,9 @@ jsonResponse = {
   - ✅ create
   - ❌ create_many
   - ✅ read
-  - ➖ read_one
-  - ➖ read_date_range
-  - ➖ update
+  - ✅ read_one
+  - ✅ read_date_range
+  - ✅ update
   - ✅ delete
   - ❌ search
 - staff_member
