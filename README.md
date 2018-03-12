@@ -21,6 +21,10 @@ jsonResponse = {
 1. convert all read to return ___ object and not the PDOstatement object
 2. make use of `$_SERVER['REQUEST_METHOD']` to differentiate GET, PUT, POST, DELETE methods, create unified endpoint
 
+## Hangups
+
+- I don't have a solution for shift tags yet... (eg. evd, crrt)
+
 ## Progress - backend
 
 - config
@@ -38,14 +42,13 @@ jsonResponse = {
   - ✅ MariaDB Table
   - ✅ foreign keys
   - ✅ unique index
-  - ❌ create
+  - ✅ create
   - ❌ create_many
-  - ❌ read
-  - ❌ read_one
-  - ❌ read_shift_report
-  - ❌ read_date_range
-  - ❌ update
-  - ❌ delete
+  - ✅ read
+  - ➖ read_one
+  - ➖ read_date_range
+  - ➖ update
+  - ✅ delete
   - ❌ search
 - staff_member
   - ✅ MariaDB Table

@@ -133,7 +133,7 @@ class ShiftToMod {
         }
 
         //bind
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
     
         // execute query
         $stmt->execute();

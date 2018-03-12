@@ -33,15 +33,15 @@ try {
     $num = $stmt->rowCount();
  
     // products array
-    $shift_to_mod_arr = (object) array();
-    $shift_to_mod_arr->response = "OK";
+    $result = (object) array();
+    $result->response = "OK";
     if ($num > 0) {
-        $shift_to_mod_arr->message = "Shift to mod with id {$submitted_id} deleted.";
+        $result->message = "Shift to mod with id {$shift_to_mod->id} deleted.";
     } else {
-        $shift_to_mod_arr->message = "Nothing deleted. Nothing with id {$submitted_id} exists.";
+        $result->message = "Nothing deleted.";
     }
 
-    echo json_encode($role_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

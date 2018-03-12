@@ -78,6 +78,13 @@ try {
         throw new Exception('assignment id not provided for create');
     }
 
+    //check for the creator
+    if (isset($data->created_by)) {
+        $shift->created_by = trim($data->created_by);
+    } else {
+        throw new Exception("created_by not provided for create");
+    }
+
     //sets the mods array of mod id's
     if (isset($data->mods)) {
         $shift->mods = $data->mods;
