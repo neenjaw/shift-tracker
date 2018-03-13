@@ -89,6 +89,8 @@ jsonResponse = {
   - ✅ check_password
   - ✅ update
   - ✅ delete
+  - ✅ login
+  - ✅ logout
 - category
   - ✅ MariaDB Table
   - ✅ unique index
@@ -128,12 +130,12 @@ jsonResponse = {
 
 ## Progress - frontend
 
-- ❌ processes
-  - ❌ auth state
-  - ❌ ajax query lib
-- ❌ pages
-  - ❌ landing
-  - ❌ index
+- ➖ processes
+  - ➖ auth state
+  - ➖ axios
+- ➖ pages
+  - ➖ landing
+  - ❌ home
     - ❌ date range table
     - ❌ dynamic shift edit
   - ❌ shifts
