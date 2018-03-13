@@ -1,10 +1,10 @@
-# shift-tracker 
+# shift-tracker
 
 ## frontend
 
 The skeleton is up for the front end.  Basic design decisions being:
 
--Font Awesome for glyph support
+-Font Awesome 5 for glyph support
 -Bootstrap 4 for rapid css styling
 -Axios for rest-api interaction
 

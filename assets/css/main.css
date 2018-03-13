@@ -27,3 +27,15 @@ nav {
     margin-bottom: 15px;
     border-radius: 0 0 5px 5px;
 }
+
+.closable {
+    display: none;
+    height: 0;
+    overflow: hidden;
+    transition: height 350ms ease-in-out;
+}
+
+.closable.not-closed {
+    display: block;
+    height: auto;
+}

@@ -1,16 +1,19 @@
 $(function() {
     var loginForm = document.querySelector('form.login');
     var loginFormSubmitButton = loginForm.querySelector('button');
+    var loginFormUsername = loginForm.querySelector('#username');
+    var loginFormPassword = loginForm.querySelector('#password');
 
     loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        loginFormSubmitButton.innerHTML = '<i class="fas fa-transfer"></i> Sending...';        
+        loginFormSubmitButton.innerHTML = '<i class="fas fa-transfer"></i> Sending...';     
+
 
         axios
             .post('/api/user/login.php', {
-                username: 'tima',
-                password: 'password'
+                username: loginFormUsername.value,
+                password: loginFormPassword.value
             })
             .then(function (response) {
                 console.log(response);
