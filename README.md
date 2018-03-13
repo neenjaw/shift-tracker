@@ -51,17 +51,17 @@ jsonResponse = {
 
 ## Progress - backend
 
-- config
-  - ❌ authorization
+- ➖ config
+  - ➖ authorization
   - ✅ database
-- objects
+- ✅ objects
   - ✅ shift
   - ✅ staff
   - ✅ user
   - ✅ assignment
   - ✅ role
   - ✅ mod
-- shift
+- ➖ shift
   - ✅ MariaDB Table
   - ✅ foreign keys
   - ✅ unique index
@@ -73,7 +73,7 @@ jsonResponse = {
   - ✅ read_one_staff
   - ✅ update
   - ✅ delete
-- staff_member
+- ✅ staff_member
   - ✅ MariaDB Table
   - ✅ foreign keys
   - ✅ unique index
@@ -81,7 +81,7 @@ jsonResponse = {
   - ✅ read
   - ✅ update
   - ✅ delete
-- user
+- ✅ user
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
@@ -91,35 +91,35 @@ jsonResponse = {
   - ✅ delete
   - ✅ login
   - ✅ logout
-- category
+- ✅ category
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
   - ✅ read
   - ✅ update
   - ✅ delete
-- role
+- ✅ role
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
   - ✅ read
   - ✅ update
   - ✅ delete
-- assignment
+- ✅ assignment
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
   - ✅ read
   - ✅ update
   - ✅ delete
-- mod
+- ✅ mod
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
   - ✅ read
   - ✅ update
   - ✅ delete
-- shift_to_mod
+- ✅ shift_to_mod
   - ✅ MariaDB Table
   - ✅ foreign keys
   - ✅ unique index
