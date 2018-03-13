@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -15,9 +17,9 @@ try {
 
     // initialize object
     $user = new User($db);
-    
-    $data = json_decode(file_get_contents('php://input'));
 
+    $data = json_decode(file_get_contents('php://input'));
+    
     if (isset($data->username)) {
         $user->username = trim($data->username);
     } else {
@@ -43,6 +45,15 @@ try {
     $authorized = password_verify($user->password, $row['password']);
 
     if ($authorized) {
+
+        //PHP Session Setup
+        $_SESSION['authenticated'] = true;
+        $_SESSION['user'] = (object) array();
+        $_SESSION['user']->id = $row['id'];
+        $_SESSION['user']->login = $row['username'];
+        $_SESSION['user']->active = $row['active'];
+        $_SESSION['user']->admin = $row['admin'];
+        //END PHP Session Setup
 
         $result->authorized = true;
         $result->message = "Success. User Authenticated.";
@@ -74,5 +85,3 @@ try {
     echo json_encode($result);
 
 }
-
-?>
