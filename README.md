@@ -1,4 +1,21 @@
-# shift-tracker rest-ish api -- php
+# shift-tracker 
+
+## frontend
+
+The skeleton is up for the front end.  Basic design decisions being:
+
+-Font Awesome for glyph support
+-Bootstrap 4 for rapid css styling
+-Axios for rest-api interaction
+
+Making sure to:
+
+-Modularize my css files
+-Modularize my js files
+
+Plan for now, keep it simple, get a working version done, don't get side-tracked by details.
+
+## backend -- rest-ish api
 
 Modelled after [code of a ninja's tutorial](https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html).  Basically divided into a frontend and backend php project.  The backend is 'separate' for semantics and maintainability but dependent on the session initiated by the front-end for authentication and authorization.
 
