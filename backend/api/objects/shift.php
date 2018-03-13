@@ -1,5 +1,6 @@
 <?php
 
+include_once '../config/auxiliary.php';
 include_once 'shift_to_mod.php';
 
 class Shift {
@@ -243,18 +244,18 @@ class Shift {
 
     function read_date_range($date_from, $date_to = NULL) {
 
-        if (preg_match('/^[12][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $shift->date_from) !== 1) {
+        if (preg_match('/^[12][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $date_from) !== 1) {
             throw new Exception('date from does not conform');
         }
 
         if ($date_to !== NULL) {
-            if (preg_match('/^[12][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $shift->date_to) !== 1) {
+            if (preg_match('/^[12][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $date_to) !== 1) {
                 throw new Exception('date to does not conform');
             }
 
-            $date_condition = "BETWEEN {$date_from} AND {$date_to}";
+            $date_condition = "BETWEEN '{$date_from}' AND '{$date_to}'";
         } else {
-            $date_condition = ">= {$date_from}";
+            $date_condition = ">= '{$date_from}'";
         }
 
         // select all query
@@ -306,10 +307,89 @@ class Shift {
                     s.shift_date {$date_condition}
                 ORDER BY
                     s.shift_date ASC";
-    
+
         // prepare query statement
         $stmt = $this->conn->prepare($sql);
     
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
+    function read_one_staff($date_from = NULL, $date_to = NULL) {
+
+        if (!isset($this->staff_id))      throw new Exception('staff_id must be provided');
+
+        $date_condition = '';
+
+        if ($date_from !== NULL) {
+            if ( ! isDateFormatted($date_from) ) throw new Exception('date from does not conform');
+
+            if ($date_to !== NULL) {
+                if ( ! isDateFormatted($date_to) ) throw new Exception('date to does not conform');
+
+                $date_condition = "AND ( s.shift_date BETWEEN '{$date_from}' AND '{$date_to}')";
+            } else {
+                $date_condition = "AND (s.shift_date >= '{$date_from}')";
+            }
+        }
+
+        // select all query
+        $sql = "SELECT
+                    s.id, s.shift_date, s.shift_d_or_n, 
+                    s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
+                    s.role_id, r.name as role_name,
+                    s.assignment_id, a.name as assignment_name,
+                    sm.shift_mods,
+
+                    s.date_created, s.date_updated, s.created_by, s.updated_by
+                FROM
+                    {$this->table_name} s
+                LEFT JOIN
+                    staff_members f
+                ON 
+                    s.staff_id = f.id
+                LEFT JOIN
+                    roles r
+                ON
+                    s.role_id = r.id
+                LEFT JOIN
+                    assignments a
+                ON
+                    s.assignment_id = a.id 
+                LEFT JOIN
+                    (
+                        SELECT
+                            sm.shift_id as id,
+                            CONCAT(
+                                '[',
+                                GROUP_CONCAT(
+                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                ),
+                                ']'
+                            ) as shift_mods
+                        FROM
+                            shift_to_mod sm
+                        LEFT JOIN
+                            mods m
+                        ON
+                            sm.mod_id = m.id
+                        GROUP BY
+                            sm.shift_id
+                    ) sm
+                ON
+                    s.id = sm.id
+                WHERE
+                    s.staff_id=:staff_id {$date_condition}
+                ORDER BY
+                    s.shift_date ASC";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($sql);
+    
+        $stmt->bindParam(':staff_id', $this->staff_id, PDO::PARAM_INT);
+        
         // execute query
         $stmt->execute();
     

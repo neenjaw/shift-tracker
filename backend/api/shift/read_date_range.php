@@ -4,6 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
+include_once '../config/auxiliary.php'; 
 include_once '../config/database.php';
 include_once '../objects/shift.php';
     
@@ -14,9 +15,34 @@ try {
 
     // initialize object
     $shift = new Shift($db);
+
+    $date_from = NULL;
+    $date_to = NULL;
+
+    $data = json_decode(file_get_contents('php://input'));
+    
+    //set the shift date from
+    if (isset($data->date_from)) {
+        $date_from = trim($data->date_from);
+
+        if (! isDateFormatted($date_from)) {
+            throw new Exception('date does not conform');
+        }
+    } else {
+        throw new Exception('date not provided for the start of the read range');
+    }
+    
+    //set the shift date to
+    if (isset($data->date_to)) {
+        $date_to = trim($data->date_to);
+
+        if (! isDateFormatted($date_to)) {
+            throw new Exception('date does not conform');
+        }
+    }
     
     // query products
-    $stmt = $shift->read();
+    $stmt = $shift->read_date_range($date_from, $date_to);
     $num = $stmt->rowCount();
  
     // products array

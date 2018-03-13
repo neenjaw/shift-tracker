@@ -54,9 +54,9 @@ jsonResponse = {
   - ✅ read
   - ✅ read_one
   - ✅ read_date_range
+  - ✅ read_one_staff
   - ✅ update
   - ✅ delete
-  - ❌ search
 - staff_member
   - ✅ MariaDB Table
   - ✅ foreign keys

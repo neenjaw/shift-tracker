@@ -4,6 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
+include_once '../config/auxiliary.php';
 include_once '../config/database.php';
 include_once '../objects/shift.php';
     
@@ -14,9 +15,39 @@ try {
 
     // initialize object
     $shift = new Shift($db);
+
+    $data = json_decode(file_get_contents('php://input'));
+    
+    if (isset($data->staff_id)) {
+        $shift->staff_id = trim($data->staff_id);
+
+        if (! isThisIntegerlike($shift->staff_id)) {
+            throw new Exception('staff_id does not conform');
+        }
+    } else {
+        throw new Exception('staff_id not provided for delete');
+    }
+    
+    //set the shift date from
+    if (isset($data->date_from)) {
+        $date_from = trim($data->date_from);
+
+        if (! isDateFormatted($date_from)) {
+            throw new Exception('date does not conform');
+        }
+    }
+    
+    //set the shift date to
+    if (isset($data->date_to)) {
+        $date_to = trim($data->date_to);
+
+        if (! isDateFormatted($date_to)) {
+            throw new Exception('date does not conform');
+        }
+    }
     
     // query products
-    $stmt = $shift->read();
+    $stmt = $shift->read_one_staff($date_from, $date_to);
     $num = $stmt->rowCount();
  
     // products array

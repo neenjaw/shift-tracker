@@ -4,6 +4,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
+include_once '../config/auxiliary.php';
 include_once '../config/database.php';
 include_once '../objects/shift.php';
     
@@ -20,7 +21,7 @@ try {
     if (isset($data->id)) {
         $shift->id = trim($data->id);
 
-        if (filter_var($shift->id, FILTER_VALIDATE_INT) === false) {
+        if (! isThisIntegerlike($shift->id)) {
             throw new Exception('id does not conform');
         }
     } else {
@@ -33,6 +34,7 @@ try {
  
     // products array
     $result = (object) array();
+    $result->count = $num;
     $result->records = array();
  
     // retrieve our table contents
@@ -55,7 +57,7 @@ try {
             "role_name"        => $role_name,
             "assignment_id"    => $assignment_id,
             "assignment_name"  => $assignment_name,
-            "shift_mods"       => $shift_mods,
+            "shift_mods"       => json_decode($shift_mods),
             "date_created"     => $date_created,
             "date_updated"     => $date_updated,
             "created_by"       => $created_by,
