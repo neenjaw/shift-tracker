@@ -36,7 +36,6 @@ jsonResponse = {
 
 - config
   - ❌ authorization
-  - ❌ core
   - ✅ database
 - objects
   - ✅ shift

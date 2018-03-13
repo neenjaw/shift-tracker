@@ -8,7 +8,7 @@ class Database {
     public $conn = null;
 
     public function getConnection() {
-        $db_config = parse_ini_file('../../../dbconfig.ini'); 
+        $db_config = parse_ini_file('./dbconfig.ini'); 
 
         $this->host = $db_config['host'];
         $this->db_name = $db_config['dbname'];
