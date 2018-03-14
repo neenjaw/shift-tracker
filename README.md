@@ -4,15 +4,15 @@
 
 The skeleton is up for the front end.  Basic design decisions being:
 
--Font Awesome 5 for glyph support
--Bootstrap 4 for rapid css styling
--Axios for rest-api interaction
--Handlebars and Gulp to precompile templates for use
+- Font Awesome 5 for glyph support
+- Bootstrap 4 for rapid css styling
+- Axios for rest-api interaction
+- Handlebars and Gulp to precompile templates for use
 
 Making sure to:
 
--Modularize my css files
--Modularize my js files
+- Modularize my css files
+- Modularize my js files
 
 Plan for now, keep it simple, get a working version done, don't get side-tracked by details.
 
@@ -46,9 +46,9 @@ jsonResponse = {
 
 ## Progress - key
 
-✅ complete
-❌ not started
-➖ in progress
+- ✅ complete
+- ❌ not started
+- ➖ in progress
 
 ## Progress - backend
 
