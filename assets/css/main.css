@@ -29,13 +29,22 @@ nav {
 }
 
 .closable {
-    display: none;
+    display: block;
+    opacity: 0;
     height: 0;
     overflow: hidden;
-    transition: height 350ms ease-in-out;
+    transition: all 300ms linear;
 }
 
 .closable.not-closed {
-    display: block;
+    opacity: 1;
     height: auto;
+}
+
+.closable.closing {
+    height: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }

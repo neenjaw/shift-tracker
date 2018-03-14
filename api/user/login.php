@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+include_once('../../assets/lib/flash.php');
+$flash = new Flash(session_status());
+
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -53,6 +56,8 @@ try {
         $_SESSION['user']->login = $row['username'];
         $_SESSION['user']->active = $row['active'];
         $_SESSION['user']->admin = $row['admin'];
+
+        $flash->add_message('Successful log in.', 'success');
         //END PHP Session Setup
 
         $result->authorized = true;

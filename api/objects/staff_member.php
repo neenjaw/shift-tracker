@@ -1,4 +1,5 @@
 <?php
+require_once '../config/auth.php';
 
 class StaffMember {
     //db connection and table name

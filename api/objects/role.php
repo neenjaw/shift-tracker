@@ -1,4 +1,5 @@
 <?php
+require_once '../config/auth.php';
 
 class Role {
     //db connection and table name

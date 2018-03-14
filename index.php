@@ -2,6 +2,9 @@
 //skip require ../partials/01-prehead.php aince we need custom header
 session_start();
 
+include_once('assets/lib/flash.php');
+$flash = new Flash(session_status());
+
 if (isset($_SESSION['user'])) {
   header("Location: /home");
 }
@@ -29,7 +32,6 @@ if (isset($_SESSION['user'])) {
             </div>
             <button type="submit" class="btn btn-block btn-primary">Log in</button>
         </form>
-    </div>
     
 <?php require('partials/06-prescript.php'); ?>
 

@@ -1,4 +1,6 @@
 <?php
+require_once '../config/auth.php';
+
 class Database {
 
     private $host = '';

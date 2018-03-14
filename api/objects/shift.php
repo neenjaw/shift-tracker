@@ -1,4 +1,5 @@
 <?php
+require_once '../config/auth.php';
 
 include_once '../config/auxiliary.php';
 include_once 'shift_to_mod.php';

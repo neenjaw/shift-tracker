@@ -1,4 +1,5 @@
 <?php
+require_once '../config/auth.php';
 
 class Category {
     //db connection and table name

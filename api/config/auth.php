@@ -1,15 +1,9 @@
 <?php
-
 session_start();
 
-include_once('../assets/lib/flash.php');
+include_once('../../assets/lib/flash.php');
 $flash = new Flash(session_status());
 
 if (!isset($_SESSION['user'])) {
-  header("Location: /");
+  header("Location: /api/reject.php");
 }
-
-?>
-
-<!DOCTYPE html>
-<html>

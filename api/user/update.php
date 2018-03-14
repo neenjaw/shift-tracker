@@ -1,4 +1,5 @@
 <?php
+require_once '../config/auth.php';
 
 // required headers
 header("Access-Control-Allow-Origin: *");

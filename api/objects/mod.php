@@ -1,4 +1,5 @@
 <?php
+require_once '../config/auth.php';
 
 class Mod {
     //db connection and table name
