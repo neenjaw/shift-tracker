@@ -1,3 +1,5 @@
+/*global axios*/
+
 $(function() {
     var loginForm = document.querySelector('form.login');
     var loginFormSubmitButton = loginForm.querySelector('button');
@@ -25,7 +27,7 @@ $(function() {
                     loginFormSubmitButton.classList.add('btn-success');
 
                     setTimeout(function() {
-                        window.location.href = "/home"; 
+                        window.location.href = '/home'; 
                     }, 1000);
                     
                 } else {

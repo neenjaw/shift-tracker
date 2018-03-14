@@ -1,0 +1,32 @@
+{
+  "name": "shift-tracker",
+  "version": "1.0.0",
+  "description": "shift tracker web app",
+  "main": "index.php",
+  "scripts": {
+    "compile": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neenjaw/shift-tracker.git"
+  },
+  "keywords": [
+    "php",
+    "api",
+    "js",
+    "css"
+  ],
+  "author": "Tim Austin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/neenjaw/shift-tracker/issues"
+  },
+  "homepage": "https://github.com/neenjaw/shift-tracker#readme",
+  "devDependencies": {
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^5.0.2",
+    "gulp-wrap": "^0.13.0"
+  }
+}

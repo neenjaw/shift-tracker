@@ -7,15 +7,15 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">home</span></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="/staff" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         staff
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/staff">actions</a>
+                    <a class="dropdown-item" href="/staff">view all staff</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -23,14 +23,14 @@
                         shifts
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/shift">actions</a>
+                    <a class="dropdown-item" href="/shift">shift reports</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="/shift/add-one-shift.php">add a shift</a>
                     <a class="dropdown-item" href="/shift/add-unit-shift.php">add unit shift</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#">admin</a>
+                    <a class="nav-link" href="/admin">admin</a>
                 </li>
                 <?php if (isset($_SESSION['user'])) { ?>
                 <li class="nav-item">

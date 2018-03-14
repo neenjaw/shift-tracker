@@ -3,6 +3,9 @@ require_once '../config/auth.php';
 
 // required headers
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
@@ -18,16 +21,14 @@ try {
     // initialize object
     $shift = new Shift($db);
 
-    $data = json_decode(file_get_contents('php://input'));
-    
-    if (isset($data->id)) {
-        $shift->id = trim($data->id);
+    if (isset($_GET['id'])) {
+        $shift->id = trim($_GET['id']);
 
         if (! isThisIntegerlike($shift->id)) {
             throw new Exception('id does not conform');
         }
     } else {
-        throw new Exception('id not provided for delete');
+        throw new Exception('id not provided for read one shift');
     }
     
     // query products

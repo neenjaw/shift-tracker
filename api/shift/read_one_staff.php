@@ -3,6 +3,9 @@ require_once '../config/auth.php';
 
 // required headers
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
@@ -18,21 +21,19 @@ try {
     // initialize object
     $shift = new Shift($db);
 
-    $data = json_decode(file_get_contents('php://input'));
-    
-    if (isset($data->staff_id)) {
-        $shift->staff_id = trim($data->staff_id);
+    if (isset($_GET['staff_id'])) {
+        $shift->staff_id = trim($_GET['staff_id']);
 
         if (! isThisIntegerlike($shift->staff_id)) {
             throw new Exception('staff_id does not conform');
         }
     } else {
-        throw new Exception('staff_id not provided for delete');
+        throw new Exception('staff_id not provided for read one staff');
     }
     
     //set the shift date from
-    if (isset($data->date_from)) {
-        $date_from = trim($data->date_from);
+    if (isset($_GET['date_from'])) {
+        $date_from = trim($_GET['date_from']);
 
         if (! isDateFormatted($date_from)) {
             throw new Exception('date does not conform');
@@ -40,8 +41,8 @@ try {
     }
     
     //set the shift date to
-    if (isset($data->date_to)) {
-        $date_to = trim($data->date_to);
+    if (isset($_GET['date_to'])) {
+        $date_to = trim($data->$_GET['date_to']);
 
         if (! isDateFormatted($date_to)) {
             throw new Exception('date does not conform');

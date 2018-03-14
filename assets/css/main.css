@@ -48,3 +48,10 @@ nav {
     padding-top: 0;
     padding-bottom: 0;
 }
+
+.rounded-outline {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+}

@@ -262,9 +262,15 @@ class Shift {
         // select all query
         $sql = "SELECT
                     s.id, s.shift_date, s.shift_d_or_n, 
+
                     s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
+                    
+                    f.category_id as staff_category_id, c.name as staff_category_name,
+
                     s.role_id, r.name as role_name,
+
                     s.assignment_id, a.name as assignment_name,
+
                     sm.shift_mods,
 
                     s.date_created, s.date_updated, s.created_by, s.updated_by
@@ -282,6 +288,10 @@ class Shift {
                     assignments a
                 ON
                     s.assignment_id = a.id 
+                LEFT JOIN
+                    categories c
+                ON
+                    f.category_id = c.id
                 LEFT JOIN
                     (
                         SELECT
@@ -307,7 +317,7 @@ class Shift {
                 WHERE
                     s.shift_date {$date_condition}
                 ORDER BY
-                    s.shift_date ASC";
+                    f.last_name ASC, f.first_name ASC, s.shift_date ASC";
 
         // prepare query statement
         $stmt = $this->conn->prepare($sql);

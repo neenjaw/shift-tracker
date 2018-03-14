@@ -3,6 +3,9 @@ require_once '../config/auth.php';
 
 // required headers
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
@@ -21,11 +24,9 @@ try {
     $date_from = NULL;
     $date_to = NULL;
 
-    $data = json_decode(file_get_contents('php://input'));
-    
     //set the shift date from
-    if (isset($data->date_from)) {
-        $date_from = trim($data->date_from);
+    if (isset($_GET['date_from'])) {
+        $date_from = trim($_GET['date_from']);
 
         if (! isDateFormatted($date_from)) {
             throw new Exception('date does not conform');
@@ -35,8 +36,8 @@ try {
     }
     
     //set the shift date to
-    if (isset($data->date_to)) {
-        $date_to = trim($data->date_to);
+    if (isset($_GET['date_to'])) {
+        $date_to = trim($_GET['date_to']);
 
         if (! isDateFormatted($date_to)) {
             throw new Exception('date does not conform');
@@ -50,6 +51,8 @@ try {
     // products array
     $result = (object) array();
     $result->count = $num;
+    $result->date_from = $date_from;
+    $result->date_to = $date_to;
     $result->records = array();
  
     // retrieve our table contents
@@ -62,21 +65,23 @@ try {
         extract($row);
  
         $one_shift = array(
-            "id"               => $id,
-            "shift_date"       => $shift_date,
-            "shift_d_or_n"     => $shift_d_or_n,
-            "staff_id"         => $staff_id,
-            "staff_first_name" => $staff_first_name,
-            "staff_last_name"  => $staff_last_name,
-            "role_id"          => $role_id,
-            "role_name"        => $role_name,
-            "assignment_id"    => $assignment_id,
-            "assignment_name"  => $assignment_name,
-            "shift_mods"       => json_decode($shift_mods),
-            "date_created"     => $date_created,
-            "date_updated"     => $date_updated,
-            "created_by"       => $created_by,
-            "updated_by"       => $updated_by
+            "id"                  => $id,
+            "shift_date"          => $shift_date,
+            "shift_d_or_n"        => $shift_d_or_n,
+            "staff_id"            => $staff_id,
+            "staff_first_name"    => $staff_first_name,
+            "staff_last_name"     => $staff_last_name,
+            "staff_category_id"   => $staff_category_id,
+            "staff_category_name" => $staff_category_name,
+            "role_id"             => $role_id,
+            "role_name"           => $role_name,
+            "assignment_id"       => $assignment_id,
+            "assignment_name"     => $assignment_name,
+            "shift_mods"          => json_decode($shift_mods),
+            "date_created"        => $date_created,
+            "date_updated"        => $date_updated,
+            "created_by"          => $created_by,
+            "updated_by"          => $updated_by
         );
  
         array_push($result->records, $one_shift);
