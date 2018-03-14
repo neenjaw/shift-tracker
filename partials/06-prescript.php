@@ -7,5 +7,5 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" integrity="sha256-9YAuB2VnFZNJ+lKfpaQ3dKQT9/C0j3VUla76hHbiVF8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.min.js" integrity="sha256-UoS1yAHj9HqfbFL+oYoF0gkPrJiMK9t4zeciRCafl8I=" crossorigin="anonymous"></script>
-    <!-- JS -->
+    <!-- JS - Compiled HBS Template, Custom JS -->
     <script src="assets/templates/templates.js"></script>

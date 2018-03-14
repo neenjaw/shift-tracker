@@ -12,7 +12,7 @@
     <p class="text-muted">A tool for tracking staff shift mix.</p>
 </div>
 
-<div class="rounded-outline">
+<div class="shifts-display rounded-outline">
     <h4>Shifts for the last <span class="number-of-days">15</span> days:</h4>
     <div class="shift-container">
         
