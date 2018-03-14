@@ -12,21 +12,21 @@
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="/staff" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Staff
+                        staff
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/staff">View Staff</a>
+                    <a class="dropdown-item" href="/staff">actions</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="/shift" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Shifts
+                        shifts
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/shift">View Actions</a>
-                    <a class="dropdown-item" href="/shift/add-one-shift.php">Add a shift</a>
+                    <a class="dropdown-item" href="/shift">actions</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/shift/add-unit-shift.php">Add unit</a>
+                    <a class="dropdown-item" href="/shift/add-one-shift.php">add a shift</a>
+                    <a class="dropdown-item" href="/shift/add-unit-shift.php">add unit shift</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -34,7 +34,7 @@
                 </li>
                 <?php if (isset($_SESSION['user'])) { ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="/api/user/logout.php">Logout</a>
+                    <a class="nav-link" href="/api/user/logout.php">logout</a>
                 </li>
                 <?php } ?>
                 </ul>
