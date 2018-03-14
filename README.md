@@ -7,6 +7,7 @@ The skeleton is up for the front end.  Basic design decisions being:
 -Font Awesome 5 for glyph support
 -Bootstrap 4 for rapid css styling
 -Axios for rest-api interaction
+-Handlebars and Gulp to precompile templates for use
 
 Making sure to:
 
@@ -56,11 +57,11 @@ jsonResponse = {
   - ✅ database
 - ✅ objects
   - ✅ shift
-  - ✅ staff
-  - ✅ user
-  - ✅ assignment
-  - ✅ role
-  - ✅ mod
+  - ✅ staff ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ user ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ assignment ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ role ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ mod ⚠ NEED GET METHODS TO BE FIXED
 - ➖ shift
   - ✅ MariaDB Table
   - ✅ foreign keys
@@ -78,14 +79,14 @@ jsonResponse = {
   - ✅ foreign keys
   - ✅ unique index
   - ✅ create
-  - ✅ read
+  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
   - ✅ update
   - ✅ delete
 - ✅ user
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read
+  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
   - ✅ check_password
   - ✅ update
   - ✅ delete
@@ -95,28 +96,28 @@ jsonResponse = {
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read
+  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
   - ✅ update
   - ✅ delete
 - ✅ role
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read
+  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
   - ✅ update
   - ✅ delete
 - ✅ assignment
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read
+  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
   - ✅ update
   - ✅ delete
 - ✅ mod
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read
+  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
   - ✅ update
   - ✅ delete
 - ✅ shift_to_mod
@@ -124,30 +125,28 @@ jsonResponse = {
   - ✅ foreign keys
   - ✅ unique index
   - ✅ create
-  - ✅ read
+  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
   - ✅ update
   - ✅ delete
 
 ## Progress - frontend
 
-- ➖ processes
-  - ➖ auth state
-  - ➖ axios
+- ✅ processes
+  - ✅ auth state
+  - ✅ axios
+  - ✅ handlebars / gulp
 - ➖ pages
   - ➖ landing
-  - ❌ home
+  - ➖ home
     - ❌ date range table
     - ❌ dynamic shift edit
-  - ❌ shifts
+  - ➖ shifts
     - ❌ add unit shift
     - ❌ add single shift
-    - ❌ find shift
     - ❌ shift report
-  - ❌ staff member
-    - ❌ add
-    - ❌ review/report
-    - ❌ edit/delete
-  - ❌ admin panel
+  - ➖ staff member
+    - ❌ review
+  - ➖ admin panel
     - ❌ add user
     - ❌ change password
     - ❌ remove user
