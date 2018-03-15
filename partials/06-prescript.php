@@ -1,3 +1,4 @@
+        <div class="modal-container hidden"></div>
     </div>
     
     <!-- JS Libs - jQuery, Popper, Bootstrap, Axios, Moment, Handlebars Runtime -->

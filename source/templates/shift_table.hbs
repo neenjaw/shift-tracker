@@ -9,7 +9,7 @@
       </div>
       {{#each staff}}
         <div class="st-rowhead-cell">
-            <span><a href="staff-detail.php?staff-id={{this.id}}" data-staff-id="{{this.id}}">{{this.fullname}}</a></span>
+            <span><a href="/staff?staff_id={{this.id}}" data-staff-id="{{this.id}}">{{this.nameReverse}}</a></span>
         </div>
       {{/each}} {{!-- end staff --}}
     {{/each}} {{!-- end group --}}
@@ -25,22 +25,27 @@
     </div>
 
     {{#each groups}}
-      {{#each staff}}
 
-        {{#if @first}}
-          <div class="st-row">
-            {{#each ../../dates}}
-              <div class="st-cell st-divider-cell">
-                <span>&nbsp;</span>
-              </div>
-            {{/each}} {{!-- end shift --}}
-          </div>
-        {{/if}} {{!-- end if @first --}}
+      <div class="st-row">
+        {{#each ../dates}}
+        <div class="st-cell st-divider-cell">
+          <span>&nbsp;</span>
+        </div>
+        {{/each}} {{!-- end shift --}}
+      </div>
+
+      {{#each staff}}
 
         <div class="st-row">
           {{#each shifts}}
-            <div class="st-cell">
-              <span><a href="javascript:void(0);" data-shift-id="{{this.id}}">{{this.letter}}</a></span>
+            <div class="st-cell"{{#if this.charHover}} data-char-hover="{{this.charHover}}"{{/if}}>
+              <span data-shift-date="{{this.date}}">
+                {{#if this.id}}
+                  <a class="st-link{{#if this.class}} {{this.class}}"{{/if}} href="javascript:void(0);" data-shift-id="{{this.id}}">{{this.char}}</a>
+                {{else}}
+                  {{this.char}}
+                {{/if}}
+              </span>
             </div>
           {{/each}} {{!-- end shift --}}
         </div>

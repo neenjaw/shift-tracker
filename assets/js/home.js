@@ -1,5 +1,6 @@
 /*global axios*/
 /*global moment*/
+/*global Handlebars*/
 /*global ShiftTracker*/
 
 var Shifts = (function () {
@@ -24,7 +25,9 @@ var Shifts = (function () {
         return true;
     }
 
-    function getShifts() {
+    function getShifts(options) {
+        options = options || {};
+
         var date_to = moment()
             .format('YYYY-MM-DD');
 
@@ -42,8 +45,9 @@ var Shifts = (function () {
             .then(function (response) {
                 console.log(response);
 
-                tableData = formatTableData(response.data);
-                //TODO: fix handlebars template, call it here
+                var tableData = formatTableData(response.data);
+
+                options.callback(tableData);
             })
             .catch(function (error) {
                 console.log(error);
@@ -52,15 +56,6 @@ var Shifts = (function () {
     }
 
     function formatTableData(data) {
-        function makeStaffEntry(staff) {
-            return {
-                firstName: firstName,
-                lastName:  lastName,
-                id:        id,
-                shifts:    []
-            };
-        }
-
         function makeShiftCell(shift) {
             var cell = {
                 id:    shift.id,
@@ -68,7 +63,10 @@ var Shifts = (function () {
                 char:  null,
                 charHover: null,
                 date:  shift.shift_date,
-                staffName: (shift.staff_first_name +' '+ shift.staff_last_name +', '+ shift.staff_category_name)
+                staffName: (shift.staff_first_name + ' ' + shift.staff_last_name),
+                staffNameReverse: (shift.staff_last_name +', '+ shift.staff_first_name),
+                staffId: shift.staff_id,
+                staffGroup: shift.staff_category_name
             };
 
             var a = shift.assignment_name;
@@ -108,7 +106,7 @@ var Shifts = (function () {
                 var topRank = -1;
                 
                 for (var index = 0; index < mods.length; index++) {
-                    mod = mods[index];
+                    var mod = mods[index];
 
                     var name = mod.mod_name;
                     var char = '';
@@ -166,13 +164,14 @@ var Shifts = (function () {
             return cell;
         }
 
-        function makeBlankShiftCell(date, staffFirstName, staffLastName) {
+        function makeBlankShiftCell(date, staffName) {
             return {
                 id: null,
                 class: null,
                 char: '-',
+                charHover: null,
                 date: date,
-                staffName: (staffFirstName + ' ' + staffLastName)
+                staffName: staffName
             };
         }
 
@@ -180,6 +179,24 @@ var Shifts = (function () {
         var endDate = data.date_to;
 
         var records = data.records;
+
+        var staffMembers = [];
+        var staffMembersIndex = {};
+
+        for (var index = 0; index < records.length; index++) {
+            var shift = records[index];
+            var staffName = shift.staff_last_name + ', ' + shift.staff_first_name;
+            
+            if(!(staffName in staffMembersIndex)) {
+                var newIndex = staffMembers.push({name: staffName, shifts:[]}) - 1;
+                staffMembersIndex[staffName] = newIndex;
+            }
+
+            staffMembers[staffMembersIndex[staffName]].shifts.push(makeShiftCell(shift));
+        }
+
+        console.log(staffMembers);
+        
 
         var formatted = { 
             dates: [],
@@ -219,12 +236,33 @@ var Shifts = (function () {
             UC: formatted.groups[3].staff,
         };
 
-        for (var index = 0; index < records.length; index++) {
-            var shift = records[index];
-            group[shift.staff_category_name].push(makeShiftCell(shift));
-        }
+        for (var i = 0; i < staffMembers.length; i++) {
+            var staff = staffMembers[i];
+            var shifts = staff.shifts;
 
-        //TODO: Now fill in all the dates for each staff member with blanks when they have no shift
+            var formattedStaff = {
+                name: shifts[0].staffName,
+                nameReverse: shifts[0].staffNameReverse,
+                id: shifts[0].staffId,
+                group: shifts[0].staffGroup,
+                shifts: []
+            };
+
+            // add the staff to the proper formatted group
+            group[formattedStaff.group].push(formattedStaff);
+
+            for (var j = 0; j < formatted.dates.length; j++) {
+                var date = formatted.dates[j];
+                
+                //check if the date matches the shift date, if it does then add it to the staff's group entry
+                if (shifts.length > 0 && shifts[0].date === date) {
+                    formattedStaff.shifts.push(shifts.shift());
+                } else {
+                    // if not, create a blank cell to display, and insert that
+                    formattedStaff.shifts.push(makeBlankShiftCell(date, formattedStaff.name));
+                }
+            }
+        }
 
         console.log(formatted);
         
@@ -239,7 +277,14 @@ var Shifts = (function () {
 }());
 
 $(function() {
-    Shifts.getShifts();
+    var shiftDisplayContainer = document.querySelector('.shift-container');
 
-    // document.querySelector('.shift-container').innerHTML = ShiftTracker.templates.test({foo:true, bar:'The rain in spain falls mostly on the plain'});
+    shiftDisplayContainer.innerHTML = ShiftTracker.templates.loader({ date: '2018-01-02' });
+    // shiftDisplayContainer.innerHTML = ShiftTracker.templates.test({ which: 'shift_entry_modal_content' });
+
+    Shifts.getShifts({
+        callback: function (data) {
+            shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift_table(data);
+        }
+    });
 });

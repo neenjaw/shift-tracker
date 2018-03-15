@@ -317,7 +317,7 @@ class Shift {
                 WHERE
                     s.shift_date {$date_condition}
                 ORDER BY
-                    s.shift_date ASC";
+                    f.last_name ASC, f.first_name ASC, s.shift_date ASC";
 
         // prepare query statement
         $stmt = $this->conn->prepare($sql);

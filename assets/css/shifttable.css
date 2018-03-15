@@ -1,3 +1,10 @@
+:root {
+    --a-pod-color: var(--red);
+    --b-pod-color: var(--green);
+    --c-pod-color: var(--blue);
+    --all-pod-color: var(--gray-dark);
+}
+
 .st-container {
     display: flex;
     flex-direction: row;
@@ -44,6 +51,7 @@
     flex-direction: column;
     overflow-x: scroll;
     overflow-y: hidden;
+    box-shadow: inset 7px 0 9px -7px rgba(0, 0, 0, 0.4);    
 }
 
 /* format the date cells */
@@ -100,4 +108,29 @@
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
+}
+
+.st-a-pod {
+    color: var(--a-pod-color);
+}
+
+.st-b-pod {
+    color: var(--b-pod-color);
+}
+
+.st-c-pod {
+    color: var(--c-pod-color);
+}
+
+.st-all-pod {
+    color: var(--all-pod-color);
+}
+
+.st-link {
+    font-weight: 700;
+    transition: color 0.15s ease-in-out;
+}
+
+.st-link:hover {
+    color: initial;
 }

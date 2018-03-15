@@ -1,0 +1,19 @@
+.modal-container {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    transition: opacity 0.2s ease-in-out;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.modal-container.show {
+    opacity: 1;
+}
+
+.modal-container.hidden {
+    display: none;
+}

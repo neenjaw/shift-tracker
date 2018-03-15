@@ -106,3 +106,14 @@ var Flash = (function() {
         insertFlash: insertFlash
     };
 }());
+
+$(function() {
+    // add the printDate helper
+    Handlebars.registerHelper('printDate', function (dateString) {
+        var momentDate = moment(dateString, 'YYYY-MM-DD');
+        var month = momentDate.format('MMM');
+        var day = momentDate.format('D');
+
+        return new Handlebars.SafeString(month + '<br>' + day);
+    });
+});
