@@ -1,1 +1,80 @@
-hi there
+{{!-- Shift Details entries --}}
+<div class="shift-entry-modal__wrapper">
+    <input id="shift-details-shift-id" type="hidden" name="shift-id" value="{{this.id}}">
+    <div class="card-block">
+        <h5 class="card-text">{{this.date}}-{{this.d_or_n}}</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <span>Role:
+                <span class="role-name">{{this.role_name}}</span>
+                <a class="show-shift-item-edit btn btn-sm btn-secondary" href="javascript:void(0);">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+            </span>
+            <span class="hidden">
+                <!-- Hidden input to edit role -->
+                <form class="shift-item-edit">
+                    <select class="role-select" required>
+                        {{#each roles}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+
+                    <button class="cancel-shift-item-edit btn btn-sm btn-secondary">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="submit-shift-item-edit btn btn-sm btn-success">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </form>
+            </span>
+        </li>
+
+        <li class="list-group-item">
+            <span>Assignment:
+                <span class="assignment-name">{{this.assignment_name}}</span>
+                <a class="show-shift-item-edit btn btn-sm btn-secondary" href="javascript:void(0);">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+            </span>
+            <span class="hidden">
+                <!-- Hidden input to edit role -->
+                <form class="shift-item-edit">
+                    <select class="role-select" required>
+                        {{#each assignments}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+
+                    <button class="cancel-shift-item-edit btn btn-sm btn-secondary">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="submit-shift-item-edit btn btn-sm btn-success">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </form>
+            </span>
+        </li>
+
+        <li class="list-group-item">
+            <ul class="shift-mod-list">
+                {{#each shift_mods}}
+                <li class="shift-mod-item" data-shift-mod-id="{{this.shift_mod_id}}" data-mod-id="{{this.mod_id}}">{{this.mod_name}}
+                    <i class="fas fa-times"></i>
+                </li>
+                {{/each}}
+            </ul>
+            <form class="shift-mod-add">
+                <select class="shift-mods">
+                    {{#each mods}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+                <button class="btn btn-sm btn-secondary">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>

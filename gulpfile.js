@@ -55,6 +55,7 @@ function compile() {
 
 function watch() {
     gulp.watch(paths.handlebars.src, compile);
+    gulp.watch(paths.handlebars.partialsrc, compile);
 }
 
 gulp.task('compile', compile);

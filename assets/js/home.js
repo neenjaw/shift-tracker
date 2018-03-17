@@ -2,6 +2,7 @@
 /*global moment*/
 /*global Handlebars*/
 /*global ShiftTracker*/
+/*global Modal*/
 
 var Shifts = (function () {
     var shiftContainer = document.querySelector('.shift-container');
@@ -276,15 +277,55 @@ var Shifts = (function () {
     };
 }());
 
+function showShiftModal() {
+    Modal.showModal({
+        innerHTML: ShiftTracker.templates.modal({
+            id:19,
+            title: 'Tim Austin'+'\'s shift:',
+            name: 'Tim Austin',
+            date: '2018-03-02',
+            d_or_n: 'D',
+            role_name: 'Clinician',
+            roles: [
+                {id: 1, name: 'Bedside'},
+                {id: 2, name: 'Float'},
+                {id: 3, name: 'Clinician'}
+            ],
+            assignment_name: 'A/B',
+            assignments: [
+                { id: 1, name: 'A/B' },
+                { id: 2, name: 'B/C' },
+                { id: 3, name: 'A/B/C' }
+            ],
+            shift_mods: [
+                { shift_mod_id: 2, mod_id: 1, mod_name: 'crrt' },
+                { shift_mod_id: 3, mod_id: 2, mod_name: 'evd' },
+                { shift_mod_id: 4, mod_id: 3, mod_name: 'burn' }
+            ],
+            mods: [
+                { id: 1, name: 'crrt' },
+                { id: 2, name: 'evd' },
+                { id: 3, name: 'burn' },
+                { id: 4, name: 'admit' },
+                { id: 5, name: 'codes' }                
+            ],
+            whichContent: 'shift_entry_modal_content',
+            whichFooter: 'shift_entry_modal_footer'
+        })
+    });
+}
+
 $(function() {
     var shiftDisplayContainer = document.querySelector('.shift-container');
+    var modalDisplayContainer = document.querySelector('.modal-container');
 
     shiftDisplayContainer.innerHTML = ShiftTracker.templates.loader({ date: '2018-01-02' });
-    // shiftDisplayContainer.innerHTML = ShiftTracker.templates.test({ which: 'shift_entry_modal_content' });
 
     Shifts.getShifts({
         callback: function (data) {
             shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift_table(data);
         }
     });
+
+    showShiftModal();
 });

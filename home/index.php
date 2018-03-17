@@ -23,6 +23,7 @@
 <?php require('../partials/06-prescript.php'); ?>
 
 <script src="/assets/js/main.js"></script>
+<script src="/assets/js/modal.js"></script>
 <script src="/assets/js/home.js"></script>
 
 <?php require('../partials/07-footer.php'); ?>

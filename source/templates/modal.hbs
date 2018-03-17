@@ -1,0 +1,14 @@
+<div class="modal__body">
+    <div class="modal__head">
+        <h2>{{title}}</h2>
+    </div>
+    <div class="modal__content">
+        {{!-- CONTENT --}}
+        {{> (lookup . 'whichContent') }}
+        {{!-- END CONTENT --}}
+    </div>
+    <div class="modal__footer">
+        {{> (lookup . 'whichFooter')}}
+        <button class="modal-close btn btn-primary">Close</button>
+    </div>
+</div>

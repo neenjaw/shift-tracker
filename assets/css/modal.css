@@ -1,13 +1,19 @@
 .modal-container {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.6);
     top: 0;
     left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
     transition: opacity 0.2s ease-in-out;
     overflow: hidden;
     opacity: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-container.show {
@@ -16,4 +22,60 @@
 
 .modal-container.hidden {
     display: none;
+}
+
+/* Modal Body */
+
+.modal__body {
+    height: 80vh;
+    width: 80vw;
+
+    border: 1px solid var(--gray-dark);
+    border-left: 5px solid var(--cyan);
+    background-color: white;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.modal__content {
+    flex: 1;
+}
+
+.modal__head {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.modal__head h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.modal__content {
+    padding: 10px;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.modal__footer {
+    padding: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Shift Entry Modal */
+
+.shift-entry-modal__wrapper form {
+    display: inline;
+}
+
+.shift-entry-modal__wrapper select {
+    margin-top: 3px;
 }
