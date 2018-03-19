@@ -12,6 +12,15 @@ var Modal = (function() {
         modalContainer.innerHTML = '';
         modalContainer.innerHTML = options.innerHTML || '';
 
+        if (options.callbackOnShow) {
+            var callback = options.callbackOnShow;
+            
+            // eslint-disable-next-line no-extra-boolean-cast
+            if (!!(callback && callback.constructor && callback.call && callback.apply )) {
+                callback();
+            }
+        }
+
         modalContainer.classList.remove(className.hidden);
         setTimeout(function() {
             modalContainer.classList.add(className.show);

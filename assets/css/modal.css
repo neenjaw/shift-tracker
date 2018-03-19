@@ -72,10 +72,125 @@
 
 /* Shift Entry Modal */
 
-.shift-entry-modal__wrapper form {
-    display: inline;
+.shift-entry-modal__wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 
-.shift-entry-modal__wrapper select {
-    margin-top: 3px;
+.shift-entry__details-list {
+    flex: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.shift-entry__details-list-item {
+    display: initial;
+}
+
+.shift-entry__detail {
+    display: flex;
+    align-items: flex-end;
+    height: 35px;
+}
+
+.shift-entry__detail > * {
+    margin: 2px;
+}
+
+.shift-entry__detail > a {
+    align-self: flex-start;
+}
+
+.shift-entry__form {
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 9px;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.shift-entry__show-item-edit {
+    height: 20px;
+    width: 20px;
+    font-size: 14px;
+    padding: 2px;
+    border-radius: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shift-entry__btn {
+    display: inline-block;
+    border: 0;
+    height: 30px;
+    width: 30px;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.shift-entry__select {
+    flex: 1;
+    display: inline-block;
+    border: 1 solid rgba(0, 0, 0, 0.2); 
+    height: 30px;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.shift-entry__mod-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.shift-entry__mod-list-item {
+    margin: 5px;
+    padding: 2px 6px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: palegoldenrod;
+    transition: all 0.2s ease-in;
+}
+
+.shift-entry__mod-list-item:hover {
+    background-color: goldenrod;
+}
+
+.shift-entry__delete {
+    margin-right: 5px;
+}
+
+.shift-entry__mods {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.shift-entry-modal__wrapper .hidden {
+    display: none;
+}
+
+.shift-entry-modal__wrapper select option[disabled] {
+    font-style: italic;
 }
