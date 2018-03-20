@@ -52,8 +52,10 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
+        $result->created = true;
         $result->message = "Shift to mod ({$shift_to_mod->shift_id} <-> {$shift_to_mod->mod_id}) created.";
     } else {
+        $result->created = false;
         $result->message = "Shift to mod not created.";
     }
 

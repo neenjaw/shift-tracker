@@ -80,8 +80,10 @@ try {
     $result->response = "OK";
 
     if ($num > 0) {
+        $result->updated = true;
         $result->message = "shift {$shift->id} updated.";
     } else {
+        $result->updated = false;
         $result->message = "No staff member records updated.";
     }
 

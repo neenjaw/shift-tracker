@@ -12,8 +12,8 @@ var Modal = (function() {
         modalContainer.innerHTML = '';
         modalContainer.innerHTML = options.innerHTML || '';
 
-        if (options.callbackOnShow) {
-            var callback = options.callbackOnShow;
+        if (options.onshow) {
+            var callback = options.onshow;
             
             // eslint-disable-next-line no-extra-boolean-cast
             if (!!(callback && callback.constructor && callback.call && callback.apply )) {

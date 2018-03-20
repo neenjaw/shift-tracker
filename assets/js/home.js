@@ -3,6 +3,7 @@
 /*global Handlebars*/
 /*global ShiftTracker*/
 /*global Modal*/
+/*global ShiftEntryModal*/
 
 var Shifts = (function () {
     var shiftContainer = document.querySelector('.shift-container');
@@ -277,161 +278,27 @@ var Shifts = (function () {
     };
 }());
 
-function showShiftModal() {
-    function setupShiftModal() {
-        var showEdits = document.querySelectorAll('a[data-show]');
-        var hideEdits = document.querySelectorAll('button[data-hide]');
 
-        var currentRole = document.querySelector('.role-name');
-        var rForm = document.querySelector('#role-edit');
-        var rSelect = rForm.querySelector('select');
-
-        var currentAssignment = document.querySelector('.assignment-name');        
-        var aForm = document.querySelector('#assignment-edit');
-        var aSelect = aForm.querySelector('select');
-
-        var mForm = document.querySelector('#mod-edit');
-        var mSelect = mForm.querySelector('select');
-
-        function currentMods() {
-            var items = document.querySelectorAll('.shift-entry__mod-list-item');
-            var mods = [];
-
-            items.forEach(function(i) {
-                mods.push(i.dataset.modId);
-            });
-
-            return mods;
-        }
-
-        function disableCurrentMods() {
-            var currMods = currentMods();
-            var options = mSelect.querySelectorAll('option');
-            var firstSet = false;
-
-            options.forEach(function(o) {
-                o.removeAttribute('disabled');
-
-                for (let i = 0; i < currMods.length; i++) {
-                    const mod = currMods[i];
-                    
-                    if (o.value === mod) {
-                        o.setAttribute('disabled', 'disabled');
-                        break;                        
-                    }
-                }
-
-                if (!firstSet && !o.disabled) {
-                    mSelect.value = o.value;
-                    firstSet = true;
-                }
-            });
-        }
-
-        function disableCurrent(current, select) {
-            var options = select.querySelectorAll('option');
-            var firstSet = false;
-
-            options.forEach(function(o) {
-                if (o.textContent === current) {
-                    o.setAttribute('disabled', 'disabled');
-                } else {
-                    o.removeAttribute('disabled');
-                }
-
-                if (!firstSet && !o.disabled) {
-                    select.value = o.value;
-                    firstSet = true;
-                }
-            });
-        }
-
-        showEdits.forEach(function(e) {
-            e.addEventListener('click', function (ev) {
-                var target = document.querySelector('div[data-show-target="' + e.dataset.show + '"]');
-
-                target.classList.toggle('hidden');
-            });
-        });
-
-        hideEdits.forEach(function (e) {
-            e.addEventListener('click', function (ev) {
-                ev.preventDefault();
-
-                var target = document.querySelector('div[data-show-target="' + e.dataset.hide + '"]');
-
-                target.classList.add('hidden');
-            });
-        });
-
-        rForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-        });
-
-        disableCurrent(currentRole.textContent, rSelect);
-
-        aForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-        });
-
-        disableCurrent(currentAssignment.textContent, aSelect);
-
-        mForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-        });
-
-        disableCurrentMods();
-    }
-
-    Modal.showModal({
-        callbackOnShow: setupShiftModal,
-        innerHTML: ShiftTracker.templates.modal({
-            id:19,
-            title: 'Tim Austin'+'\'s shift:',
-            name: 'Tim Austin',
-            date: '2018-03-02',
-            d_or_n: 'D',
-            role_name: 'Clinician',
-            roles: [
-                {id: 1, name: 'Bedside'},
-                {id: 2, name: 'Float'},
-                {id: 3, name: 'Clinician'}
-            ],
-            assignment_name: 'A/B',
-            assignments: [
-                { id: 1, name: 'A/B' },
-                { id: 2, name: 'B/C' },
-                { id: 3, name: 'A/B/C' }
-            ],
-            shift_mods: [
-                { shift_mod_id: 2, mod_id: 1, mod_name: 'crrt' },
-                { shift_mod_id: 3, mod_id: 2, mod_name: 'evd' },
-                { shift_mod_id: 4, mod_id: 3, mod_name: 'burn' }
-            ],
-            mods: [
-                { id: 1, name: 'crrt' },
-                { id: 2, name: 'evd' },
-                { id: 3, name: 'burn' },
-                { id: 4, name: 'admit' },
-                { id: 5, name: 'codes' }                
-            ],
-            whichContent: 'shift_entry_modal_content',
-            whichFooter: 'shift_entry_modal_footer'
-        })
-    });
-}
 
 $(function() {
     var shiftDisplayContainer = document.querySelector('.shift-container');
     var modalDisplayContainer = document.querySelector('.modal-container');
 
+    function getShiftsToPageTable() {
+        Shifts.getShifts({
+            callback: function (data) {
+                shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift_table(data);
+            }
+        });
+    }
+
     shiftDisplayContainer.innerHTML = ShiftTracker.templates.loader({ date: '2018-01-02' });
 
-    Shifts.getShifts({
-        callback: function (data) {
-            shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift_table(data);
-        }
-    });
+    getShiftsToPageTable();
 
-    showShiftModal();
+    ShiftEntryModal.show({
+        shiftEntryId: 19,
+        onupdate: getShiftsToPageTable,
+        ondelete: getShiftsToPageTable
+    });
 });

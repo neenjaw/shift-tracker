@@ -38,8 +38,10 @@ try {
     $result = (object) array();
     $result->response = "OK";
     if ($num > 0) {
+        $result->deleted = true;
         $result->message = "Shift to mod with id {$shift->id} deleted.";
     } else {
+        $result->deleted = false;
         $result->message = "Nothing deleted.";
     }
 

@@ -431,7 +431,7 @@ class Shift {
                 $any_sub = true;
                 $sub_check[$i] = true;
 
-                $update_str .= "{$col_names[$i]}={$dat_param[$i]}";
+                $update_str .= ", {$col_names[$i]}={$dat_param[$i]}";
 
                 if ($sani_type[$i] === 'date') {
 
@@ -470,15 +470,17 @@ class Shift {
         $stmt->bindParam(':id', $this->id,    PDO::PARAM_INT);
         $stmt->bindParam(':ub', $this->updated_by,  PDO::PARAM_STR);
     
-        // execute query
-        $stmt->execute();
-    
         //if the data was submitted, then bind the data to the parameter
         for ($i=0; $i < count($col_names); $i++) { 
             if ($sub_check[$i] === true) {
                 $stmt->bindParam($dat_param[$i], $this->{$col_names[$i]}, $dat_types[$i]);
             }
         }
+    
+        // throw new Exception($stmt->queryString);
+
+        // execute query
+        $stmt->execute();
 
         return $stmt;
     }
