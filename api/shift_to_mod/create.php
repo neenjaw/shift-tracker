@@ -53,6 +53,7 @@ try {
 
     if ($num > 0) {
         $result->created = true;
+        $result->created_shiftmod_id = $db->lastInsertId();
         $result->message = "Shift to mod ({$shift_to_mod->shift_id} <-> {$shift_to_mod->mod_id}) created.";
     } else {
         $result->created = false;

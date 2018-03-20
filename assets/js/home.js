@@ -288,17 +288,25 @@ $(function() {
         Shifts.getShifts({
             callback: function (data) {
                 shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift_table(data);
+
+                document.addEventListener('click', function (e) {
+                    if (!e.target.classList.contains('st-link')) return;
+
+                    var id = e.target.dataset.shiftId;
+
+                    //if a shift link is clicked, call the ShiftEntryModal.show()
+                    ShiftEntryModal.show({
+                        shiftEntryId: id,
+                        onupdate: getShiftsToPageTable,
+                        ondelete: getShiftsToPageTable
+                    });
+                });
             }
         });
+
     }
 
     shiftDisplayContainer.innerHTML = ShiftTracker.templates.loader({ date: '2018-01-02' });
 
     getShiftsToPageTable();
-
-    ShiftEntryModal.show({
-        shiftEntryId: 19,
-        onupdate: getShiftsToPageTable,
-        ondelete: getShiftsToPageTable
-    });
 });

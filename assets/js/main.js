@@ -116,4 +116,17 @@ $(function() {
 
         return new Handlebars.SafeString(month + '<br>' + day);
     });
+
+    // add the printDate helper
+    Handlebars.registerHelper('stringToProperCase', function (str) {
+        var splits = str.split(' ');
+
+        for (let i = 0; i < splits.length; i++) {
+            var s = splits[i];
+            splits[i] = s.slice(0,1).toUpperCase() + s.slice(1);
+        }
+
+        return new Handlebars.SafeString(splits.join(' '));
+    });
+
 });

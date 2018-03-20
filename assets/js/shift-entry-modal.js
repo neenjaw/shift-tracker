@@ -112,7 +112,7 @@ var ShiftEntryModal = (function(){
             //axios call here to delete shift mod 
             axios
                 .post('/api/shift_to_mod/delete.php', {
-                    shift_to_mod_id: shiftModId,
+                    id: shiftModId,
                 })
                 .then(function (response) {
                     var data = response.data;
@@ -228,7 +228,7 @@ var ShiftEntryModal = (function(){
 
                     if (data.response === 'OK' && data.created === true) {
                         //if success show the list item
-                        var element = '<li class="shift-entry__mod-list-item" data-shift-mod-id="' + newShiftModId + '" data-mod-id="' + modId + '">\n';
+                        var element = '<li class="shift-entry__mod-list-item" data-shift-mod-id="' + data.created_shiftmod_id + '" data-mod-id="' + modId + '">\n';
                         element += modName + '<i class="fas fa-times"></i>\n';
                         element += '</li >';
 

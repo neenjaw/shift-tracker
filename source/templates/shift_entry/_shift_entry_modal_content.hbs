@@ -7,7 +7,7 @@
         <li class="shift-entry__details-list-item">
             <span class="shift-entry__detail">
                 <span class="role-title">Role: </span>
-                <span class="role-name">{{this.role_name}}</span>
+                <span class="role-name">{{stringToProperCase this.role_name}}</span>
                 <a class="shift-entry__show-item-edit btn-secondary" data-show="role" href="javascript:void(0);">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
@@ -61,7 +61,7 @@
         <li class="shift-entry__details-list-item shift-entry__mods">
             <ul class="shift-entry__mod-list">
                 {{#each shift_mods}}
-                <li class="shift-entry__mod-list-item" data-shift-mod-id="{{this.shift_mod_id}}" data-mod-id="{{this.mod_id}}">
+                <li class="shift-entry__mod-list-item" data-shift-mod-id="{{this.shiftmod_id}}" data-mod-id="{{this.mod_id}}">
                     {{this.mod_name}} <i class="fas fa-times"></i>
                 </li>
                 {{/each}}
