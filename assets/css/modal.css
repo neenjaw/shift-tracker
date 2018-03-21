@@ -181,10 +181,10 @@
 .shift-entry__mods {
     flex: 1;
 
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: stretch; */
 }
 
 .shift-entry-modal__wrapper .hidden {
