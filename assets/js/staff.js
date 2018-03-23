@@ -1,5 +1,4 @@
 /*global axios*/
-/*global moment*/
 /*global Handlebars*/
 /*global ShiftTracker*/
 /*global getURLParameter*/
@@ -39,6 +38,15 @@ var StaffPage = (function() {
     }
 
     function showStaff(container, id) {
+        function makeStaffObject(record) {
+            return {
+                id: record.staff_id,
+                firstName: record.staff_first_name,
+                lastName: record.staff_last_name,
+                category: record.category_name
+            };
+        }
+
         axios
             .get('/api/shift/read_one_staff.php', { 
                 params: {
@@ -51,7 +59,13 @@ var StaffPage = (function() {
                 var data = response.data;
 
                 if (data.response === 'OK' && data.count === 1) {
-                    //container.innerHTML = ShiftTracker.templates.staff.display({});
+                    var staff = makeStaffObject(data.records[0]);
+
+                    container.innerHTML = ShiftTracker.templates.staff.display({
+                        staff: staff,
+                        shifts: data.records,
+                        shiftCount: data.count
+                    });
                 }
                 
             })
