@@ -175,6 +175,8 @@ class Shift {
                     
                     s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
                     
+                    f.category_id as staff_category_id, c.name as staff_category_name,
+                    
                     s.role_id, r.name as role_name,
                     
                     s.assignment_id, a.name as assignment_name,
@@ -196,6 +198,10 @@ class Shift {
                     assignments a
                 ON
                     s.assignment_id = a.id 
+                LEFT JOIN
+                    categories c
+                ON
+                    f.category_id = c.id
                 LEFT JOIN
                     (
                         SELECT
@@ -328,21 +334,20 @@ class Shift {
         return $stmt;
     }
 
-    function read_one_staff($date_from = NULL, $date_to = NULL) {
+    function read_one_staff($limit = NULL, $offset = NULL) {
 
         if (!isset($this->staff_id))      throw new Exception('staff_id must be provided');
 
-        $date_condition = '';
+        $limit_condition = '';
 
-        if ($date_from !== NULL) {
-            if ( ! isDateFormatted($date_from) ) throw new Exception('date from does not conform');
+        if ($limit !== NULL) {
+            if ( ! isThisIntegerLike($limit) ) throw new Exception('limit does not conform');
 
-            if ($date_to !== NULL) {
-                if ( ! isDateFormatted($date_to) ) throw new Exception('date to does not conform');
-
-                $date_condition = "AND ( s.shift_date BETWEEN '{$date_from}' AND '{$date_to}')";
-            } else {
-                $date_condition = "AND (s.shift_date >= '{$date_from}')";
+            $limit_condition .= "LIMIT {$limit}";
+            
+            if ($offset !== NULL) {
+                if ( ! isThisIngeterLike($offset) ) throw new Exception('offset does not conform');
+                $limit_condition .= " OFFSET {$offset}";
             }
         }
 
@@ -350,6 +355,7 @@ class Shift {
         $sql = "SELECT
                     s.id, s.shift_date, s.shift_d_or_n, 
                     s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
+                    f.category_id as staff_category_id, c.name as staff_category_name,
                     s.role_id, r.name as role_name,
                     s.assignment_id, a.name as assignment_name,
                     sm.shift_mods,
@@ -369,6 +375,10 @@ class Shift {
                     assignments a
                 ON
                     s.assignment_id = a.id 
+                LEFT JOIN
+                    categories c
+                ON
+                    f.category_id = c.id
                 LEFT JOIN
                     (
                         SELECT
@@ -392,9 +402,10 @@ class Shift {
                 ON
                     s.id = sm.id
                 WHERE
-                    s.staff_id=:staff_id {$date_condition}
+                    s.staff_id=:staff_id 
+                {$limit_condition}
                 ORDER BY
-                    s.shift_date ASC";
+                    s.shift_date DESC";
 
         // prepare query statement
         $stmt = $this->conn->prepare($sql);

@@ -32,25 +32,29 @@ try {
     }
     
     //set the shift date from
-    if (isset($_GET['date_from'])) {
-        $date_from = trim($_GET['date_from']);
+    if (isset($_GET['limit'])) {
+        $limit = trim($_GET['limit']);
 
-        if (! isDateFormatted($date_from)) {
-            throw new Exception('date does not conform');
+        if (! isThisIntegerlike($limit)) {
+            throw new Exception('limit does not conform');
         }
+    } else {
+        $limit = NULL;
     }
     
     //set the shift date to
-    if (isset($_GET['date_to'])) {
-        $date_to = trim($data->$_GET['date_to']);
+    if (isset($_GET['offset'])) {
+        $offset = trim($data->$_GET['offset']);
 
-        if (! isDateFormatted($date_to)) {
-            throw new Exception('date does not conform');
+        if (! isThisIntegerlike($offset)) {
+            throw new Exception('offset does not conform');
         }
+    } else {
+        $offset = NULL;
     }
     
     // query products
-    $stmt = $shift->read_one_staff($date_from, $date_to);
+    $stmt = $shift->read_one_staff($limit, $offset);
     $num = $stmt->rowCount();
  
     // products array
@@ -76,6 +80,8 @@ try {
             "staff_last_name"  => $staff_last_name,
             "role_id"          => $role_id,
             "role_name"        => $role_name,
+            "category_id"      => $category_id,
+            "category_name"    => $category_name,
             "assignment_id"    => $assignment_id,
             "assignment_name"  => $assignment_name,
             "shift_mods"       => json_decode($shift_mods),

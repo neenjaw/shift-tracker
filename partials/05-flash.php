@@ -2,4 +2,4 @@
         <?= $flash->print(); ?>
     </div>
 
-    <div class="container">
+    <div class="container content">

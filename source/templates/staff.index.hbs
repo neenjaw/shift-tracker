@@ -1,0 +1,27 @@
+<h2>All Staff</h2>
+
+<table class="table table-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Category</th>
+            <th scope="col">Name</th>
+            <th scope="col" class="text-center">Profile</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {{#each groups}}
+            <tr>
+                <th scope="row" colspan="3">{{name}}</td>
+            </tr>
+
+            {{#each staff}}
+                <tr>
+                    <th scope="row">&nbsp;</th>
+                    <td>{{last_name}}, {{first_name}}</td>
+                    <td class="text-center"><a href="/staff?staff_id={{id}}"><i class="fas fa-info-circle"></i></a></td>
+                </tr>
+            {{/each}}
+        {{/each}}
+    </tbody>
+</table>

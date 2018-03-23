@@ -107,6 +107,10 @@ var Flash = (function() {
     };
 }());
 
+function getURLParameter(name) {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+}
+
 $(function() {
     // add the printDate helper
     Handlebars.registerHelper('printDate', function (dateString) {

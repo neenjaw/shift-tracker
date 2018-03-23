@@ -133,8 +133,13 @@ var ShiftEntryModal = (function(){
         }
 
         modList.addEventListener('click', function (e) {
-            if (e.target.classList.contains('shift-entry__mod-list-item')) {
-                removeMod(e.target);
+            var target = e.target;
+            var parent = e.target.parentNode;
+
+            if (target.classList.contains('shift-entry__mod-list-item')) {
+                removeMod(target);
+            } else if(parent.classList.contains('shift-entry__mod-list-item')) {
+                removeMod(parent);
             }
         });
 
