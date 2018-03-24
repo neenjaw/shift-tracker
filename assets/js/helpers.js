@@ -1,0 +1,45 @@
+/*global moment*/
+/*global Handlebars*/
+
+// add the printDate helper
+Handlebars.registerHelper('printDate', function (dateString) {
+    var momentDate = moment(dateString, 'YYYY-MM-DD');
+    var month = momentDate.format('MMM');
+    var day = momentDate.format('D');
+
+    return new Handlebars.SafeString(month + '<br>' + day);
+});
+
+// add the stringToProperCase helper
+Handlebars.registerHelper('stringToProperCase', function (str) {
+    var splits = str.split(' ');
+
+    for (let i = 0; i < splits.length; i++) {
+        var s = splits[i];
+        splits[i] = s.slice(0, 1).toUpperCase() + s.slice(1);
+    }
+
+    return new Handlebars.SafeString(splits.join(' '));
+});
+
+// add the printActive helper
+Handlebars.registerHelper('printActive', function (ac) {
+    var active = (ac) ? 'Active' : 'Inactive';
+
+    return new Handlebars.SafeString(active);
+});
+
+// add the printPercent helper
+Handlebars.registerHelper('printPercent', function (v1, v2) {
+    var percent = Math.round(v1 / v2 * 100);
+
+    return new Handlebars.SafeString(percent + '%');
+});
+
+// add the ifgtZero helper
+Handlebars.registerHelper('ifgtZero', function (v1, options) {
+    if (v1 > 0) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
