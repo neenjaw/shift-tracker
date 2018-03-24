@@ -1,0 +1,101 @@
+.staff__item > span {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height: 35px;
+}
+
+.staff__item > span a {
+    align-self: flex-start;
+}
+
+.staff__item form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.staff__item form > select {
+    flex: 1;
+    display: inline-block;
+    border: 1 solid rgba(0, 0, 0, 0.2);
+    height: 30px;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.staff__active {
+
+}
+
+.staff__item .hidden {
+    /* display: none; */
+}
+
+.staff__category-name {
+
+}
+
+.staff__active-name {
+
+}
+
+.staff__edit-toggle {
+    height: 20px;
+    width: 20px;
+    font-size: 14px;
+    padding: 2px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.staff__item-edit {
+
+}
+
+.staff__category-edit {
+
+}
+
+.staff__active-edit {
+
+}
+
+.staff__select {
+
+}
+
+.staff__category-select {
+
+}
+
+.staff__active-select {
+
+}
+
+.staff__btn {
+    display: inline-block;
+    border: 0;
+    height: 30px;
+    width: 30px;
+    margin: 2px;
+    border-radius: 5px;
+}
+
+.staff__cancel-item-edit {
+
+}
+
+.staff__submit-item-edit {
+
+}
+
+.staff__shifts {
+
+}
+
+select option[disabled] {
+    font-style: italic;
+}

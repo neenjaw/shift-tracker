@@ -19,11 +19,11 @@ try {
     
     // query products
     $stmt = $user->read();
-    $num = $stmt->rowCount();
  
     // products array
     $user_arr = (object) array();
     $user_arr->records = array();
+    $user_arr->count = $stmt->rowCount();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()

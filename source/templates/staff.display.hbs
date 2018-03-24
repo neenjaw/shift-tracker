@@ -1,1 +1,89 @@
-<h2>Template Connected</h2>
+<div class="title rounded-outline">
+    <h2>Staff Detail</h2>
+    <h4>Name: {{staff.firstName}} {{staff.lastName}}</h4>
+</div>
+
+{{#if staff.category}}
+<div class="rounded-outline staff__category staff__item">
+    <span>
+        <span>Category:&nbsp;</span><span class="staff__category-name">{{staff.category}}</span>
+        <a class="staff__edit-toggle btn-secondary" data-edit="category" href="javascript:void(0);">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+    </span>
+    <div class="hidden" data-edit-target="category">
+        <form action="" id="category" class="staff__category-edit staff__item-edit">
+            <select class="staff__select staff__category-select" required>
+                {{#each categories}}
+                <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+
+            <button class="staff__cancel-item-edit staff__btn btn-danger" data-edit="category">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="staff__submit-item-edit staff__btn btn-success">
+                <i class="fas fa-check"></i>
+            </button>
+        </form>
+    </div>
+</div>
+{{/if}}
+
+{{#if staff.active}}
+<div class="rounded-outline staff__active staff__item">
+    <span>
+        Category:
+        <span class="staff__active-name">{{staff.categoryName}}</span>
+        <a class="staff__edit-toggle btn-secondary" data-edit="category" href="javascript:void(0);">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+    </span>
+    <div class="hidden" data-edit-target="category">
+        <form action="" id="category" class="staff__active-edit staff__item-edit">
+            <select class="staff__select staff__active-select" required>
+                {{#each categories}}
+                <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+
+            <button class="staff__cancel-item-edit staff__btn btn-danger" data-edit="category">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="staff__submit-item-edit staff__btn btn-success">
+                <i class="fas fa-check"></i>
+            </button>
+        </form>
+    </div>
+</div>
+{{/if}}
+
+{{#if shifts}}
+<div class="rounded-outline staff__shifts">
+    <table class="table table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Assignment</th>
+                <th scope="col">Role</th>
+                <th scope="col" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {{#each shifts}}
+            <tr>
+                <th scope="row">{{shift_date}}</th>
+                <td>{{assignment_name}}</td>
+                <td>{{role_name}}</td>
+                <td class="text-center">
+                    <a href="/?id={{id}}">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{/if}}

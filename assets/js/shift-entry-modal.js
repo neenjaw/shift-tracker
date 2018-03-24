@@ -135,11 +135,14 @@ var ShiftEntryModal = (function(){
         modList.addEventListener('click', function (e) {
             var target = e.target;
             var parent = e.target.parentNode;
+            var pparent = parent.parentNode;
 
             if (target.classList.contains('shift-entry__mod-list-item')) {
                 removeMod(target);
             } else if(parent.classList.contains('shift-entry__mod-list-item')) {
                 removeMod(parent);
+            } else if (pparent.classList.contains('shift-entry__mod-list-item')) {
+                removeMod(pparent);
             }
         });
 
@@ -234,7 +237,7 @@ var ShiftEntryModal = (function(){
                     if (data.response === 'OK' && data.created === true) {
                         //if success show the list item
                         var element = '<li class="shift-entry__mod-list-item" data-shift-mod-id="' + data.created_shiftmod_id + '" data-mod-id="' + modId + '">\n';
-                        element += modName + '<i class="fas fa-times"></i>\n';
+                        element += modName + '&nbsp;<i class="fas fa-times"></i>\n';
                         element += '</li >';
 
                         modList.insertAdjacentHTML('beforeend', element);
@@ -305,21 +308,58 @@ var ShiftEntryModal = (function(){
 
         //axios get request for shift ID data
         axios
-            .get('/api/shift/read_one.php', {
-                params: {
-                    id: options.shiftEntryId
+            .all([
+                axios.get('/api/role/read.php'),
+                axios.get('/api/assignment/read.php'),
+                axios.get('/api/mod/read.php'),
+                axios.get('/api/shift/read_one.php', {params: {id: options.shiftEntryId}})
+            ])  
+            .then(axios.spread(function (rResponse, aResponse, mResponse, sResponse) {
+                console.log({roles, assignments, mods, sResponse});
+
+                var roles = [
+                    { id: -1, name: 'no roles exist.' }
+                ];
+
+                var mods = [
+                    { id: -1, name: 'no mods exist.' }
+                ];
+
+                var assignments = [
+                    { id: -1, name: 'no assignments exist.' }
+                ];
+
+                if (rResponse.data.response === 'OK' && rResponse.data.count > 0) {
+                    roles = rResponse.data.records.map(function (record) {
+                        return {
+                            id: record.id,
+                            name: record.name
+                        };
+                    });
                 }
-            })
-            .then(function (response) {
-                console.log(response);
-                var data = response.data;
+
+                if (aResponse.data.response === 'OK' && aResponse.data.count > 0) {
+                    assignments = aResponse.data.records.map(function (record) {
+                        return {
+                            id: record.id,
+                            name: record.name
+                        };
+                    });
+                }
+
+                if (mResponse.data.response === 'OK' && mResponse.data.count > 0) {
+                    mods = mResponse.data.records.map(function (record) {
+                        return {
+                            id: record.id,
+                            name: record.name
+                        };
+                    });
+                }
+
+                var data = sResponse.data;
 
                 if (data.response === 'OK' && data.count === 1) {
                     var shift = data.records[0];
-
-                    //get all roles
-                    //get all assignments
-                    //get all mods
 
                     Modal.showModal({
                         onshow: setup,
@@ -332,31 +372,17 @@ var ShiftEntryModal = (function(){
                             date: shift.shift_date,
                             d_or_n: shift.shift_d_or_n,
                             role_name: shift.role_name,
-                            roles: [
-                                { id: 1, name: 'bedside' },
-                                { id: 2, name: 'charge' },
-                                { id: 3, name: 'clinician' }
-                            ],
                             assignment_name: shift.assignment_name,
-                            assignments: [
-                                { id: 29, name: 'A/B' },
-                                { id: 30, name: 'B/C' },
-                                { id: 31, name: 'A/B/C' }
-                            ],
                             shift_mods: shift.shift_mods,
-                            mods: [
-                                { id: 21, name: 'crrt' },
-                                { id: 20, name: 'evd' },
-                                { id: 19, name: 'burn' },
-                                { id: 24, name: 'admit' },
-                                { id: 25, name: 'codes' }
-                            ]
+                            roles: roles,
+                            assignments: assignments,
+                            mods: mods
                         })
                     });
                 } else {
                     console.error('An was encountered, unable to get shift data', data.message);
                 }
-            })
+            }))
             .catch(function (error) {
                 console.log(error);
             });

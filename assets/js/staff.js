@@ -61,11 +61,16 @@ var StaffPage = (function() {
                 if (data.response === 'OK' && data.count === 1) {
                     var staff = makeStaffObject(data.records[0]);
 
-                    container.innerHTML = ShiftTracker.templates.staff.display({
+                    var x = {
                         staff: staff,
                         shifts: data.records,
                         shiftCount: data.count
-                    });
+                    };
+
+                    console.log(x);
+                    
+
+                    container.innerHTML = ShiftTracker.templates.staff.display(x);
                 }
                 
             })
