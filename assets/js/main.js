@@ -133,4 +133,25 @@ $(function() {
         return new Handlebars.SafeString(splits.join(' '));
     });
 
+    // add the printDate helper
+    Handlebars.registerHelper('printActive', function (ac) {
+        var active = (ac) ? 'Active' : 'Inactive';
+
+        return new Handlebars.SafeString(active);
+    });
+
+    // add the printDate helper
+    Handlebars.registerHelper('printPercent', function (v1, v2) {
+        var percent = Math.round(v1 / v2 * 100);
+
+        return new Handlebars.SafeString(percent + '%');
+    });
+
+    // add the ifgtZero helper
+    Handlebars.registerHelper('ifgtZero', function (v1, options) {
+        if (v1 > 0) {
+            return options.fn(this);
+        }
+        return options.inverse(this);
+    });
 });

@@ -1,17 +1,18 @@
 <div class="title rounded-outline">
     <h2>Staff Detail</h2>
     <h4>Name: {{staff.firstName}} {{staff.lastName}}</h4>
+    <input id="staff__id" type="hidden" value="{{staff.id}}">    
 </div>
 
-{{#if staff.category}}
+{{#if staff.categoryName}}
 <div class="rounded-outline staff__category staff__item">
     <span>
-        <span>Category:&nbsp;</span><span class="staff__category-name">{{staff.category}}</span>
-        <a class="staff__edit-toggle btn-secondary" data-edit="category" href="javascript:void(0);">
+        <span>Category:&nbsp;</span><span class="staff__category-name">{{staff.categoryName}}</span>
+        <a class="staff__edit-toggle btn-secondary" data-staff-edit="category" href="javascript:void(0);">
             <i class="fas fa-pencil-alt"></i>
         </a>
     </span>
-    <div class="hidden" data-edit-target="category">
+    <div class="hidden" data-staff-edit-target="category">
         <form action="" id="category" class="staff__category-edit staff__item-edit">
             <select class="staff__select staff__category-select" required>
                 {{#each categories}}
@@ -19,7 +20,7 @@
                 {{/each}}
             </select>
 
-            <button class="staff__cancel-item-edit staff__btn btn-danger" data-edit="category">
+            <button class="staff__cancel-item-edit staff__btn btn-danger" data-staff-edit="category">
                 <i class="fas fa-times"></i>
             </button>
             <button class="staff__submit-item-edit staff__btn btn-success">
@@ -33,21 +34,20 @@
 {{#if staff.active}}
 <div class="rounded-outline staff__active staff__item">
     <span>
-        Category:
-        <span class="staff__active-name">{{staff.categoryName}}</span>
-        <a class="staff__edit-toggle btn-secondary" data-edit="category" href="javascript:void(0);">
+        Status:&nbsp;
+        <span class="staff__active-name">{{printActive staff.active}}</span>
+        <a class="staff__edit-toggle btn-secondary" data-staff-edit="active" href="javascript:void(0);">
             <i class="fas fa-pencil-alt"></i>
         </a>
     </span>
-    <div class="hidden" data-edit-target="category">
-        <form action="" id="category" class="staff__active-edit staff__item-edit">
+    <div class="hidden" data-staff-edit-target="active">
+        <form action="" id="active" class="staff__active-edit staff__item-edit">
             <select class="staff__select staff__active-select" required>
-                {{#each categories}}
-                <option value="{{this.id}}">{{this.name}}</option>
-                {{/each}}
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
             </select>
 
-            <button class="staff__cancel-item-edit staff__btn btn-danger" data-edit="category">
+            <button class="staff__cancel-item-edit staff__btn btn-danger" data-staff-edit="active">
                 <i class="fas fa-times"></i>
             </button>
             <button class="staff__submit-item-edit staff__btn btn-success">
@@ -58,12 +58,49 @@
 </div>
 {{/if}}
 
+{{#ifgtZero shiftCount}}
+    {{#if assignmentStats}}
+    <div class="rounded-outline staff__assignment-stats">
+        <h5>Assignment Statistics</h5>
+        {{#each assignmentStats}}
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
+            <p>{{this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if categoryStats}}
+    <div class="rounded-outline staff__category-stats">
+        <h5>Category Statistics</h5>
+        {{#each categoryStats}}
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}" data-hi="a">
+            <p>{{this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if roleStats}}
+    <div class="rounded-outline staff__role-stats">
+        <h5>Role Statistics</h5>
+        {{#each roleStats}}
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
+            <p>{{stringToProperCase this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+{{else}}
+    <div class="rounded-outline">No statistics to display.  No shifts entered for this user.</div>
+{{/ifgtZero}}
+
 {{#if shifts}}
 <div class="rounded-outline staff__shifts">
     <table class="table table-sm">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">Date</th>
+                <th scope="col">Date (<i class="fas fa-long-arrow-alt-down"></i>)</th>
                 <th scope="col">Assignment</th>
                 <th scope="col">Role</th>
                 <th scope="col" class="text-center">Action</th>

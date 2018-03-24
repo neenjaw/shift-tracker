@@ -95,6 +95,36 @@ class StaffMember {
         return $stmt;
     }
 
+    // read staff
+    function read_one() {
+        if (!isset($this->id)) throw new Exception('id must be provided');
+
+        // select all query
+        $sql = "SELECT
+                    c.name as category_name, s.id, s.first_name, s.last_name, s.category_id, 
+                    s.active, s.date_created, s.date_updated, s.created_by, s.updated_by
+                FROM
+                    {$this->table_name} s
+                LEFT JOIN
+                    categories c
+                ON 
+                    s.category_id = c.id
+                WHERE
+                    s.id=:id
+                ORDER BY
+                    s.last_name ASC, s.first_name ASC";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($sql);
+    
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function update() {
 
 

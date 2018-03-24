@@ -6,6 +6,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
  
 // include database and object files
+include_once '../config/auxiliary.php';
 include_once '../config/database.php';
 include_once '../objects/staff_member.php';
  
@@ -16,14 +17,24 @@ try {
 
     // initialize object
     $staff_member = new StaffMember($db);
+
+    if (isset($_GET['id'])) {
+        $staff_member->id = trim($_GET['id']);
+
+        if (! isThisIntegerlike($staff_member->id)) {
+            throw new Exception('id does not conform');
+        }
+    } else {
+        throw new Exception('id not provided for read one staff member');
+    }
     
     // query products
-    $stmt = $staff_member->read();
-    $num = $stmt->rowCount();
+    $stmt = $staff_member->read_one();
     
     // products array
     $result = (object) array();
     $result->records = array();
+    $result->count = $stmt->rowCount();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
