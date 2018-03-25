@@ -110,6 +110,66 @@ var StaffPage = (function() {
     };
 }());
 
+var ShowHideShiftForm = (function () {
+
+    var formOpen = false;
+    var formInTransition = false;
+
+    // Get the natural height of the element
+    function getElemHeight(elem) {
+        elem.style.display = 'block';
+        var height = elem.scrollHeight + 'px';
+        elem.style.display = '';
+        return height;
+    }
+
+    function showForm(row) {
+        var content = ShiftTracker.templates.staff.shiftform({});
+
+        // row.parentNode.insertBefore(sp1, row.nextSibling);
+        row.insertAdjacentHTML('afterend', content);
+
+        var elem = row.nextElementSibling.querySelector('.shift-edit-container');
+        var height = getElemHeight(elem); // Get the natural height
+
+        elem.classList.remove('hidden'); // Make the element visible
+        elem.classList.add('showing');
+        elem.style.height = height; // Update the max-height
+
+        // Once the transition is complete, remove the inline max-height so the content can scale responsively
+        window.setTimeout(function () {
+            elem.classList.add('visible');
+            elem.classList.remove('showing');
+            elem.style.height = '';
+        }, 350);
+    }
+
+    function hideForm(row) {
+        var elem = row.querySelector('.shift-edit-container');
+
+        elem.classList.remove('visible');
+        elem.classList.add('hiding');
+        elem.style.height = elem.scrollHeight + 'px';
+
+        setTimeout(function () {
+            elem.style.height = '0px'; // Update the max-height
+
+            // When the transition is complete, hide it
+            setTimeout(function () {
+                elem.classList.remove('hiding');
+                elem.classList.add('hidden');
+                elem.style.height = '';
+                row.parentNode.removeChild(row);
+            }, 350);
+        }, 10);
+    }
+
+    return {
+        showForm: showForm,
+        hideForm: hideForm
+    };
+}());
+
 $(function() {
     var container = document.querySelector('.container.content');
     var id = getURLParameter('staff_id');
@@ -136,6 +196,10 @@ function setupShowPage() {
     var currentActive = document.querySelector('.staff__active-name');
     var aForm = document.getElementById('active');
     var aSelect = aForm.querySelector('select');
+
+    var sLinks = document.querySelectorAll('table a[data-shift-id]');
+
+    var shiftEditForm = document.getElementsByClassName('shift-edit-row');
 
     function disableCurrent(current, select) {
         var options = select.querySelectorAll('option');
@@ -245,5 +309,43 @@ function setupShowPage() {
             .catch(function (error) {
                 console.error('An error was encountered', error);
             });
+    });
+
+    sLinks.forEach(function (link) {
+        link.addEventListener('click', function (ev) {
+            // console.log('click click');
+
+            var target = ev.target;
+            
+            // find the tr elem parent
+            while(target.localName !== 'tr') {
+                target = target.parentNode;
+            }
+
+            // console.log('openForm open', (shiftEditForm.length > 0));
+            // console.log('how many forms',(shiftEditForm.length));
+
+            if (shiftEditForm.length > 0) {
+                var container = shiftEditForm[0].querySelector('.shift-edit-container');
+
+                if (!container.classList.contains('visible')) return;
+
+                //if the link is the current form's link, then toggle
+                if (shiftEditForm[0] === target.nextElementSibling) {
+                    ShowHideShiftForm.hideForm(shiftEditForm[0]);
+
+                //else hide the form, then open the new one after
+                } else {
+                    ShowHideShiftForm.hideForm(shiftEditForm[0]);
+
+                    setTimeout(function () {
+                        ShowHideShiftForm.showForm(target);
+                    }, 360);
+                }
+
+            } else {
+                ShowHideShiftForm.showForm(target);
+            }
+        });
     });
 }

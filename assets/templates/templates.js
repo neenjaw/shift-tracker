@@ -250,7 +250,7 @@ this["ShiftTracker"]["templates"]["staff"]["display"] = Handlebars.template({"1"
 },"18":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<div class=\"rounded-outline staff__shifts\">\r\n    <table class=\"table table-sm\">\r\n        <thead class=\"thead-dark\">\r\n            <tr>\r\n                <th scope=\"col\">Date (<i class=\"fas fa-long-arrow-alt-down\"></i>)</th>\r\n                <th scope=\"col\">Assignment</th>\r\n                <th scope=\"col\">Role</th>\r\n                <th scope=\"col\" class=\"text-center\">Action</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n\r\n"
+  return "<div class=\"rounded-outline\">\r\n    <table class=\"table table-sm staff__shifts\">\r\n        <thead class=\"thead-dark\">\r\n            <tr>\r\n                <th scope=\"col\">Date (<i class=\"fas fa-long-arrow-alt-down\"></i>)</th>\r\n                <th scope=\"col\">Assignment</th>\r\n                <th scope=\"col\">Role</th>\r\n                <th scope=\"col\" class=\"text-center\">Action</th>\r\n            </tr>\r\n        </thead>\r\n        <tbody>\r\n\r\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.shifts : depth0),{"name":"each","hash":{},"fn":container.program(19, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "        </tbody>\r\n    </table>\r\n</div>\r\n";
 },"19":function(container,depth0,helpers,partials,data) {
@@ -262,7 +262,7 @@ this["ShiftTracker"]["templates"]["staff"]["display"] = Handlebars.template({"1"
     + alias4(((helper = (helper = helpers.assignment_name || (depth0 != null ? depth0.assignment_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"assignment_name","hash":{},"data":data}) : helper)))
     + "</td>\r\n                <td>"
     + alias4(((helper = (helper = helpers.role_name || (depth0 != null ? depth0.role_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"role_name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n                <td class=\"text-center\">\r\n                    <a href=\"/?id="
+    + "</td>\r\n                <td class=\"text-center\">\r\n                    <a href=\"javascript:void(0);\" data-shift-id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "\">\r\n                        <i class=\"fas fa-info-circle\"></i>\r\n                    </a>\r\n                </td>\r\n            </tr>\r\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
@@ -309,6 +309,9 @@ this["ShiftTracker"]["templates"]["staff"]["index"] = Handlebars.template({"1":f
   return "<h2>All Staff</h2>\r\n\r\n<table class=\"table table-sm\">\r\n    <thead class=\"thead-dark\">\r\n        <tr>\r\n            <th scope=\"col\">Category</th>\r\n            <th scope=\"col\">Name</th>\r\n            <th scope=\"col\" class=\"text-center\">Profile</th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n\r\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.groups : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </tbody>\r\n</table>";
+},"useData":true});
+this["ShiftTracker"]["templates"]["staff"]["shiftform"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "\r\n<tr class=\"shift-edit-row\">\r\n    <td colspan=\"4\">\r\n        <div class=\"shift-edit-container hidden\">\r\n            <form>\r\n                <div>\r\n                    Assignment:\r\n                </div>\r\n                <div>\r\n                    Role:\r\n                </div>\r\n                <div>\r\n                    Mods:\r\n                </div>\r\n                <div>\r\n                    Delete / Save\r\n                </div>\r\n            </form>\r\n        </div>\r\n    </td>\r\n</tr>";
 },"useData":true});
 this["ShiftTracker"]["templates"]["test"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;

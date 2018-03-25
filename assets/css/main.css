@@ -100,3 +100,22 @@ nav {
     display: block;
     height: auto;
 }
+
+.shift-edit-row > td {
+    padding: 0;
+}
+
+.shift-edit-container.hidden {
+    display: none;
+    height: 0;
+}
+
+.shift-edit-container {
+    display: block;
+    height: auto;
+    overflow: hidden;
+    transition: height 350ms ease-in-out;
+    background-color: rgb(250, 250, 250);
+    padding: 0 5px;
+}
+

@@ -96,8 +96,8 @@
 {{/ifgtZero}}
 
 {{#if shifts}}
-<div class="rounded-outline staff__shifts">
-    <table class="table table-sm">
+<div class="rounded-outline">
+    <table class="table table-sm staff__shifts">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Date (<i class="fas fa-long-arrow-alt-down"></i>)</th>
@@ -114,7 +114,7 @@
                 <td>{{assignment_name}}</td>
                 <td>{{role_name}}</td>
                 <td class="text-center">
-                    <a href="/?id={{id}}">
+                    <a href="javascript:void(0);" data-shift-id="{{id}}">
                         <i class="fas fa-info-circle"></i>
                     </a>
                 </td>
