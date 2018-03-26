@@ -155,7 +155,7 @@ var Shifts = (function () {
                     hover.push('Non-vent');
                 }
 
-                if (topRank === -1) {
+                if (topRank <= 1) {
                     topChar = 'N';
                 }
 
@@ -288,6 +288,9 @@ $(function() {
         Shifts.getShifts({
             callback: function (data) {
                 shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift.table(data);
+
+                // scroll to the farther right to show newest
+                document.querySelector('div.st-header-cell:last-of-type').scrollIntoView();
 
                 document.addEventListener('click', function (e) {
                     if (!e.target.classList.contains('st-link')) return;
