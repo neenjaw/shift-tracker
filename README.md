@@ -79,14 +79,14 @@ jsonResponse = {
   - ✅ foreign keys
   - ✅ unique index
   - ✅ create
-  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ read 
   - ✅ update
   - ✅ delete
 - ✅ user
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ read 
   - ✅ check_password
   - ✅ update
   - ✅ delete
@@ -96,28 +96,28 @@ jsonResponse = {
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ read 
   - ✅ update
   - ✅ delete
 - ✅ role
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ read 
   - ✅ update
   - ✅ delete
 - ✅ assignment
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ read
   - ✅ update
   - ✅ delete
 - ✅ mod
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ read 
   - ✅ update
   - ✅ delete
 - ✅ shift_to_mod
@@ -125,7 +125,7 @@ jsonResponse = {
   - ✅ foreign keys
   - ✅ unique index
   - ✅ create
-  - ✅ read ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ read 
   - ✅ update
   - ✅ delete
 
@@ -139,13 +139,13 @@ jsonResponse = {
   - ➖ landing
   - ➖ home
     - ❌ date range table
-    - ❌ dynamic shift edit
+    - ✅ dynamic shift edit
   - ➖ shifts
     - ❌ add unit shift
     - ❌ add single shift
     - ❌ shift report
   - ➖ staff member
-    - ❌ review
+    - ✅ review
   - ➖ admin panel
     - ❌ add user
     - ❌ change password
