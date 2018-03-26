@@ -24,20 +24,8 @@
     margin: 2px;
 }
 
-.staff__active {
-
-}
-
 .staff__item .hidden {
     display: none;
-}
-
-.staff__category-name {
-
-}
-
-.staff__active-name {
-
 }
 
 .staff__edit-toggle {
@@ -51,30 +39,6 @@
     align-items: center;
 }
 
-.staff__item-edit {
-
-}
-
-.staff__category-edit {
-
-}
-
-.staff__active-edit {
-
-}
-
-.staff__select {
-
-}
-
-.staff__category-select {
-
-}
-
-.staff__active-select {
-
-}
-
 .staff__btn {
     display: inline-block;
     border: 0;
@@ -82,18 +46,6 @@
     width: 30px;
     margin: 2px;
     border-radius: 5px;
-}
-
-.staff__cancel-item-edit {
-
-}
-
-.staff__submit-item-edit {
-
-}
-
-.staff__shifts {
-
 }
 
 select option[disabled] {
@@ -153,6 +105,29 @@ select option[disabled] {
     border-radius: 5px;
     padding: 4px 6px;
     margin: 2px;
+    background-color: seashell;
+}
+
+.shift-edit-row>td {
+    padding: 0;
+}
+
+.shift-edit-container.hidden {
+    display: none;
+    height: 0;
+}
+
+.shift-edit-container {
+    display: block;
+    height: auto;
+    overflow: hidden;
+    transition: height 350ms ease-in-out;
+    background-color: #dddddd;
+    padding: 0 5px;
+
+    box-shadow: 
+        inset 0px 11px 8px -10px rgba(0, 0, 0, 0.2),
+        inset 0px -11px 8px -10px rgba(0, 0, 0, 0.2); 
 }
 
 .deleted {

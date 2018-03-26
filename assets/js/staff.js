@@ -5,12 +5,79 @@
 
 var StaffPage = (function () {
 
+    function isFunction(f) {
+        // eslint-disable-next-line no-extra-boolean-cast
+        return !!(f && f.constructor && f.call && f.apply);
+    }
+
     // Get the natural height of the element
     function getElemHeight(elem) {
         elem.style.display = 'block';
         var height = elem.scrollHeight + 'px';
         elem.style.display = '';
         return height;
+    }
+
+    function getShiftStats(records) {
+        var roleStats = {};
+        var categoryStats = {};
+        var assignmentStats = {};
+        var dCount = 0;
+        var nCount = 0;
+
+        records.forEach(function (record) {
+            categoryStats[record.category_id] = categoryStats[record.category_id] || { name: record.category_name, count: 0 };
+            categoryStats[record.category_id].count++;
+
+            roleStats[record.role_id] = roleStats[record.role_id] || { name: record.role_name, count: 0 };
+            roleStats[record.role_id].count++;
+
+            assignmentStats[record.assignment_id] = assignmentStats[record.assignment_id] || { name: record.assignment_name, count: 0 };
+            assignmentStats[record.assignment_id].count++;
+
+            if (record.shift_d_or_n === 'D') dCount++;
+            if (record.shift_d_or_n === 'N') nCount++;
+        });
+
+        roleStats = Object.values(roleStats);
+        assignmentStats = Object.values(assignmentStats);
+        categoryStats = Object.values(categoryStats);
+
+        return {
+            roleStats:roleStats,
+            assignmentStats:assignmentStats,
+            categoryStats:categoryStats,
+            dayCount: dCount,
+            nightCount: nCount
+        };
+    }
+
+    function showStats(container, id, callback) {
+
+        axios
+            .get('/api/shift/read_one_staff.php', { params: { staff_id: id } })
+            .then(function(response) {
+                if (response.data.response === 'OK') {
+                    var stats = getShiftStats(response.data.records);
+
+                    container.innerHTML = ShiftTracker.templates.partial.holder({
+                        whichPartial: 'staff_detail_statistics',
+                        shiftCount: response.data.count,
+                        roleStats: stats.roleStats,
+                        assignmentStats: stats.assignmentStats,
+                        categoryStats: stats.categoryStats,
+                        dayCount: stats.dayCount,
+                        nightCount: stats.nightCount
+                    });
+
+                    if(isFunction(callback)) {
+                        callback();
+                    }
+                }
+            })
+            .catch(function(error) {
+                container.innerHTML = ShiftTracker.templates.staff.error({ errorMsg: 'Unable to update shift stats, <a href="/staff?staff_id='+id+'">reload.</a>'});
+            });
     }
 
     function showIndex(container) {
@@ -77,29 +144,18 @@ var StaffPage = (function () {
                         categories = categoryResponse.data.records;
                     }
 
-                    var roleStats = {};
-                    var categoryStats = {};
-                    var assignmentStats = {};
-
-                    shiftResponse.data.records.forEach(function(record) {
-                        categoryStats[record.category_id] = categoryStats[record.category_id] || {name:record.category_name, count: 0};
-                        categoryStats[record.category_id].count++;
-
-                        roleStats[record.role_id] = roleStats[record.role_id] || { name: record.role_name, count: 0 };
-                        roleStats[record.role_id].count++;
-
-                        assignmentStats[record.assignment_id] = assignmentStats[record.assignment_id] || { name: record.assignment_name, count: 0 };
-                        assignmentStats[record.assignment_id].count++;
-                    });
+                    var stats = getShiftStats(shiftResponse.data.records);
 
                     var data = {
                         staff: staffObj,
                         shifts: shiftResponse.data.records,
                         shiftCount: shiftResponse.data.count,
                         categories: categories,
-                        roleStats: Object.values(roleStats),
-                        assignmentStats: Object.values(assignmentStats),
-                        categoryStats: Object.values(categoryStats)
+                        roleStats: stats.roleStats,
+                        assignmentStats: stats.assignmentStats,
+                        categoryStats: stats.categoryStats,
+                        dayCount: stats.dayCount,
+                        nightCount: stats.nightCount
                     };
 
                     container.innerHTML = ShiftTracker.templates.staff.display(data);
@@ -126,13 +182,6 @@ var StaffPage = (function () {
                 })
             ])
             .then(axios.spread(function (aResponse, rResponse, mResponse, sResponse) {
-                console.log({
-                    aResponse,
-                    rResponse,
-                    mResponse,
-                    sResponse
-                });
-
 
                 var contentData = {};
 
@@ -180,9 +229,6 @@ var StaffPage = (function () {
                 } else {
                     throw 'Unable to get mod data';
                 }
-
-                console.log(contentData);
-
 
                 var content = ShiftTracker.templates.staff.shiftForm(contentData);
                 showHelper(row, content, link, icons);
@@ -232,7 +278,11 @@ var StaffPage = (function () {
                 elem.classList.add('hidden');
                 elem.style.height = '';
 
-                row.previousElementSibling.querySelector('a[data-shift-id]').innerHTML = icons.edit;
+                var prevRowA = row.previousElementSibling.querySelector('a[data-shift-id]');
+                
+                if (prevRowA !== null) {
+                    prevRowA.innerHTML = icons.edit;
+                }
 
                 row.parentNode.removeChild(row);
             }, 350);
@@ -242,6 +292,7 @@ var StaffPage = (function () {
     return {
         showIndex: showIndex,
         showStaff: showStaff,
+        showStats: showStats,
         showForm: showForm,
         hideForm: hideForm
     };
@@ -268,7 +319,6 @@ function setupShowPage() {
     };
 
     var staffId = document.getElementById('staff__id');
-    var statItems = document.querySelectorAll('.stat__item');
     var showEdits = document.querySelectorAll('a[data-staff-edit]');
     var hideEdits = document.querySelectorAll('button[data-staff-edit]');
 
@@ -303,16 +353,32 @@ function setupShowPage() {
     }
 
     disableCurrent(currentCategory.textContent, cSelect);    
-    disableCurrent(currentActive.textContent, aSelect);    
+    disableCurrent(currentActive.textContent, aSelect);
     
-    statItems.forEach(function (e) {
-        var p = e.querySelector('p');
-        var percent = e.dataset.statPercent;
+    function displayPercentBar() {
+        var statItems = document.querySelectorAll('.stat__item');
 
-        setTimeout(function () {
-            p.style.width = percent;
-        }, 1);
-    });
+        statItems.forEach(function (e) {
+            var p = e.querySelector('p');
+            var percent = e.dataset.statPercent;
+
+            setTimeout(function () {
+                p.style.width = percent;
+            }, 1);
+        });
+    }
+
+    displayPercentBar();
+
+    function reloadStaffStats() {
+        var container = document.querySelector('.staff__shift-stats');
+
+        container.innerHTML = ShiftTracker.templates.loader({});
+
+        StaffPage.showStats(container, staffId.value, function () {
+            displayPercentBar();
+        });
+    }
 
     showEdits.forEach(function (e) {
         e.addEventListener('click', function (ev) {
@@ -461,20 +527,20 @@ function setupShowPage() {
     function shiftEditFormDeleteShift(formElem) {
         var shiftId = formElem.dataset.shiftId;
 
-        console.log({shiftId});
-
         if(confirm('Are you sure you want to delete this shift?')) {
             axios
                 .post('/api/shift/delete.php', {
                     id: shiftId,
                 })
                 .then(function(response) {
-                    console.log(response);
-
                     if (response.data.response === 'OK') {
-                        formElem.previousElementSibling.querySelectorAll('*').forEach(function (e) {
-                            e.classList.add('deleted');
-                        });
+                        // formElem.previousElementSibling.querySelectorAll('*').forEach(function (e) {
+                        //     e.classList.add('deleted');
+                        // });
+
+                        formElem.previousElementSibling.parentNode.removeChild(formElem.previousElementSibling);
+
+                        reloadStaffStats();
 
                         StaffPage.hideForm(formElem, icons);   
                     }                 
@@ -520,8 +586,6 @@ function setupShowPage() {
 
         var selectedAssignmentValue = selectAssignment.value;
 
-        // console.log({ currentAssignment, selectedAssignmentName, selectedAssignmentValue});
-
         //get the role
         var selectRole = formElem
             .querySelector('select.shift-edit__role');
@@ -531,8 +595,6 @@ function setupShowPage() {
             .innerText;
 
         var selectedRoleValue = selectRole.value;
-
-        // console.log({ currentRole, selectedRoleName, selectedRoleValue });
 
         //figure out what mods were previously added
         var previouslySelectedMods = Array
@@ -588,8 +650,6 @@ function setupShowPage() {
                 return toAdd;
             });
 
-        // console.log({ modsToRemove, modsToAdd});
-
         var axiosPostCalls = [];
 
         var updateShift = false;
@@ -607,9 +667,6 @@ function setupShowPage() {
             shiftParams.role_id = selectedRoleValue;
             updateShift = true;
         }
-
-        // console.log({shiftParams});
-        
 
         if (updateShift) {
             axiosPostCalls.push(axios.post('/api/shift/update.php', shiftParams));
@@ -655,7 +712,15 @@ function setupShowPage() {
                     }
                 });
 
-                console.log({datum});
+                reloadStaffStats();
+
+                // var container = document.querySelector('.staff__shift-stats');
+
+                // container.innerHTML = ShiftTracker.templates.loader({});
+
+                // StaffPage.showStats(container, staffId.value, function () {
+                //     displayPercentBar();
+                // });
 
                 StaffPage.hideForm(formElem, icons);      
             })
@@ -666,8 +731,5 @@ function setupShowPage() {
 
                 StaffPage.hideForm(formElem, icons);      
             });
-
-        // console.log({previouslySelectedMods, selectedMods, selectedAssignment, selectedRole, currentAssignment, currentRole});
-        
     }
 }

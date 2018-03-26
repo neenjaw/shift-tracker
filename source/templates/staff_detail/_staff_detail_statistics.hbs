@@ -1,0 +1,46 @@
+{{#ifgtZero shiftCount}}
+    {{#if assignmentStats}}
+    <div class="rounded-outline staff__assignment-stats">
+        <h5>Assignment Statistics</h5>
+        {{#each assignmentStats}}
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
+            <p>{{this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if categoryStats}}
+    <div class="rounded-outline staff__category-stats">
+        <h5>Category Statistics</h5>
+        {{#each categoryStats}}
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}" data-hi="a">
+            <p>{{this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if roleStats}}
+    <div class="rounded-outline staff__role-stats">
+        <h5>Role Statistics</h5>
+        {{#each roleStats}}
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
+            <p>{{stringToProperCase this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    <div class="rounded-outline staff__role-stats">
+        <h5>Day/Night Statistics</h5>
+        <div class="stat__item" data-stat-count="{{dayCount}}" data-stat-total="{{shiftCount}}" data-stat-percent="{{printPercent dayCount shiftCount}}">
+            <p>Number of Day Shifts: {{dayCount}} / {{shiftCount}} ({{printPercent dayCount shiftCount}})</p>
+        </div>
+        <div class="stat__item" data-stat-count="{{nightCount}}" data-stat-total="{{shiftCount}}" data-stat-percent="{{printPercent nightCount shiftCount}}">
+            <p>Number of Day Shifts: {{nightCount}} / {{shiftCount}} ({{printPercent nightCount shiftCount}})</p>
+        </div>
+    </div>
+{{else}}
+    <div class="rounded-outline">No statistics to display.  No shifts entered for this user.</div>
+{{/ifgtZero}}

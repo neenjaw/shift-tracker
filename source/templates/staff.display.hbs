@@ -58,42 +58,9 @@
 </div>
 {{/if}}
 
-{{#ifgtZero shiftCount}}
-    {{#if assignmentStats}}
-    <div class="rounded-outline staff__assignment-stats">
-        <h5>Assignment Statistics</h5>
-        {{#each assignmentStats}}
-        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
-            <p>{{this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
-        </div>
-        {{/each}}
-    </div>
-    {{/if}}
-
-    {{#if categoryStats}}
-    <div class="rounded-outline staff__category-stats">
-        <h5>Category Statistics</h5>
-        {{#each categoryStats}}
-        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}" data-hi="a">
-            <p>{{this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
-        </div>
-        {{/each}}
-    </div>
-    {{/if}}
-
-    {{#if roleStats}}
-    <div class="rounded-outline staff__role-stats">
-        <h5>Role Statistics</h5>
-        {{#each roleStats}}
-        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
-            <p>{{stringToProperCase this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
-        </div>
-        {{/each}}
-    </div>
-    {{/if}}
-{{else}}
-    <div class="rounded-outline">No statistics to display.  No shifts entered for this user.</div>
-{{/ifgtZero}}
+<div class="staff__shift-stats">
+    {{> staff_detail_statistics}}
+</div>
 
 {{#if shifts}}
 <div class="rounded-outline">
