@@ -1,9 +1,9 @@
 
-<tr class="shift-edit-row">
+<tr class="shift-edit-row" data-shift-id="{{shift.id}}">
     <td colspan="4">
         <div class="shift-edit-container hidden">
             <form class="shift-edit__form" data-shift-id="{{shift.id}}">
-                <div>
+                <div class="shift-edit__assignment-wrap">
                     <h6>Assignment:&nbsp;</h6>
                     <select class="shift-edit__select shift-edit__assignment" required>
                         {{#each assignments}}
@@ -11,15 +11,15 @@
                         {{/each}}
                     </select>
                 </div>
-                <div>
+                <div class="shift-edit__role-wrap">
                     <h6>Role:&nbsp;</h6>
-                    <select class="shift-edit__select shift-edit__assignment" required>
+                    <select class="shift-edit__select shift-edit__role" required>
                         {{#each roles}}
                         <option value="{{this.id}}" {{checkIfSelected this.id ../shift.role_id}}>{{this.name}}</option>
                         {{/each}}
                     </select>
                 </div>
-                <div>
+                <div class="shift-edit__mods-wrap">
                     <h6>Mods:&nbsp;</h6>
                     <div class="shift-edit__mods">
                         {{#each mods}}

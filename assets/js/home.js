@@ -287,7 +287,7 @@ $(function() {
     function getShiftsToPageTable() {
         Shifts.getShifts({
             callback: function (data) {
-                shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift_table(data);
+                shiftDisplayContainer.innerHTML = ShiftTracker.templates.shift.table(data);
 
                 document.addEventListener('click', function (e) {
                     if (!e.target.classList.contains('st-link')) return;

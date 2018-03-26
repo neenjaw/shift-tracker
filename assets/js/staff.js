@@ -3,7 +3,16 @@
 /*global ShiftTracker*/
 /*global getURLParameter*/
 
-var StaffPage = (function() {    
+var StaffPage = (function () {
+
+    // Get the natural height of the element
+    function getElemHeight(elem) {
+        elem.style.display = 'block';
+        var height = elem.scrollHeight + 'px';
+        elem.style.display = '';
+        return height;
+    }
+
     function showIndex(container) {
         axios
             .get('/api/staff_member/read.php')
@@ -104,36 +113,26 @@ var StaffPage = (function() {
             });
     }
 
-    return {
-        showIndex: showIndex,
-        showStaff: showStaff
-    };
-}());
-
-var ShowHideShiftForm = (function () {
-
-    var formOpen = false;
-    var formInTransition = false;
-
-    // Get the natural height of the element
-    function getElemHeight(elem) {
-        elem.style.display = 'block';
-        var height = elem.scrollHeight + 'px';
-        elem.style.display = '';
-        return height;
-    }
-
     function showForm(row, id, link, icons) {
         axios
             .all([
                 axios.get('/api/assignment/read.php'),
                 axios.get('/api/role/read.php'),
                 axios.get('/api/mod/read.php'),
-                axios.get('/api/shift/read_one.php', {params:{id:id}})
+                axios.get('/api/shift/read_one.php', {
+                    params: {
+                        id: id
+                    }
+                })
             ])
-            .then(axios.spread(function(aResponse, rResponse, mResponse, sResponse) {
-                console.log({aResponse, rResponse, mResponse, sResponse});
-                
+            .then(axios.spread(function (aResponse, rResponse, mResponse, sResponse) {
+                console.log({
+                    aResponse,
+                    rResponse,
+                    mResponse,
+                    sResponse
+                });
+
 
                 var contentData = {};
 
@@ -142,7 +141,7 @@ var ShowHideShiftForm = (function () {
                 } else {
                     throw 'Unable to get shift data';
                 }
-                
+
                 if (aResponse.data.response === 'OK' && aResponse.data.count > 0) {
                     contentData.assignments = aResponse.data.records.map(function (record) {
                         var r = {
@@ -183,15 +182,15 @@ var ShowHideShiftForm = (function () {
                 }
 
                 console.log(contentData);
-                
 
-                var content = ShiftTracker.templates.staff.shiftform(contentData);
+
+                var content = ShiftTracker.templates.staff.shiftForm(contentData);
                 showHelper(row, content, link, icons);
             }))
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error(error);
 
-                var content = ShiftTracker.templates.staff.shiftformerror({});
+                var content = ShiftTracker.templates.staff.shiftFormError({});
                 showHelper(row, content);
             });
 
@@ -241,6 +240,8 @@ var ShowHideShiftForm = (function () {
     }
 
     return {
+        showIndex: showIndex,
+        showStaff: showStaff,
         showForm: showForm,
         hideForm: hideForm
     };
@@ -250,7 +251,7 @@ $(function() {
     var container = document.querySelector('.container.content');
     var id = getURLParameter('staff_id');
 
-    container.innerHTML = ShiftTracker.templates.loader({ date: '2018-01-02' });    
+    container.innerHTML = ShiftTracker.templates.loader({});    
 
     if (id) {
         StaffPage.showStaff(container, id, setupShowPage);
@@ -418,19 +419,19 @@ function setupShowPage() {
 
                 //if the link is the current form's link, then toggle
                 if (shiftEditForm[0] === target.nextElementSibling) {
-                    ShowHideShiftForm.hideForm(shiftEditForm[0], icons);
+                    StaffPage.hideForm(shiftEditForm[0], icons);
 
                 //else hide the form, then open the new one after
                 } else {
-                    ShowHideShiftForm.hideForm(shiftEditForm[0], icons);
+                    StaffPage.hideForm(shiftEditForm[0], icons);
 
                     setTimeout(function () {
-                        ShowHideShiftForm.showForm(target, shiftId, link, icons);
+                        StaffPage.showForm(target, shiftId, link, icons);
                     }, 360);
                 }
 
             } else {
-                ShowHideShiftForm.showForm(target, shiftId, link, icons);
+                StaffPage.showForm(target, shiftId, link, icons);
             }
         });
     });
@@ -460,10 +461,12 @@ function setupShowPage() {
     function shiftEditFormDeleteShift(formElem) {
         var shiftId = formElem.dataset.shiftId;
 
+        console.log({shiftId});
+
         if(confirm('Are you sure you want to delete this shift?')) {
             axios
                 .post('/api/shift/delete.php', {
-                    id: shiftId
+                    id: shiftId,
                 })
                 .then(function(response) {
                     console.log(response);
@@ -473,7 +476,7 @@ function setupShowPage() {
                             e.classList.add('deleted');
                         });
 
-                        ShowHideShiftForm.hideForm(formElem, icons);   
+                        StaffPage.hideForm(formElem, icons);   
                     }                 
                 })
                 .catch(function(error) {
@@ -481,7 +484,7 @@ function setupShowPage() {
                                         
                     alert('Unable to delete shift.');
 
-                    ShowHideShiftForm.hideForm(formElem, icons);                    
+                    StaffPage.hideForm(formElem, icons);                    
                 });
         }
     }
@@ -489,11 +492,182 @@ function setupShowPage() {
     function shiftEditFormCancel(formElem) {
         formElem.previousElementSibling.querySelector('a[data-shift-id]').innerHTML = icons.load;
 
-        ShowHideShiftForm.hideForm(formElem, icons);
+        StaffPage.hideForm(formElem, icons);
     }
 
     function shiftEditFormSubmit(formElem) {
         var shiftId = formElem.dataset.shiftId;
 
+        var currentAssignment = formElem
+            .previousElementSibling
+            .querySelector('.assignment');
+
+        var currentAssignmentName = currentAssignment.innerText;
+
+        var currentRole = formElem
+            .previousElementSibling
+            .querySelector('.role');
+
+        var currentRoleName = currentRole.innerText;
+
+        //get the assignment
+        var selectAssignment = formElem
+            .querySelector('select.shift-edit__assignment');
+
+        var selectedAssignmentName = selectAssignment
+            .querySelector('option[value="'+selectAssignment.value+'"]')
+            .innerText;
+
+        var selectedAssignmentValue = selectAssignment.value;
+
+        // console.log({ currentAssignment, selectedAssignmentName, selectedAssignmentValue});
+
+        //get the role
+        var selectRole = formElem
+            .querySelector('select.shift-edit__role');
+        
+        var selectedRoleName = selectRole
+            .querySelector('option[value="' + selectRole.value + '"]')
+            .innerText;
+
+        var selectedRoleValue = selectRole.value;
+
+        // console.log({ currentRole, selectedRoleName, selectedRoleValue });
+
+        //figure out what mods were previously added
+        var previouslySelectedMods = Array
+            .from(
+                formElem.querySelectorAll('input[type="checkbox"][data-shiftmod-id]')
+            )
+            .map(function(elem) {
+                return {
+                    shiftModId: elem.dataset.shiftmodId,
+                    modId: elem.value
+                };
+            });
+
+        var selectedMods = Array
+            .from(
+                formElem.querySelectorAll('input[type="checkbox"]:checked')
+            )
+            .map(function(elem) {
+                return {
+                    modId: elem.value
+                };
+            });
+        
+        var modsToRemove = previouslySelectedMods
+            .filter(function(m) {
+                var toRemove = true;
+
+                for (let i = 0; i < selectedMods.length; i++) {
+                    var s = selectedMods[i];
+
+                    if (s.modId === m.modId) {
+                        toRemove = false;
+                        break;
+                    }
+                }
+
+                return toRemove;
+            });
+
+        var modsToAdd = selectedMods
+            .filter(function (m) {
+                var toAdd = true;
+
+                for (let i = 0; i < previouslySelectedMods.length; i++) {
+                    var s = previouslySelectedMods[i];
+
+                    if (s.modId === m.modId) {
+                        toAdd = false;
+                        break;
+                    }
+                }
+
+                return toAdd;
+            });
+
+        // console.log({ modsToRemove, modsToAdd});
+
+        var axiosPostCalls = [];
+
+        var updateShift = false;
+        var shiftParams = {
+            id: shiftId,
+            updated_by: 'webuser'
+        };
+        
+        if (currentAssignmentName !== selectedAssignmentName) {
+            shiftParams.assignment_id = selectedAssignmentValue;
+            updateShift = true;
+        }
+
+        if (currentRoleName !== selectedRoleName) {
+            shiftParams.role_id = selectedRoleValue;
+            updateShift = true;
+        }
+
+        // console.log({shiftParams});
+        
+
+        if (updateShift) {
+            axiosPostCalls.push(axios.post('/api/shift/update.php', shiftParams));
+        }
+
+        if (modsToRemove.length > 0) {
+            modsToRemove.forEach(function(mod) {
+                axiosPostCalls.push(axios.post('/api/shift_to_mod/delete.php', {
+                    id: mod.shiftModId
+                }));
+            });
+        }
+
+
+        if (modsToAdd.length > 0) {
+            modsToAdd.forEach(function (mod) {
+                axiosPostCalls.push(axios.post('/api/shift_to_mod/create.php', {
+                    shift_id: shiftId,
+                    mod_id: mod.modId
+                }));
+            });
+        }
+
+        if (axiosPostCalls.length === 0) {
+            alert('Nothing to submit.');
+
+            StaffPage.hideForm(formElem, icons);      
+        }
+
+        axios
+            .all(axiosPostCalls)
+            .then(function(responses) {
+                var datum = responses.map(function(response) {
+                    return response.data;
+                });
+
+                datum.forEach(function(data) {
+                    if (data.response == 'OK') {
+                        if (data.message.match(/^shift.+updated\.$/)) {
+                            currentAssignment.innerHTML = selectedAssignmentName;
+                            currentRole.innerHTML = selectedRoleName;
+                        }
+                    }
+                });
+
+                console.log({datum});
+
+                StaffPage.hideForm(formElem, icons);      
+            })
+            .catch(function(error) {
+                console.error(error);
+
+                alert('Unable to delete shift.');
+
+                StaffPage.hideForm(formElem, icons);      
+            });
+
+        // console.log({previouslySelectedMods, selectedMods, selectedAssignment, selectedRole, currentAssignment, currentRole});
+        
     }
 }

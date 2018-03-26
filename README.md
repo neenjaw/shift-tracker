@@ -57,11 +57,11 @@ jsonResponse = {
   - ✅ database
 - ✅ objects
   - ✅ shift
-  - ✅ staff ⚠ NEED GET METHODS TO BE FIXED
-  - ✅ user ⚠ NEED GET METHODS TO BE FIXED
-  - ✅ assignment ⚠ NEED GET METHODS TO BE FIXED
-  - ✅ role ⚠ NEED GET METHODS TO BE FIXED
-  - ✅ mod ⚠ NEED GET METHODS TO BE FIXED
+  - ✅ staff
+  - ✅ user
+  - ✅ assignment
+  - ✅ role
+  - ✅ mod
 - ➖ shift
   - ✅ MariaDB Table
   - ✅ foreign keys

@@ -114,13 +114,15 @@ select option[disabled] {
     transition: width 2s ease-in-out;
 }
 
+.shift-edit__form > div {
+    margin: 10px 5px;
+}
+
 .shift-edit__controls {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
-    margin: 5px;
 }
 
 .shift-edit__mods {
