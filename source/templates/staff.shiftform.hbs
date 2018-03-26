@@ -4,16 +4,40 @@
         <div class="shift-edit-container hidden">
             <form>
                 <div>
-                    Assignment:
+                    <h6>Assignment:&nbsp;</h6>
+                    <select class="shift-edit__select shift-edit__assignment" required>
+                        {{#each assignments}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 <div>
-                    Role:
+                    <h6>Role:&nbsp;</h6>
+                    <select class="shift-edit__select shift-edit__assignment" required>
+                        {{#each roles}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
                 </div>
                 <div>
-                    Mods:
+                    <h6>Mods:&nbsp;</h6>
+                    <div class="shift-edit__mods">
+                        {{#each mods}}
+                        <div class="shift-edit__mod">
+                            <input type="checkbox" class="shift-edit__checkbox" id="mod_{{this.id}}" value="{{this.id}}" {{checkIfChecked this.id ../shift.shift_mods}}>
+                            <label for="mod_{{this.id}}">&nbsp;{{this.name}}</label>
+                        </div>
+                        {{/each}}
+                    </div>
                 </div>
-                <div>
-                    Delete / Save
+                <div class="shift-edit__controls">
+                    <span>
+                        <button data-shift-id="{{shift.id}}" class="delete-shift btn btn-sm btn-danger mr-4">Delete</button>
+                    </span>
+                    <span>
+                        <button class="cancel-edit btn btn-sm btn-primary">Submit</button>
+                        <button class="submit-edit btn btn-sm btn-secondary">Cancel</button>
+                    </span>
                 </div>
             </form>
         </div>

@@ -5,8 +5,10 @@
 <?php require('../partials/04-nav.php'); ?>
 <?php require('../partials/05-flash.php'); ?>
 
-    <h1>staff!</h1>
-    
+<div class="main-loader">
+    <span class="main-spinner"><i class="fas fa-spinner fa-pulse"></i></span>
+</div>
+
 <?php require('../partials/06-prescript.php'); ?>
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/staff.js"></script>

@@ -123,28 +123,101 @@ var ShowHideShiftForm = (function () {
         return height;
     }
 
-    function showForm(row) {
-        var content = ShiftTracker.templates.staff.shiftform({});
+    function showForm(row, id, link, icons) {
+        axios
+            .all([
+                axios.get('/api/assignment/read.php'),
+                axios.get('/api/role/read.php'),
+                axios.get('/api/mod/read.php'),
+                axios.get('/api/shift/read_one.php', {params:{id:id}})
+            ])
+            .then(axios.spread(function(aResponse, rResponse, mResponse, sResponse) {
+                console.log({aResponse, rResponse, mResponse, sResponse});
+                
 
-        // row.parentNode.insertBefore(sp1, row.nextSibling);
-        row.insertAdjacentHTML('afterend', content);
+                var contentData = {};
 
-        var elem = row.nextElementSibling.querySelector('.shift-edit-container');
-        var height = getElemHeight(elem); // Get the natural height
+                if (sResponse.data.response === 'OK' && aResponse.data.count > 0) {
+                    contentData.shift = sResponse.data.records[0];
+                } else {
+                    throw 'Unable to get shift data';
+                }
+                
+                if (aResponse.data.response === 'OK' && aResponse.data.count > 0) {
+                    contentData.assignments = aResponse.data.records.map(function (record) {
+                        var r = {
+                            id: record.id,
+                            name: record.name
+                        };
 
-        elem.classList.remove('hidden'); // Make the element visible
-        elem.classList.add('showing');
-        elem.style.height = height; // Update the max-height
+                        return r;
+                    });
+                } else {
+                    throw 'Unable to get assignment data';
+                }
 
-        // Once the transition is complete, remove the inline max-height so the content can scale responsively
-        window.setTimeout(function () {
-            elem.classList.add('visible');
-            elem.classList.remove('showing');
-            elem.style.height = '';
-        }, 350);
+                if (rResponse.data.response === 'OK' && rResponse.data.count > 0) {
+                    contentData.roles = rResponse.data.records.map(function (record) {
+                        var r = {
+                            id: record.id,
+                            name: record.name
+                        };
+
+                        return r;
+                    });
+                } else {
+                    throw 'Unable to get role data';
+                }
+
+                if (mResponse.data.response === 'OK' && mResponse.data.count > 0) {
+                    contentData.mods = mResponse.data.records.map(function (record) {
+                        var r = {
+                            id: record.id,
+                            name: record.name
+                        };
+
+                        return r;
+                    });
+                } else {
+                    throw 'Unable to get mod data';
+                }
+
+                console.log(contentData);
+                
+
+                var content = ShiftTracker.templates.staff.shiftform(contentData);
+                showHelper(row, content, link, icons);
+            }))
+            .catch(function(error) {
+                console.error(error);
+
+                var content = ShiftTracker.templates.staff.shiftformerror({});
+                showHelper(row, content);
+            });
+
+        function showHelper(row, content, link, icons) {
+            // row.parentNode.insertBefore(sp1, row.nextSibling);
+            row.insertAdjacentHTML('afterend', content);
+
+            var elem = row.nextElementSibling.querySelector('.shift-edit-container');
+            var height = getElemHeight(elem); // Get the natural height
+
+            elem.classList.remove('hidden'); // Make the element visible
+            elem.classList.add('showing');
+            elem.style.height = height; // Update the max-height
+
+            // Once the transition is complete, remove the inline max-height so the content can scale responsively
+            window.setTimeout(function () {
+                elem.classList.add('visible');
+                elem.classList.remove('showing');
+                elem.style.height = '';
+
+                link.innerHTML = icons.cancel;
+            }, 350);
+        }
     }
 
-    function hideForm(row) {
+    function hideForm(row, icons) {
         var elem = row.querySelector('.shift-edit-container');
 
         elem.classList.remove('visible');
@@ -159,6 +232,9 @@ var ShowHideShiftForm = (function () {
                 elem.classList.remove('hiding');
                 elem.classList.add('hidden');
                 elem.style.height = '';
+
+                row.previousElementSibling.querySelector('a[data-shift-id]').innerHTML = icons.edit;
+
                 row.parentNode.removeChild(row);
             }, 350);
         }, 10);
@@ -184,6 +260,12 @@ $(function() {
 });
 
 function setupShowPage() {
+    var icons = {
+        edit: '<i class="far fa-edit"></i>',
+        cancel: '<i class="far fa-times-circle"></i>',
+        load: '<i class="fas fa-spinner fa-pulse"></i>'
+    }
+
     var staffId = document.getElementById('staff__id');
     var statItems = document.querySelectorAll('.stat__item');
     var showEdits = document.querySelectorAll('a[data-staff-edit]');
@@ -313,17 +395,21 @@ function setupShowPage() {
 
     sLinks.forEach(function (link) {
         link.addEventListener('click', function (ev) {
-            // console.log('click click');
+            var link = this;
 
             var target = ev.target;
+            var shiftId = null;
             
             // find the tr elem parent
             while(target.localName !== 'tr') {
+                if (target.localName === 'a') {
+                    shiftId = target.dataset.shiftId;
+                } 
+
                 target = target.parentNode;
             }
 
-            // console.log('openForm open', (shiftEditForm.length > 0));
-            // console.log('how many forms',(shiftEditForm.length));
+            link.innerHTML = icons.load;
 
             if (shiftEditForm.length > 0) {
                 var container = shiftEditForm[0].querySelector('.shift-edit-container');
@@ -332,19 +418,19 @@ function setupShowPage() {
 
                 //if the link is the current form's link, then toggle
                 if (shiftEditForm[0] === target.nextElementSibling) {
-                    ShowHideShiftForm.hideForm(shiftEditForm[0]);
+                    ShowHideShiftForm.hideForm(shiftEditForm[0], icons);
 
                 //else hide the form, then open the new one after
                 } else {
-                    ShowHideShiftForm.hideForm(shiftEditForm[0]);
+                    ShowHideShiftForm.hideForm(shiftEditForm[0], icons);
 
                     setTimeout(function () {
-                        ShowHideShiftForm.showForm(target);
+                        ShowHideShiftForm.showForm(target, shiftId, link, icons);
                     }, 360);
                 }
 
             } else {
-                ShowHideShiftForm.showForm(target);
+                ShowHideShiftForm.showForm(target, shiftId, link, icons);
             }
         });
     });

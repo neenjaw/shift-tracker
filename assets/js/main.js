@@ -12,8 +12,12 @@ var CloseNav = (function () {
                 isClickOutsideOfNav = false;
             }
 
-            currentElement = currentElement.parentElement;
-            currentLocalName = currentElement.localName;
+            try {
+                currentElement = currentElement.parentElement;
+                currentLocalName = currentElement.localName;
+            } catch (error) {
+                break;
+            }
         }
 
         if (isClickOutsideOfNav) {

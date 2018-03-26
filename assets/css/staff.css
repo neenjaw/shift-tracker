@@ -113,3 +113,42 @@ select option[disabled] {
     white-space: nowrap;
     transition: width 2s ease-in-out;
 }
+
+.shift-edit__controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    margin: 5px;
+}
+
+.shift-edit__mods {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.shift-edit__mods label {
+    padding: 0;
+    margin: 0;
+}
+
+.shift-edit__select {
+    display: block;
+
+    width: 95%;
+
+    margin: 4px auto;
+    padding: 5px;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.shift-edit__mod {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 4px 6px;
+    margin: 2px;
+}
