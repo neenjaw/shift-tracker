@@ -12,7 +12,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table tracker.assignments
-DROP TABLE IF EXISTS `assignments`;
 CREATE TABLE IF NOT EXISTS `assignments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -35,7 +34,6 @@ INSERT INTO `assignments` (`id`, `name`, `date_created`, `date_updated`) VALUES
 /*!40000 ALTER TABLE `assignments` ENABLE KEYS */;
 
 -- Dumping structure for table tracker.categories
-DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -55,7 +53,6 @@ INSERT INTO `categories` (`id`, `name`, `date_created`, `date_updated`) VALUES
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
 -- Dumping structure for table tracker.mods
-DROP TABLE IF EXISTS `mods`;
 CREATE TABLE IF NOT EXISTS `mods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -78,7 +75,6 @@ INSERT INTO `mods` (`id`, `name`, `date_created`, `date_updated`) VALUES
 /*!40000 ALTER TABLE `mods` ENABLE KEYS */;
 
 -- Dumping structure for table tracker.roles
-DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -100,7 +96,6 @@ INSERT INTO `roles` (`id`, `name`, `date_created`, `date_updated`) VALUES
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 
 -- Dumping structure for table tracker.shifts
-DROP TABLE IF EXISTS `shifts`;
 CREATE TABLE IF NOT EXISTS `shifts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shift_date` date NOT NULL,
@@ -120,16 +115,24 @@ CREATE TABLE IF NOT EXISTS `shifts` (
   CONSTRAINT `shifts_ibfk_1` FOREIGN KEY (`staff_id`) REFERENCES `staff_members` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `shifts_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `shifts_ibfk_3` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
--- Dumping data for table tracker.shifts: ~1 rows (approximately)
+-- Dumping data for table tracker.shifts: ~10 rows (approximately)
 /*!40000 ALTER TABLE `shifts` DISABLE KEYS */;
 INSERT INTO `shifts` (`id`, `shift_date`, `shift_d_or_n`, `staff_id`, `role_id`, `assignment_id`, `date_created`, `date_updated`, `created_by`, `updated_by`) VALUES
-	(19, '2018-03-09', 'D', 19, 3, 29, '2018-03-09 14:00:58', '2018-03-09 14:00:58', 'tima', NULL);
+	(20, '2018-03-20', 'N', 19, 1, 28, '2018-03-12 09:47:17', '2018-03-24 09:21:04', 'arooter', NULL),
+	(21, '2018-03-15', 'N', 21, 1, 28, '2018-03-12 21:21:22', '2018-03-22 08:32:08', 'tima', NULL),
+	(22, '2018-03-21', 'N', 19, 1, 28, '2018-03-12 09:47:17', '2018-03-24 09:21:00', 'arooter', NULL),
+	(23, '2018-03-19', 'D', 19, 1, 28, '2018-03-12 09:47:17', '2018-03-24 09:21:07', 'arooter', NULL),
+	(24, '2018-03-18', 'D', 19, 1, 28, '2018-03-12 09:47:17', '2018-03-24 09:21:10', 'arooter', NULL),
+	(25, '2018-03-12', 'D', 19, 2, 26, '2018-03-12 09:47:17', '2018-03-24 09:19:16', 'arooter', 'webuser'),
+	(26, '2018-03-13', 'D', 19, 2, 26, '2018-03-12 09:47:17', '2018-03-24 09:19:29', 'arooter', 'webuser'),
+	(27, '2018-03-14', 'N', 19, 3, 31, '2018-03-12 09:47:17', '2018-03-24 09:20:02', 'arooter', 'webuser'),
+	(28, '2018-03-15', 'N', 19, 3, 31, '2018-03-12 09:47:17', '2018-03-24 09:20:14', 'arooter', 'webuser'),
+	(29, '2018-03-24', 'N', 19, 1, 28, '2018-03-12 09:47:17', '2018-03-24 09:21:00', 'arooter', NULL);
 /*!40000 ALTER TABLE `shifts` ENABLE KEYS */;
 
 -- Dumping structure for table tracker.shift_to_mod
-DROP TABLE IF EXISTS `shift_to_mod`;
 CREATE TABLE IF NOT EXISTS `shift_to_mod` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `shift_id` int(11) NOT NULL,
@@ -141,19 +144,21 @@ CREATE TABLE IF NOT EXISTS `shift_to_mod` (
   KEY `fk_mod_id` (`mod_id`),
   CONSTRAINT `fk_mod_id` FOREIGN KEY (`mod_id`) REFERENCES `mods` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_shift_id` FOREIGN KEY (`shift_id`) REFERENCES `shifts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 
--- Dumping data for table tracker.shift_to_mod: ~4 rows (approximately)
+-- Dumping data for table tracker.shift_to_mod: ~7 rows (approximately)
 /*!40000 ALTER TABLE `shift_to_mod` DISABLE KEYS */;
 INSERT INTO `shift_to_mod` (`id`, `shift_id`, `mod_id`, `date_created`, `date_updated`) VALUES
-	(1, 19, 24, '2018-03-09 14:03:18', '2018-03-09 14:03:18'),
-	(4, 19, 25, '2018-03-09 14:05:15', '2018-03-09 14:05:15'),
-	(5, 19, 21, '2018-03-09 14:45:34', '2018-03-09 14:45:34'),
-	(6, 19, 20, '2018-03-09 14:45:54', '2018-03-09 14:45:54');
+	(8, 20, 21, '2018-03-12 09:47:17', '2018-03-12 09:47:17'),
+	(10, 20, 23, '2018-03-12 09:47:17', '2018-03-12 09:47:17'),
+	(35, 21, 25, '2018-03-22 08:55:07', '2018-03-22 08:55:07'),
+	(40, 21, 20, '2018-03-22 08:58:12', '2018-03-22 08:58:12'),
+	(43, 20, 20, '2018-03-23 19:47:18', '2018-03-23 19:47:18'),
+	(51, 26, 24, '2018-03-24 09:56:20', '2018-03-24 09:56:20'),
+	(52, 26, 19, '2018-03-24 09:56:21', '2018-03-24 09:56:21');
 /*!40000 ALTER TABLE `shift_to_mod` ENABLE KEYS */;
 
 -- Dumping structure for table tracker.staff_members
-DROP TABLE IF EXISTS `staff_members`;
 CREATE TABLE IF NOT EXISTS `staff_members` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(100) NOT NULL,
@@ -168,16 +173,16 @@ CREATE TABLE IF NOT EXISTS `staff_members` (
   UNIQUE KEY `uq_name` (`first_name`,`last_name`),
   KEY `staff_members_ibfk_1` (`category_id`),
   CONSTRAINT `staff_members_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
--- Dumping data for table tracker.staff_members: ~1 rows (approximately)
+-- Dumping data for table tracker.staff_members: ~2 rows (approximately)
 /*!40000 ALTER TABLE `staff_members` DISABLE KEYS */;
 INSERT INTO `staff_members` (`id`, `first_name`, `last_name`, `category_id`, `active`, `date_created`, `date_updated`, `created_by`, `updated_by`) VALUES
-	(19, 'Tim', 'Austin', 1, 1, '2018-03-09 14:00:13', '2018-03-09 14:00:13', 'tima', NULL);
+	(19, 'Tim', 'Austin', 1, 1, '2018-03-09 14:00:13', '2018-03-24 15:55:57', 'tima', 'webuser'),
+	(21, 'Dan', 'Cashen', 1, 1, '2018-03-12 21:20:23', '2018-03-12 21:20:23', 'tima', NULL);
 /*!40000 ALTER TABLE `staff_members` ENABLE KEYS */;
 
 -- Dumping structure for table tracker.users
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
