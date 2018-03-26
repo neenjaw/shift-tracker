@@ -44,19 +44,25 @@ Handlebars.registerHelper('ifgtZero', function (v1, options) {
     return options.inverse(this);
 });
 
-// add the printPercent helper
+// add the checkIfChecked helper
 Handlebars.registerHelper('checkIfChecked', function (id, mods) {
-    
     if (mods === null) return '';
-
 
     for (let i = 0; i < mods.length; i++) {
         var mod = mods[i];
 
         if (mod.mod_id == id) {
-            // console.log('found', id);
-            return 'data-shiftmod-id="' + mod.shiftmod_id + '" checked';
+            return new Handlebars.SafeString('data-shiftmod-id="' + mod.shiftmod_id + '" checked');
         }
+    }
+
+    return '';
+});
+
+// add the checkIfChecked helper
+Handlebars.registerHelper('checkIfSelected', function (id, assignmentId) {
+    if (assignmentId == id) {
+        return 'selected';
     }
 
     return '';

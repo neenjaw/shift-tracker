@@ -264,7 +264,7 @@ function setupShowPage() {
         edit: '<i class="far fa-edit"></i>',
         cancel: '<i class="far fa-times-circle"></i>',
         load: '<i class="fas fa-spinner fa-pulse"></i>'
-    }
+    };
 
     var staffId = document.getElementById('staff__id');
     var statItems = document.querySelectorAll('.stat__item');
@@ -434,4 +434,66 @@ function setupShowPage() {
             }
         });
     });
+
+    window.addEventListener('click', function (e) {
+        if (
+            e.target.classList.contains('delete-shift') || 
+            e.target.classList.contains('cancel-edit') ||
+            e.target.classList.contains('submit-edit')
+        ) {
+            e.preventDefault();
+
+            if (e.target.classList.contains('delete-shift')) {
+                shiftEditFormDeleteShift(shiftEditForm[0]);
+            }
+
+            if (e.target.classList.contains('cancel-edit')) {
+                shiftEditFormCancel(shiftEditForm[0]);
+            }
+
+            if (e.target.classList.contains('submit-edit')) {
+                shiftEditFormSubmit(shiftEditForm[0]);
+            }
+        }
+    });
+
+    function shiftEditFormDeleteShift(formElem) {
+        var shiftId = formElem.dataset.shiftId;
+
+        if(confirm('Are you sure you want to delete this shift?')) {
+            axios
+                .post('/api/shift/delete.php', {
+                    id: shiftId
+                })
+                .then(function(response) {
+                    console.log(response);
+
+                    if (response.data.response === 'OK') {
+                        formElem.previousElementSibling.querySelectorAll('*').forEach(function (e) {
+                            e.classList.add('deleted');
+                        });
+
+                        ShowHideShiftForm.hideForm(formElem, icons);   
+                    }                 
+                })
+                .catch(function(error) {
+                    console.error(error);
+                                        
+                    alert('Unable to delete shift.');
+
+                    ShowHideShiftForm.hideForm(formElem, icons);                    
+                });
+        }
+    }
+
+    function shiftEditFormCancel(formElem) {
+        formElem.previousElementSibling.querySelector('a[data-shift-id]').innerHTML = icons.load;
+
+        ShowHideShiftForm.hideForm(formElem, icons);
+    }
+
+    function shiftEditFormSubmit(formElem) {
+        var shiftId = formElem.dataset.shiftId;
+
+    }
 }

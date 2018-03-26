@@ -2,12 +2,12 @@
 <tr class="shift-edit-row">
     <td colspan="4">
         <div class="shift-edit-container hidden">
-            <form>
+            <form class="shift-edit__form" data-shift-id="{{shift.id}}">
                 <div>
                     <h6>Assignment:&nbsp;</h6>
                     <select class="shift-edit__select shift-edit__assignment" required>
                         {{#each assignments}}
-                        <option value="{{this.id}}">{{this.name}}</option>
+                        <option value="{{this.id}}" {{checkIfSelected this.id ../shift.assignment_id}}>{{this.name}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -15,7 +15,7 @@
                     <h6>Role:&nbsp;</h6>
                     <select class="shift-edit__select shift-edit__assignment" required>
                         {{#each roles}}
-                        <option value="{{this.id}}">{{this.name}}</option>
+                        <option value="{{this.id}}" {{checkIfSelected this.id ../shift.role_id}}>{{this.name}}</option>
                         {{/each}}
                     </select>
                 </div>
@@ -32,11 +32,11 @@
                 </div>
                 <div class="shift-edit__controls">
                     <span>
-                        <button data-shift-id="{{shift.id}}" class="delete-shift btn btn-sm btn-danger mr-4">Delete</button>
+                        <button class="delete-shift btn btn-sm btn-danger mr-4">Delete</button>
                     </span>
                     <span>
-                        <button class="cancel-edit btn btn-sm btn-primary">Submit</button>
-                        <button class="submit-edit btn btn-sm btn-secondary">Cancel</button>
+                        <button class="submit-edit btn btn-sm btn-primary">Submit</button>
+                        <button class="cancel-edit btn btn-sm btn-secondary">Cancel</button>
                     </span>
                 </div>
             </form>

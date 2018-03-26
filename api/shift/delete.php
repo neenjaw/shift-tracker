@@ -19,7 +19,7 @@ try {
     $shift = new Shift($db);
 
     $data = json_decode(file_get_contents('php://input'));
-    
+
     if (isset($data->id)) {
         $shift->id = trim($data->id);
 
