@@ -1,1 +1,17 @@
-staff
+<div class="staff">
+    {{#if staff.length}}
+        <div class="staff-search">
+            <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
+        </div>
+        <div class="staff-list mt-2">
+            <label for="staff-list-select">Select Staff</label>
+            <select class="shift__staff form-control" id="staff-list-select" size="9">
+                {{#each staff}}
+                    <option value="{{this.id}}" data-category="{{this.categoryName}}">{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
+                {{/each}}
+            </select>
+        </div>
+    {{else}}
+        <p>All staff have a shift this day already, or there are no staff.</p>
+    {{/if}}
+</div>

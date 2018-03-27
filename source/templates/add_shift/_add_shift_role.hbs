@@ -1,1 +1,14 @@
-role
+<div class="role">
+    {{#if roles.length}}
+        <div class="role-list">
+            <label for="role-list-select">Select Role</label>
+            <select class="shift__role form-control" id="role-list-select" size="{{roles.length}}">
+                {{#each roles}}
+                <option value="{{this.id}}" {{#if @first}}selected{{/if}}>{{this.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+    {{else}}
+        <p>Must be an error, there should be a role to pick from.</p>
+    {{/if}}
+</div>

@@ -15,6 +15,7 @@ var AddShiftPage = (function() {
     var container = null;
     var currentStep = null;
     var submissionData = null;
+    var areClickListenersSet = false;
 
     var steps = [
         {
@@ -48,7 +49,7 @@ var AddShiftPage = (function() {
             },
             onvalid: function () {
                 var date = container.querySelector('.shift__date');
-                var dayOrNight = container.querySelector('.shift__day-or-night');
+                var dayOrNight = container.querySelector('.active .shift__day-or-night');
 
                 submissionData = Object.assign(submissionData, {
                     date: date.value,
@@ -73,15 +74,18 @@ var AddShiftPage = (function() {
 
                         if (response.data.response === 'OK') {
                             if (isFunction(callback)) {
-                                return callback(null, response.data.records.map(function(record) {
-                                    return {
-                                        firstName: record.first_name,
-                                        lastName: record.last_name,
-                                        id: record.id,
-                                        categoryId: record.category_id,
-                                        categoryName: record.category_name
-                                    };
-                                }));
+                                return callback(null, { 
+                                    staff: response.data.records
+                                        .map(function(record) {
+                                            return {
+                                                firstName: record.first_name,
+                                                lastName: record.last_name,
+                                                id: record.id,
+                                                categoryId: record.category_id,
+                                                categoryName: record.category_name
+                                            };
+                                        })
+                                });
                             }
                         }
                     })
@@ -107,7 +111,8 @@ var AddShiftPage = (function() {
                 var staff = container.querySelector('.shift__staff');
 
                 submissionData = Object.assign(submissionData, {
-                    staff: staff.value
+                    staff: staff.value,
+                    category: staff.querySelector('option[value="'+staff.value+'"]').dataset.category
                 });
             } 
         },
@@ -124,15 +129,43 @@ var AddShiftPage = (function() {
 
                         if (response.data.response === 'OK') {
                             if (isFunction(callback)) {
-                                return callback(null, response.data.records.filter(function (record) {
-                                    if (submissionData.dayOrNight === 'N') {
-                                        if (record.name === 'charge') {
-                                            return false;
-                                        }
-                                    }
+                                return callback(null, { 
+                                    roles :response.data.records
+                                        .filter(function (record) {
+                                            if (submissionData.dayOrNight === 'N') {
+                                                if (record.name === 'charge') {
+                                                    return false;
+                                                }
+                                            } 
 
-                                    return true;
-                                }));
+                                            if (submissionData.category === 'RN') {
+                                                if (record.name === 'nursing attendant') {
+                                                    return false;
+                                                } else if (record.name === 'unit clerk') {
+                                                    return false;
+                                                }
+                                            }
+
+                                            if (submissionData.category === 'LPN' || submissionData.category === 'NA') {
+                                                if (record.name === 'nursing attendant') {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            }
+
+
+                                            if (submissionData.category === 'UC') {
+                                                if (record.name === 'unit clerk') {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            }
+
+                                            return true;
+                                        })
+                                });
                             }
                         }
                     })
@@ -176,80 +209,81 @@ var AddShiftPage = (function() {
 
                         if (response.data.response === 'OK') {
                             if (isFunction(callback)) {
-                                return callback(null, response.data.records.filter(function(record) {
+                                return callback(null, { 
+                                    assignments: response.data.records.filter(function(record) {
                                     //filter the assignment records by previously submitted criteria
-                                    var list = null;
+                                        var list = null;
 
-                                    if (submissionData.roleName === 'clinician') {
-                                        if (submissionData.dayOrNight === 'D') {
-                                            list = ['A/B', 'B/C'];
+                                        if (submissionData.roleName === 'clinician') {
+                                            if (submissionData.dayOrNight === 'D') {
+                                                list = ['A/B', 'B/C'];
 
-                                            if (list.includes(record.name)) {
-                                                return true;
-                                            } else {
-                                                return false;
+                                                if (list.includes(record.name)) {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            } else if (submissionData.dayOrNight === 'N') {
+                                                list = ['A/B/C'];
+
+                                                if (list.includes(record.name)) {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
                                             }
-                                        } else if (submissionData.dayOrNight === 'N') {
-                                            list = ['A/B/C'];
 
-                                            if (list.includes(record.name)) {
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        }
-
-                                        return false;
-
-                                    } else if (submissionData.roleName === 'charge') {
-                                        if (submissionData.dayOrNight === 'D') {
-                                            list = ['A', 'C'];
-
-                                            if (list.includes(record.name)) {
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        } else if (submissionData.dayOrNight === 'N') {
-                                            list = ['A/B/C'];
-
-                                            if (list.includes(record.name)) {
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        }
-
-                                        return false;
-
-                                    } else if (submissionData.roleName === 'nursing attendant') {
-                                        list = ['float'];
-
-                                        if (list.includes(record.name)) {
                                             return false;
+
+                                        } else if (submissionData.roleName === 'charge') {
+                                            if (submissionData.dayOrNight === 'D') {
+                                                list = ['A', 'C'];
+
+                                                if (list.includes(record.name)) {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            } else if (submissionData.dayOrNight === 'N') {
+                                                list = ['A/B/C'];
+
+                                                if (list.includes(record.name)) {
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            }
+
+                                            return false;
+
+                                        } else if (submissionData.roleName === 'nursing attendant') {
+                                            list = ['float'];
+
+                                            if (list.includes(record.name)) {
+                                                return false;
+                                            } else {
+                                                return true;
+                                            }
+                                        } else if (submissionData.roleName === 'outreach') {
+                                            list = ['float'];
+
+                                            if (list.includes(record.name)) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        } else if (submissionData.roleName === 'unit clerk') {
+                                            list = ['float'];
+
+                                            if (list.includes(record.name)) {
+                                                return false;
+                                            } else {
+                                                return true;
+                                            }
                                         } else {
                                             return true;
                                         }
-                                    } else if (submissionData.roleName === 'outreach') {
-                                        list = ['float'];
-
-                                        if (list.includes(record.name)) {
-                                            return true;
-                                        } else {
-                                            return false;
-                                        }
-                                    } else if (submissionData.roleName === 'unit clerk') {
-                                        list = ['float'];
-
-                                        if (list.includes(record.name)) {
-                                            return false;
-                                        } else {
-                                            return true;
-                                        }
-                                    } else {
-                                        return true;
-                                    }
-                                }));
+                                    })});
                             }
                         }
                     })
@@ -292,7 +326,7 @@ var AddShiftPage = (function() {
 
                         if (response.data.response === 'OK') {
                             if (isFunction(callback)) {
-                                return callback(null, response.data.records);
+                                return callback(null, { mods: response.data.records });
                             }
                         }
                     })
@@ -335,16 +369,59 @@ var AddShiftPage = (function() {
         currentStep = 0;
         submissionData = {};
 
+        if (!areClickListenersSet) {
+            container.addEventListener('click', function(e){
+                var target = e.target; 
+
+                if (target.classList.contains('shift-next-step')) {
+                    nextStep();
+                } else if (target.classList.contains('shift-previous-step')) {
+                    previousStep();
+                } else if (target.classList.contains('shift-previous-step')) {
+                    submit();
+                }
+            });
+        }
+
         showCurrentStep({previous: false, next: true, submit: false});
     }
 
     function showCurrentStep(data) {
-        console.log({currentStep, submissionData});
+        // console.log({
+        //     currentStep,
+        //     submissionData,
+        //     data
+        // });
+
+        function toggleNext(state) {
+            document.querySelector('.shift-next-step').disabled = !state;
+        }
+
+        function togglePrevious(state) {
+            document.querySelector('.shift-previous-step').disabled = !state;
+        }
+
+        function toggleSubmit(state) {
+            var submit = document.querySelector('.shift-submit')
+            submit.disabled = !state;
+
+            setTimeout(function() {
+                if (state) {
+                    submit.classList.remove('btn-primary');
+                    submit.classList.add('btn-warning');
+                }
+            }, 100);
+        }
 
         steps[currentStep].prepare(function (err, result) {
             if (err) {
                 console.error(err);
                 container.innerHTML = ShiftTracker.templates.staff.error({ errorMsg: 'problem displaying this step, <a href="/shift/add-one-shift.php">reload.</a>'});
+
+                toggleNext(false);
+                togglePrevious(false);
+                toggleSubmit(false);
+
                 return;
             } 
 
@@ -354,6 +431,9 @@ var AddShiftPage = (function() {
                 totalSteps: steps.length
             }, data, result));
 
+            toggleNext(data.next);
+            togglePrevious(data.previous);
+            toggleSubmit(data.submit);
         });
     }
 
@@ -385,7 +465,7 @@ var AddShiftPage = (function() {
         if (currentStep !== null && currentStep > 0) {
             currentStep -= 1;
 
-            var previous = ((currentStep - 1) > 0);
+            var previous = (currentStep > 0);
             var next = true;
             var submit = false;
 

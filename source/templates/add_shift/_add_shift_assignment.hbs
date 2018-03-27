@@ -1,1 +1,14 @@
-assignment
+<div class="assignment">
+    {{#if assignments.length}}
+    <div class="assignment-list">
+        <label for="assignment-list-select">Select Assignment</label>
+        <select class="shift__assignment form-control" id="assignment-list-select" size="{{assignments.length}}">
+            {{#each assignments}}
+            <option value="{{this.id}}" {{#if @first}}selected{{/if}}>{{this.name}}</option>
+            {{/each}}
+        </select>
+    </div>
+    {{else}}
+    <p>Must be an error, there should be an assignment to pick from.</p>
+    {{/if}}
+</div>
