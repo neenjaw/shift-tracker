@@ -402,7 +402,7 @@ var AddShiftPage = (function() {
         }
 
         function toggleSubmit(state) {
-            var submit = document.querySelector('.shift-submit')
+            var submit = document.querySelector('.shift-submit');
             submit.disabled = !state;
 
             setTimeout(function() {
