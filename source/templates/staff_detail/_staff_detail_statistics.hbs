@@ -32,6 +32,17 @@
     </div>
     {{/if}}
 
+    {{#if modStats}}
+    <div class="rounded-outline staff__role-stats">
+        <h5>Shift Statistics</h5>
+        {{#each modStats}}
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
+            <p>{{stringToProperCase this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
     <div class="rounded-outline staff__role-stats">
         <h5>Day/Night Statistics</h5>
         <div class="stat__item" data-stat-count="{{dayCount}}" data-stat-total="{{shiftCount}}" data-stat-percent="{{printPercent dayCount shiftCount}}">

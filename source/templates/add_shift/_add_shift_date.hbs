@@ -1,0 +1,12 @@
+<div class="date">
+    <label for="date">Enter the shift date:</label>
+    <input type="date" id="date" class="shift__date" min="2000-01-01" max="{{today}}" value="{{today}}" placeholder="YYYY-MM-DD">
+</div>
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-secondary active">
+        <input class="shift__day-or-night" type="radio" value="D" autocomplete="off" checked> Day
+    </label>
+    <label class="btn btn-secondary">
+        <input class="shift__day-or-night" type="radio" value="N" autocomplete="off"> Night
+    </label>
+</div>

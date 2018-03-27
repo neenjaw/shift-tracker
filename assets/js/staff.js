@@ -22,6 +22,7 @@ var StaffPage = (function () {
         var roleStats = {};
         var categoryStats = {};
         var assignmentStats = {};
+        var modStats = {};
         var dCount = 0;
         var nCount = 0;
 
@@ -35,18 +36,35 @@ var StaffPage = (function () {
             assignmentStats[record.assignment_id] = assignmentStats[record.assignment_id] || { name: record.assignment_name, count: 0 };
             assignmentStats[record.assignment_id].count++;
 
+            if (record.shift_mods) {
+                for (let i = 0; i < record.shift_mods.length; i++) {
+                    var mod = record.shift_mods[i];
+                    
+                    modStats[mod.mod_name] = modStats[mod.mod_name] || { name: mod.mod_name, count: 0 };
+                    modStats[mod.mod_name].count++;
+                }
+            }
+
             if (record.shift_d_or_n === 'D') dCount++;
             if (record.shift_d_or_n === 'N') nCount++;
         });
 
+        if (modStats.vent) {
+            modStats.nonvent = { name: 'non-vented', count: (records.length - modStats.vent.count)};
+        } else {
+            modStats.nonvent = { name: 'non-vented', count: (records.length) };            
+        }
+
         roleStats = Object.values(roleStats);
         assignmentStats = Object.values(assignmentStats);
         categoryStats = Object.values(categoryStats);
+        modStats = Object.values(modStats);
 
         return {
             roleStats:roleStats,
             assignmentStats:assignmentStats,
             categoryStats:categoryStats,
+            modStats:modStats,
             dayCount: dCount,
             nightCount: nCount
         };
@@ -66,6 +84,7 @@ var StaffPage = (function () {
                         roleStats: stats.roleStats,
                         assignmentStats: stats.assignmentStats,
                         categoryStats: stats.categoryStats,
+                        modStats: stats.modStats,
                         dayCount: stats.dayCount,
                         nightCount: stats.nightCount
                     });
@@ -154,6 +173,7 @@ var StaffPage = (function () {
                         roleStats: stats.roleStats,
                         assignmentStats: stats.assignmentStats,
                         categoryStats: stats.categoryStats,
+                        modStats: stats.modStats,
                         dayCount: stats.dayCount,
                         nightCount: stats.nightCount
                     };
@@ -182,6 +202,7 @@ var StaffPage = (function () {
                 })
             ])
             .then(axios.spread(function (aResponse, rResponse, mResponse, sResponse) {
+                console.log(sResponse.data);
 
                 var contentData = {};
 
@@ -691,45 +712,35 @@ function setupShowPage() {
         }
 
         if (axiosPostCalls.length === 0) {
-            alert('Nothing to submit.');
-
             StaffPage.hideForm(formElem, icons);      
-        }
+        } else {
+            axios
+                .all(axiosPostCalls)
+                .then(function (responses) {
+                    var datum = responses.map(function (response) {
+                        return response.data;
+                    });
 
-        axios
-            .all(axiosPostCalls)
-            .then(function(responses) {
-                var datum = responses.map(function(response) {
-                    return response.data;
-                });
-
-                datum.forEach(function(data) {
-                    if (data.response == 'OK') {
-                        if (data.message.match(/^shift.+updated\.$/)) {
-                            currentAssignment.innerHTML = selectedAssignmentName;
-                            currentRole.innerHTML = selectedRoleName;
+                    datum.forEach(function (data) {
+                        if (data.response == 'OK') {
+                            if (data.message.match(/^shift.+updated\.$/)) {
+                                currentAssignment.innerHTML = selectedAssignmentName;
+                                currentRole.innerHTML = selectedRoleName;
+                            }
                         }
-                    }
+                    });
+
+                    reloadStaffStats();
+
+                    StaffPage.hideForm(formElem, icons);
+                })
+                .catch(function (error) {
+                    console.error(error);
+
+                    alert('Unable to delete shift.');
+
+                    StaffPage.hideForm(formElem, icons);
                 });
-
-                reloadStaffStats();
-
-                // var container = document.querySelector('.staff__shift-stats');
-
-                // container.innerHTML = ShiftTracker.templates.loader({});
-
-                // StaffPage.showStats(container, staffId.value, function () {
-                //     displayPercentBar();
-                // });
-
-                StaffPage.hideForm(formElem, icons);      
-            })
-            .catch(function(error) {
-                console.error(error);
-
-                alert('Unable to delete shift.');
-
-                StaffPage.hideForm(formElem, icons);      
-            });
+        }
     }
 }

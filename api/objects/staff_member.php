@@ -125,6 +125,49 @@ class StaffMember {
         return $stmt;
     }
 
+    // read active staff
+    function read_active($date) {
+        if (preg_match('/^[12][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $date) !== 1) {
+            throw new Exception('date from does not conform');
+        }
+
+        // select all query
+        $sql = "SELECT
+                    c.name as category_name, s.id, s.first_name, s.last_name, s.category_id, 
+                    s.active, s.date_created, s.date_updated, s.created_by, s.updated_by
+                FROM
+                    {$this->table_name} s
+                LEFT JOIN
+                    categories c
+                ON 
+                    s.category_id = c.id
+                LEFT JOIN
+                    (
+                        SELECT
+                            staff_id
+                        FROM
+                            shifts
+                        WHERE
+                            shift_date=:date
+                    ) as h
+                ON
+                    h.staff_id = s.id
+                WHERE
+                    (h.staff_id IS NULL) AND (s.active = 1)
+                ORDER BY
+                    s.last_name ASC, s.first_name ASC";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($sql);
+    
+        $stmt->bindParam(':date', $date, PDO::PARAM_STR);
+
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function update() {
 
 
