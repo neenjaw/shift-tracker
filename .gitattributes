@@ -1,0 +1,21 @@
+# default
+* text=auto
+
+# to be normalized
+*.txt text
+
+# to have lines converted to lf
+*.js text eol=lf
+*.hbs text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.php text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.sql text eol=lf
+*.ini text eol=lf
+.gitattributes text eol=lf
+
+# leave alone
+*.png binary
+*.jpg binary
