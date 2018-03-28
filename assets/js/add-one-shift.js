@@ -342,7 +342,7 @@ var AddShiftPage = (function() {
                 return true;
             }, 
             onvalid: function () {
-                var mods = container.querySelectorAll('.shift__mod input:checked');
+                var mods = container.querySelectorAll('.shift__mod option:checked');
 
                 var listOfMods = [];
 
@@ -377,7 +377,7 @@ var AddShiftPage = (function() {
                     nextStep();
                 } else if (target.classList.contains('shift-previous-step')) {
                     previousStep();
-                } else if (target.classList.contains('shift-previous-step')) {
+                } else if (target.classList.contains('shift-submit')) {
                     submit();
                 }
             });
@@ -474,7 +474,19 @@ var AddShiftPage = (function() {
     }
 
     function submit() {
+        // validate current step
+        // -- steps[currentStep].validate()
 
+        if (!steps[currentStep].validate()) {
+            return;
+        }
+
+        // if valid, gather the data to be submitted
+        // -- steps[currentStep].isvalid()
+
+        steps[currentStep].onvalid();
+
+        console.log(submissionData);
     }
 
     return {
