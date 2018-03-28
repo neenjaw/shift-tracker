@@ -317,24 +317,29 @@ var AddShiftPage = (function() {
             contentPartial: 'mod',
             prepare: function (callback) {
 
-                axios
-                    .get('/api/mod/read.php')
-                    .then(function (response) {
-                        if (response.data.response === 'ERROR') {
-                            throw response.data.message;
-                        }
-
-                        if (response.data.response === 'OK') {
-                            if (isFunction(callback)) {
-                                return callback(null, { mods: response.data.records });
+                if (submissionData.roleName !== 'bedside') {
+                    return callback(null, { hasMods: false });
+                } else {
+                    axios
+                        .get('/api/mod/read.php')
+                        .then(function (response) {
+                            if (response.data.response === 'ERROR') {
+                                throw response.data.message;
                             }
-                        }
-                    })
-                    .catch(function (error) {
-                        if (isFunction(callback)) {
-                            return callback(error);
-                        }
-                    });
+
+                            if (response.data.response === 'OK') {
+                                if (isFunction(callback)) {
+                                    return callback(null, { hasMods: true, mods: response.data.records });
+                                }
+                            }
+                        })
+                        .catch(function (error) {
+                            if (isFunction(callback)) {
+                                return callback(error);
+                            }
+                        });
+                }
+
             },
             validate: function () { 
                 var staff = container.querySelectorAll('.shift__mod input:checked');
@@ -342,7 +347,7 @@ var AddShiftPage = (function() {
                 return true;
             }, 
             onvalid: function () {
-                var mods = container.querySelectorAll('.shift__mod option:checked');
+                var mods = container.querySelectorAll('.shift__mod input:checked');
 
                 var listOfMods = [];
 
@@ -365,7 +370,7 @@ var AddShiftPage = (function() {
     }
 
     function init(options) {
-        container = options.container;
+        container = container || options.container;
         currentStep = 0;
         submissionData = {};
 
@@ -381,6 +386,8 @@ var AddShiftPage = (function() {
                     submit();
                 }
             });
+
+            areClickListenersSet = true;
         }
 
         showCurrentStep({previous: false, next: true, submit: false});
@@ -438,6 +445,9 @@ var AddShiftPage = (function() {
     }
 
     function nextStep() {
+        console.log('next', {currentStep});
+        
+
         if (currentStep !== null && currentStep < (steps.length - 1)) {
             // validate current step
             // -- steps[currentStep].validate()
@@ -474,6 +484,10 @@ var AddShiftPage = (function() {
     }
 
     function submit() {
+        var submit = document.querySelector('.shift-submit');
+
+        submit.disabled = true;
+
         // validate current step
         // -- steps[currentStep].validate()
 
@@ -487,6 +501,37 @@ var AddShiftPage = (function() {
         steps[currentStep].onvalid();
 
         console.log(submissionData);
+
+        axios
+            .post('/api/shift/create.php', {
+                shift_date: submissionData.date,
+                shift_d_or_n: submissionData.dayOrNight,
+                staff_id: submissionData.staff,
+                role_id: submissionData.role,
+                assignment_id: submissionData.assignment,
+                created_by: 'webuser',
+                mods: submissionData.mod
+            })
+            .then(function(response) {
+                var data = response.data;
+
+                if (data.response !== 'OK') {
+                    throw 'problem creating the entry: ' + data.message;
+                }
+
+                if (!data.created) {
+                    throw 'problem creating the entry ' + data.message;
+                }
+
+                submit.disabled = false;
+                Flash.insertFlash('success', 'Shift created! Nice work!');
+                init(); //restart the form
+            })
+            .catch(function(error) {
+                alert('An error occured, attempt to resubmit, reload, or try again later');
+                console.error(error);
+                submit.disabled = false;
+            });
     }
 
     return {

@@ -109,8 +109,10 @@ try {
 
     if ($num > 0) {
         $result->message = "Shift for {$shift->staff_id} on {$shift->shift_date} created.";
+        $result->created = true;
     } else {
         $result->message = "Shift not created.";
+        $result->created = false;
     }
 
     echo json_encode($result);
