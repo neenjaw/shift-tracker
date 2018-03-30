@@ -47,6 +47,10 @@
     background-color: paleturquoise;
 }
 
+.shift__mod.active-mod {
+    background-color: palegreen;
+}
+
 .add-wrap input[type="checkbox"] {
     display: none;
     cursor: pointer;

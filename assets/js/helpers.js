@@ -80,3 +80,14 @@ Handlebars.registerHelper('debug', function (optionalValue) {
         console.log(optionalValue);
     }
 });
+
+// add the checkIfChecked helper
+Handlebars.registerHelper('chooseMaxUpTo', function (v1, v2, v3) {
+    var max = (v1 > v2) ? v1 : v2;
+
+    if (max > v3) {
+        return v3;
+    }
+
+    return v2;
+});

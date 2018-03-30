@@ -16,5 +16,6 @@
     
 <?php require('../partials/06-prescript.php'); ?>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/add-shift.js"></script>
     <script src="/assets/js/add-one-shift.js"></script>
 <?php require('../partials/07-footer.php'); ?>

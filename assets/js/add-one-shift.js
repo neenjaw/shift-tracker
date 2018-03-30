@@ -2,35 +2,29 @@
 /* global Flash */
 /* global axios */
 /* global moment */
+/* global AddShift */
 
 $(function() {
     var container = document.querySelector('.add-container');
 
     container.innerHTML = ShiftTracker.templates.loader();
 
-    AddShiftPage.init({container: container});
-});
-
-var AddShiftPage = (function() {
-    var container = null;
-    var currentStep = null;
-    var submissionData = null;
-    var areClickListenersSet = false;
-
-    var steps = [
+    var oneShiftSteps = [
         {
             contentPartial: 'date',
-            prepare: function (callback) {
-                if(isFunction(callback)) {
-                    return callback(null, {
-                        today: moment().format('YYYY-MM-DD')
-                    });
-                }
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
+                return callback(null, {
+                    today: moment().format('YYYY-MM-DD')
+                });
             },
             validate: function () {
                 var date = container.querySelector('.shift__date');
                 var dayOrNight = container.querySelector('.shift__day-or-night');
-                
+
                 if (!date.value.match(/^[12][0-9]{3}-[01][0-9]-[0-3][0-9]$/)) { // check if in YYYY-MM-DD format
                     date.focus();
                     Flash.insertFlash('warning', 'Date should be YYYY-MM-DD');
@@ -47,55 +41,55 @@ var AddShiftPage = (function() {
 
                 return true;
             },
-            onvalid: function () {
+            onvalid: function (validatedData) {
                 var date = container.querySelector('.shift__date');
                 var dayOrNight = container.querySelector('.active .shift__day-or-night');
 
-                submissionData = Object.assign(submissionData, {
+                validatedData = Object.assign(validatedData, {
                     date: date.value,
                     dayOrNight: dayOrNight.value
                 });
             }
         },
-        { 
+        {
             contentPartial: 'staff',
-            prepare: function (callback) {
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
 
                 axios
                     .get('/api/staff_member/read_active.php', {
                         params: {
-                            date: submissionData.date
+                            date: data.validated.date
                         }
                     })
-                    .then(function(response) {
+                    .then(function (response) {
                         if (response.data.response === 'ERROR') {
                             throw response.data.message;
                         }
 
                         if (response.data.response === 'OK') {
-                            if (isFunction(callback)) {
-                                return callback(null, { 
-                                    staff: response.data.records
-                                        .map(function(record) {
-                                            return {
-                                                firstName: record.first_name,
-                                                lastName: record.last_name,
-                                                id: record.id,
-                                                categoryId: record.category_id,
-                                                categoryName: record.category_name
-                                            };
-                                        })
-                                });
-                            }
+                            return callback(null, {
+                                staff: response.data.records
+                                    .map(function (record) {
+                                        return {
+                                            firstName: record.first_name,
+                                            lastName: record.last_name,
+                                            id: record.id,
+                                            categoryId: record.category_id,
+                                            categoryName: record.category_name
+                                        };
+                                    })
+                            });
                         }
                     })
-                    .catch(function(error) {
-                        if (isFunction(callback)) {
-                            return callback(error);
-                        }
+                    .catch(function (error) {
+                        return callback(error);
                     });
             },
-            validate: function () { 
+            validate: function () {
                 var staff = container.querySelector('.shift__staff');
 
                 if (!staff.value.match(/^[0-9]+$/)) {
@@ -106,19 +100,23 @@ var AddShiftPage = (function() {
                 }
 
                 return true;
-            }, 
-            onvalid: function () {
+            },
+            onvalid: function (validatedData) {
                 var staff = container.querySelector('.shift__staff');
 
-                submissionData = Object.assign(submissionData, {
+                validatedData = Object.assign(validatedData, {
                     staff: staff.value,
-                    category: staff.querySelector('option[value="'+staff.value+'"]').dataset.category
+                    category: staff.querySelector('option[value="' + staff.value + '"]').dataset.category
                 });
-            } 
+            }
         },
-        { 
+        {
             contentPartial: 'role',
-            prepare: function (callback) {
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
 
                 axios
                     .get('/api/role/read.php')
@@ -128,51 +126,47 @@ var AddShiftPage = (function() {
                         }
 
                         if (response.data.response === 'OK') {
-                            if (isFunction(callback)) {
-                                return callback(null, { 
-                                    roles :response.data.records
-                                        .filter(function (record) {
-                                            if (submissionData.dayOrNight === 'N') {
-                                                if (record.name === 'charge') {
-                                                    return false;
-                                                }
-                                            } 
-
-                                            if (submissionData.category === 'RN') {
-                                                if (record.name === 'nursing attendant') {
-                                                    return false;
-                                                } else if (record.name === 'unit clerk') {
-                                                    return false;
-                                                }
+                            return callback(null, {
+                                roles: response.data.records
+                                    .filter(function (record) {
+                                        if (data.validated.dayOrNight === 'N') {
+                                            if (record.name === 'charge') {
+                                                return false;
                                             }
+                                        }
 
-                                            if (submissionData.category === 'LPN' || submissionData.category === 'NA') {
-                                                if (record.name === 'nursing attendant') {
-                                                    return true;
-                                                } else {
-                                                    return false;
-                                                }
+                                        if (data.validated.category === 'RN') {
+                                            if (record.name === 'nursing attendant') {
+                                                return false;
+                                            } else if (record.name === 'unit clerk') {
+                                                return false;
                                             }
+                                        }
 
-
-                                            if (submissionData.category === 'UC') {
-                                                if (record.name === 'unit clerk') {
-                                                    return true;
-                                                } else {
-                                                    return false;
-                                                }
+                                        if (data.validated.category === 'LPN' || data.category === 'NA') {
+                                            if (record.name === 'nursing attendant') {
+                                                return true;
+                                            } else {
+                                                return false;
                                             }
+                                        }
 
-                                            return true;
-                                        })
-                                });
-                            }
+
+                                        if (data.validated.category === 'UC') {
+                                            if (record.name === 'unit clerk') {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        }
+
+                                        return true;
+                                    })
+                            });
                         }
                     })
                     .catch(function (error) {
-                        if (isFunction(callback)) {
-                            return callback(error);
-                        }
+                        return callback(error);
                     });
             },
             validate: function () {
@@ -186,19 +180,23 @@ var AddShiftPage = (function() {
                 }
 
                 return true;
-            }, 
-            onvalid: function () {
+            },
+            onvalid: function (validatedData) {
                 var role = container.querySelector('.shift__role');
 
-                submissionData = Object.assign(submissionData, {
+                validatedData = Object.assign(validatedData, {
                     role: role.value,
-                    roleName: role.querySelector('option[value="'+role.value+'"]').innerText
+                    roleName: role.querySelector('option[value="' + role.value + '"]').innerText
                 });
-            } 
+            }
         },
-        { 
+        {
             contentPartial: 'assignment',
-            prepare: function (callback) {
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
 
                 axios
                     .get('/api/assignment/read.php')
@@ -208,89 +206,86 @@ var AddShiftPage = (function() {
                         }
 
                         if (response.data.response === 'OK') {
-                            if (isFunction(callback)) {
-                                return callback(null, { 
-                                    assignments: response.data.records.filter(function(record) {
+                            return callback(null, {
+                                assignments: response.data.records.filter(function (record) {
                                     //filter the assignment records by previously submitted criteria
-                                        var list = null;
+                                    var list = null;
 
-                                        if (submissionData.roleName === 'clinician') {
-                                            if (submissionData.dayOrNight === 'D') {
-                                                list = ['A/B', 'B/C'];
+                                    if (data.validated.roleName === 'clinician') {
+                                        if (data.validated.dayOrNight === 'D') {
+                                            list = ['A/B', 'B/C'];
 
-                                                if (list.includes(record.name)) {
-                                                    return true;
-                                                } else {
-                                                    return false;
-                                                }
-                                            } else if (submissionData.dayOrNight === 'N') {
-                                                list = ['A/B/C'];
-
-                                                if (list.includes(record.name)) {
-                                                    return true;
-                                                } else {
-                                                    return false;
-                                                }
+                                            if (list.includes(record.name)) {
+                                                return true;
+                                            } else {
+                                                return false;
                                             }
+                                        } else if (data.validated.dayOrNight === 'N') {
+                                            list = ['A/B/C'];
 
+                                            if (list.includes(record.name)) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        }
+
+                                        return false;
+
+                                    } else if (data.validated.roleName === 'charge') {
+                                        if (data.validated.dayOrNight === 'D') {
+                                            list = ['A', 'C'];
+
+                                            if (list.includes(record.name)) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        } else if (data.validated.dayOrNight === 'N') {
+                                            list = ['A/B/C'];
+
+                                            if (list.includes(record.name)) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        }
+
+                                        return false;
+
+                                    } else if (data.validated.roleName === 'nursing attendant') {
+                                        list = ['float'];
+
+                                        if (list.includes(record.name)) {
                                             return false;
-
-                                        } else if (submissionData.roleName === 'charge') {
-                                            if (submissionData.dayOrNight === 'D') {
-                                                list = ['A', 'C'];
-
-                                                if (list.includes(record.name)) {
-                                                    return true;
-                                                } else {
-                                                    return false;
-                                                }
-                                            } else if (submissionData.dayOrNight === 'N') {
-                                                list = ['A/B/C'];
-
-                                                if (list.includes(record.name)) {
-                                                    return true;
-                                                } else {
-                                                    return false;
-                                                }
-                                            }
-
-                                            return false;
-
-                                        } else if (submissionData.roleName === 'nursing attendant') {
-                                            list = ['float'];
-
-                                            if (list.includes(record.name)) {
-                                                return false;
-                                            } else {
-                                                return true;
-                                            }
-                                        } else if (submissionData.roleName === 'outreach') {
-                                            list = ['float'];
-
-                                            if (list.includes(record.name)) {
-                                                return true;
-                                            } else {
-                                                return false;
-                                            }
-                                        } else if (submissionData.roleName === 'unit clerk') {
-                                            list = ['float'];
-
-                                            if (list.includes(record.name)) {
-                                                return false;
-                                            } else {
-                                                return true;
-                                            }
                                         } else {
                                             return true;
                                         }
-                                    })});
-                            }
+                                    } else if (data.validated.roleName === 'outreach') {
+                                        list = ['float'];
+
+                                        if (list.includes(record.name)) {
+                                            return true;
+                                        } else {
+                                            return false;
+                                        }
+                                    } else if (data.validated.roleName === 'unit clerk') {
+                                        list = ['float'];
+
+                                        if (list.includes(record.name)) {
+                                            return false;
+                                        } else {
+                                            return true;
+                                        }
+                                    } else {
+                                        return true;
+                                    }
+                                })
+                            });
                         }
                     })
                     .catch(function (error) {
-                        if (isFunction(callback)) {
-                            return callback(error);
-                        }
+                        return callback(error);
                     });
             },
             validate: function () {
@@ -305,19 +300,23 @@ var AddShiftPage = (function() {
 
                 return true;
 
-            }, onvalid: function () {
+            }, onvalid: function (validatedData) {
                 var assignment = container.querySelector('.shift__assignment');
 
-                submissionData = Object.assign(submissionData, {
+                validatedData = Object.assign(validatedData, {
                     assignment: assignment.value
                 });
-            } 
+            }
         },
-        { 
+        {
             contentPartial: 'mod',
-            prepare: function (callback) {
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
 
-                if (submissionData.roleName !== 'bedside') {
+                if (data.validated.roleName !== 'bedside') {
                     return callback(null, { hasMods: false });
                 } else {
                     axios
@@ -328,215 +327,44 @@ var AddShiftPage = (function() {
                             }
 
                             if (response.data.response === 'OK') {
-                                if (isFunction(callback)) {
-                                    return callback(null, { hasMods: true, mods: response.data.records });
-                                }
+                                return callback(null, { hasMods: true, mods: response.data.records });
                             }
                         })
                         .catch(function (error) {
-                            if (isFunction(callback)) {
-                                return callback(error);
-                            }
+                            return callback(error);
                         });
                 }
 
             },
-            validate: function () { 
+            validate: function () {
                 var staff = container.querySelectorAll('.shift__mod input:checked');
 
                 return true;
-            }, 
-            onvalid: function () {
+            },
+            onvalid: function (validatedData) {
                 var mods = container.querySelectorAll('.shift__mod input:checked');
 
                 var listOfMods = [];
 
                 for (let i = 0; i < mods.length; i++) {
                     var mod = mods[i];
-                    
+
                     listOfMods.push(mod.value);
                 }
 
-                submissionData = Object.assign(submissionData, {
+                validatedData = Object.assign(validatedData, {
                     mod: listOfMods
                 });
-            } 
+            }
         }
     ];
 
-    function isFunction(f) {
-        // eslint-disable-next-line no-extra-boolean-cast
-        return !!(f && f.constructor && f.call && f.apply);
-    }
-
-    function init(options) {
-        container = container || options.container;
-        currentStep = 0;
-        submissionData = {};
-
-        if (!areClickListenersSet) {
-            container.addEventListener('click', function(e){
-                var target = e.target; 
-
-                if (target.classList.contains('shift-next-step')) {
-                    nextStep();
-                } else if (target.classList.contains('shift-previous-step')) {
-                    previousStep();
-                } else if (target.classList.contains('shift-submit')) {
-                    submit();
-                }
-            });
-
-            areClickListenersSet = true;
+    var addOneShift = AddShift(oneShiftSteps, {
+        debug: true,
+        container: container,
+        templates: {
+            show: ShiftTracker.templates.shift.add,
+            error: ShiftTracker.templates.shift.error
         }
-
-        showCurrentStep({previous: false, next: true, submit: false});
-    }
-
-    function showCurrentStep(data) {
-        // console.log({
-        //     currentStep,
-        //     submissionData,
-        //     data
-        // });
-
-        function toggleNext(state) {
-            document.querySelector('.shift-next-step').disabled = !state;
-        }
-
-        function togglePrevious(state) {
-            document.querySelector('.shift-previous-step').disabled = !state;
-        }
-
-        function toggleSubmit(state) {
-            var submit = document.querySelector('.shift-submit');
-            submit.disabled = !state;
-
-            setTimeout(function() {
-                if (state) {
-                    submit.classList.remove('btn-primary');
-                    submit.classList.add('btn-warning');
-                }
-            }, 100);
-        }
-
-        steps[currentStep].prepare(function (err, result) {
-            if (err) {
-                console.error(err);
-                container.innerHTML = ShiftTracker.templates.staff.error({ errorMsg: 'problem displaying this step, <a href="/shift/add-one-shift.php">reload.</a>'});
-
-                toggleNext(false);
-                togglePrevious(false);
-                toggleSubmit(false);
-
-                return;
-            } 
-
-            container.innerHTML = ShiftTracker.templates.shift.add(Object.assign({
-                whichContentPartial: 'add_shift_' + steps[currentStep].contentPartial,
-                step: currentStep + 1,
-                totalSteps: steps.length
-            }, data, result));
-
-            toggleNext(data.next);
-            togglePrevious(data.previous);
-            toggleSubmit(data.submit);
-        });
-    }
-
-    function nextStep() {
-        console.log('next', {currentStep});
-        
-
-        if (currentStep !== null && currentStep < (steps.length - 1)) {
-            // validate current step
-            // -- steps[currentStep].validate()
-
-            if (!steps[currentStep].validate()) {
-                return;
-            }
-
-            // if valid, gather the data to be submitted
-            // -- steps[currentStep].isvalid()
-
-            steps[currentStep].onvalid();
-
-            currentStep += 1;
-
-            var previous = true;
-            var next = ((currentStep + 1) < steps.length);
-            var submit = ((currentStep + 1) >= steps.length);
-
-            showCurrentStep({previous: previous, next: next, submit: submit});
-        }
-    }
-
-    function previousStep() {
-        if (currentStep !== null && currentStep > 0) {
-            currentStep -= 1;
-
-            var previous = (currentStep > 0);
-            var next = true;
-            var submit = false;
-
-            showCurrentStep({ previous: previous, next: next, submit: submit });
-        }
-    }
-
-    function submit() {
-        var submit = document.querySelector('.shift-submit');
-
-        submit.disabled = true;
-
-        // validate current step
-        // -- steps[currentStep].validate()
-
-        if (!steps[currentStep].validate()) {
-            return;
-        }
-
-        // if valid, gather the data to be submitted
-        // -- steps[currentStep].isvalid()
-
-        steps[currentStep].onvalid();
-
-        console.log(submissionData);
-
-        axios
-            .post('/api/shift/create.php', {
-                shift_date: submissionData.date,
-                shift_d_or_n: submissionData.dayOrNight,
-                staff_id: submissionData.staff,
-                role_id: submissionData.role,
-                assignment_id: submissionData.assignment,
-                created_by: 'webuser',
-                mods: submissionData.mod
-            })
-            .then(function(response) {
-                var data = response.data;
-
-                if (data.response !== 'OK') {
-                    throw 'problem creating the entry: ' + data.message;
-                }
-
-                if (!data.created) {
-                    throw 'problem creating the entry ' + data.message;
-                }
-
-                submit.disabled = false;
-                Flash.insertFlash('success', 'Shift created! Nice work!');
-                init(); //restart the form
-            })
-            .catch(function(error) {
-                alert('An error occured, attempt to resubmit, reload, or try again later');
-                console.error(error);
-                submit.disabled = false;
-            });
-    }
-
-    return {
-        init: init,
-        nextStep:nextStep,
-        previousStep:previousStep
-    };
-}());
+    });
+});

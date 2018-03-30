@@ -1,0 +1,13 @@
+<div class="add-wrap">
+    <div class="content">
+        <h2>Page Error</h2>
+        {{#if errorMsg}}
+        <p class="text-muted">{{{errorMsg}}}</p>
+        {{else}}
+        <p class="text-muted">There was an error displaying this shift page.</p>
+        {{/if}}
+    </div>
+    <div class="controls">
+        {{> add_shift_controls}}
+    </div>
+</div>

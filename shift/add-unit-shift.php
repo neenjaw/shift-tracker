@@ -1,13 +1,21 @@
 <?php require('../partials/01-prehead.php'); ?>
 <?php require('../partials/02-head-prestyle.php'); ?>
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/shift-many.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/add-one-shift.css" />
 <?php require('../partials/03-head-poststyle.php'); ?>
 <?php require('../partials/04-nav.php'); ?>
 <?php require('../partials/05-flash.php'); ?>
 
-    <h1>many!</h1>
+<div class="title rounded-outline">
+    <h2>Add day/night Shift</h2>
+    <h4 class="text-muted">Add a shift for the entire shift</h4>
+</div>
+
+<div class="add-container rounded-outline">
+
+</div>
     
 <?php require('../partials/06-prescript.php'); ?>
     <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/shift-many.js"></script>
+    <script src="/assets/js/add-shift.js"></script>
+    <script src="/assets/js/add-many-shifts.js"></script>
 <?php require('../partials/07-footer.php'); ?>
