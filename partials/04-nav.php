@@ -16,6 +16,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/staff">view all staff</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/staff/add-staff.php">add a staff</a>
                     </div>
                 </li>
                 <li class="nav-item dropdown">
