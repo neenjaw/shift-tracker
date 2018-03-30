@@ -7,7 +7,7 @@
             <label for="staff-list-select">Select Staff</label>
             <select class="shift__staff form-control" id="staff-list-select" size="9">
                 {{#each staff}}
-                    <option value="{{this.id}}" data-category="{{this.categoryName}}">{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
+                    <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if ../staffId}}{{#ifMatch this.id ../staffId}}selected{{/ifMatch}}{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
                 {{/each}}
             </select>
         </div>
@@ -15,3 +15,5 @@
         <p>All staff have a shift this day already, or there are no staff.</p>
     {{/if}}
 </div>
+
+{{debug}}

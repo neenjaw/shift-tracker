@@ -44,6 +44,14 @@ Handlebars.registerHelper('ifgtZero', function (v1, options) {
     return options.inverse(this);
 });
 
+// add the ifgtZero helper
+Handlebars.registerHelper('ifMatch', function (v1, v2, options) {
+    if (v1 === v2) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
 // add the checkIfChecked helper
 Handlebars.registerHelper('checkIfChecked', function (id, mods) {
     if (mods === null) return '';

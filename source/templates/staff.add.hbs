@@ -1,16 +1,25 @@
 <form class="add-staff">
     <div class="name">
-        <div class="first">
-
+        <div class="form-group first">
+            <label for="first-name">First Name</label>
+            <input type="text" class="form-control" id="first-name" placeholder="First" required>
         </div>
-        <div class="last">
-
+        <div class="form-group last">
+            <label for="last-name">Last Name</label>
+            <input type="text" class="form-control" id="last-name" placeholder="Last" required>
         </div>
     </div>
-    <div class="category">
-
+    <div class="form-group category">
+        <label for="category">Category select</label>
+        <select class="form-control select-category" id="category" size="4" required>
+            {{#each categories}}
+            <option value="{{this.id}}" {{#ifMatch this.name 'RN'}}selected{{/ifMatch}}>{{this.name}}</option>
+            {{/each}}
+        </select>
     </div>
     <div class="controls">
-
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Create new Staff Member</button>
     </div>
 </form>
+
+{{!-- {{debug}} --}}

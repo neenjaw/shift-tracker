@@ -25,8 +25,8 @@ $(function() {
 
                         if (
                             assignments.data.response === 'ERROR' ||
-                        roles.data.response === 'ERROR' ||
-                        mods.data.response === 'ERROR'
+                            roles.data.response === 'ERROR' ||
+                            mods.data.response === 'ERROR'
                         ) {
                             var messages = [];
 
@@ -39,8 +39,8 @@ $(function() {
 
                         if (
                             assignments.data.response === 'OK' &&
-                        roles.data.response === 'OK' &&
-                        mods.data.response === 'OK'
+                            roles.data.response === 'OK' &&
+                            mods.data.response === 'OK'
                         ) {
                             return callback(null, {
                                 today: moment().format('YYYY-MM-DD'),
@@ -129,9 +129,10 @@ $(function() {
                     });
             },
             validate: function () {
-                var staff = container.querySelector('.shift__clinician option:checked');
+                var staff = container.querySelector('.shift__clinician');
+                var pick = staff.querySelector('option:checked');
 
-                if (!staff) {
+                if (!pick) {
                     staff.focus();
                     Flash.insertFlash('warning', 'Choose a clinician person for the shift.');
 
@@ -172,9 +173,10 @@ $(function() {
                 });
             },
             validate: function () {
-                var staff = container.querySelector('.shift__charge input:checked');
+                var staff = container.querySelector('.shift__charge');
+                var pick = staff.querySelector('option:checked');
 
-                if (!staff) {
+                if (!pick) {
                     staff.focus();
                     Flash.insertFlash('warning', 'Choose a charge person for the shift.');
 
@@ -184,11 +186,36 @@ $(function() {
                 return true;
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelector('.shift__charge input:checked');
+                var staff = container.querySelector('.shift__charge option:checked');
 
                 validatedData = Object.assign(validatedData, {
                     chargeId: staff.value
                 });
+            }
+        },
+        {
+            contentPartial: 'charge_pod',
+            skippable: true,
+            checkIfShouldSkip: function (data) {
+                if (data.validated.dayOrNight === 'N') {
+                    data.validated.clinicianAssignmentId = data.prepared.assignments
+                        .find(function (element) {
+                            return (element.name === 'A/B/C');
+                        }).id;
+
+                    return true;
+                } else {
+                    return false;
+                }                
+            },
+            prepare: function (data, callback) {
+
+            },
+            validate: function () {
+
+            },
+            onvalid: function() {
+
             }
         },
         {
@@ -198,15 +225,29 @@ $(function() {
                 return false;
             },
             prepare: function (data, callback) {
+                var staffPicks;
+
+                if (data.validated.dayOrNight === 'D') {
+                    staffPicks = data.prepared.staff.forChargePick.filter(function (s) {
+                        if (s.id === data.validated.chargeId) {
+                            return false;
+                        }
+
+                        return true;
+                    });
+                } else if (data.validated.dayOrNight === 'N') {
+                    staffPicks = data.prepared.staff.forClinicianPick.filter(function (s) {
+                        if (s.id === data.validated.clinicianId) {
+                            return false;
+                        }
+
+                        return true;
+                    });
+                }
+
                 return callback(null, {
                     staff: {
-                        forBedsidePick: data.prepared.staff.forChargePick.filter(function (s) {
-                            if (s.id === data.validated.chargeId) {
-                                return false;
-                            }
-
-                            return true;
-                        })
+                        forBedsidePick: staffPicks
                     }
                 });
             },

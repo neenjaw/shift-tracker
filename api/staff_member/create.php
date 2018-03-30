@@ -72,8 +72,10 @@ try {
     $result->response = "OK";
     
     if ($num > 0) {
-        $result->message = "User {$staff_member->first_name} {$staff_member->last_name} created.";
+        $result->created = true;
+        $result->message = "{$staff_member->first_name} {$staff_member->last_name} created.";
     } else {
+        $result->created = false;
         $result->message = 'User not created.';
     }
 

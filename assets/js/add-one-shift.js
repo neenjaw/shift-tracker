@@ -105,7 +105,7 @@ $(function() {
                 var staff = container.querySelector('.shift__staff');
 
                 validatedData = Object.assign(validatedData, {
-                    staff: staff.value,
+                    staffId: staff.value,
                     category: staff.querySelector('option[value="' + staff.value + '"]').dataset.category
                 });
             }

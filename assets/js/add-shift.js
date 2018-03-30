@@ -72,10 +72,10 @@ var AddShift = function (steps, options) {
 
     //Set the click listeners
     if (!state.areClickListenersSet) {
-        container.addEventListener('click', function (e) {
-            if (state.debug) console.log({event: e, target: e.target, classList: e.target.classList});            
+        container.addEventListener('click', function (ev) {
+            if (state.debug) console.log({event: ev, target: ev.target, classList: ev.target.classList});            
 
-            var target = e.target;
+            var target = ev.target;
 
             if (target.classList.contains(classLists.nextBtn)) {
                 nextStep(state);
@@ -86,6 +86,24 @@ var AddShift = function (steps, options) {
             } else if (target.classList.contains(classLists.mod)) {
                 target.parentNode.classList.toggle(classLists.activeMod);
             } 
+        });
+
+        container.addEventListener('mousedown', function(ev) {
+            console.log({targetName: ev.target.localName, targetParent: ev.target.parentNode, isMulti: ev.target.parentNode.multiple});
+            
+            if (ev.target.parentNode.multiple) {
+                ev.preventDefault();                
+            }
+            // var originalScrollTop = $(this).parent().scrollTop();
+            // console.log(originalScrollTop);
+            // $(this).prop('selected', $(this).prop('selected') ? false : true);
+            // var self = this;
+            // $(this).parent().focus();
+            // setTimeout(function () {
+            //     $(self).parent().scrollTop(originalScrollTop);
+            // }, 0);
+
+            // return false;
         });
 
         state.areClickListenersSet = true;
@@ -137,6 +155,8 @@ var AddShift = function (steps, options) {
                 return;
             }
 
+            console.log('✨',{data: state.data, result});
+
             Object.assign(state.data.prepared, result);
 
             container.innerHTML = templates.show(Object.assign({
@@ -166,6 +186,10 @@ var AddShift = function (steps, options) {
             state.steps[state.currentStep].onvalid(state.data.validated);
 
             state.currentStep += 1;
+
+            while (state.steps[state.currentStep].skippable && state.steps[state.currentStep].checkIfShouldSkip(state.data)) {
+                state.currentStep += 1;
+            }
 
             var previous = true;
             var next = ((state.currentStep + 1) < state.steps.length);
@@ -220,7 +244,7 @@ var AddShift = function (steps, options) {
             .post('/api/shift/create.php', {
                 shift_date: state.data.validated.date,
                 shift_d_or_n: state.data.validated.dayOrNight,
-                staff_id: state.data.validated.staff,
+                staff_id: state.data.validated.staffId,
                 role_id: state.data.validated.role,
                 assignment_id: state.data.validated.assignment,
                 created_by: 'webuser',
