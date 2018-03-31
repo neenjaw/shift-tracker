@@ -1,0 +1,19 @@
+<div class="staff">
+    {{#if staffForBedsidePick.length}}
+    <div class="staff-search">
+        <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
+    </div>
+    <div class="staff-list mt-2">
+        <label for="bedside-list-select">Select Shift Bedside Nurses</label>
+        <select class="shift__bedside form-control" id="bedside-list-select" size="{{chooseMaxUpTo staffForChargePick.length 5 9}}" multiple>
+            {{#each staffForBedsidePick}}
+            <option value="{{this.id}}">{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
+            {{/each}}
+        </select>
+    </div>
+    {{else}}
+    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>
+    {{/if}}
+</div>
+
+{{!-- {{debug}} --}}

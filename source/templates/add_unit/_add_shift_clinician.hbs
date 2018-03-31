@@ -1,12 +1,12 @@
 <div class="staff">
-    {{#if staff.forClinicianPick.length}}
+    {{#if staffForClinicianPick.length}}
         <div class="staff-search">
             <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
         </div>
         <div class="staff-list mt-2">
             <label for="clinician-list-select">Select Shift Clinician</label>
-            <select class="shift__clinician form-control" id="clinician-list-select" size="{{chooseMaxUpTo staff.forClinicianPick.length 5 9}}">
-                {{#each staff.forClinicianPick}}
+            <select class="shift__clinician form-control" id="clinician-list-select" size="{{chooseMaxUpTo staffForClinicianPick.length 5 9}}">
+                {{#each staffForClinicianPick}}
                     <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @first}}selected{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
                 {{/each}}
             </select>

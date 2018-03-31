@@ -117,10 +117,8 @@ $(function() {
                                 });
 
                             return callback(null, {
-                                staff: {
-                                    groups : groups,
-                                    forClinicianPick : groups.rn
-                                }
+                                staffGroups: groups,
+                                staffForClinicianPick : groups.rn
                             });
                         }
                     })
@@ -161,15 +159,14 @@ $(function() {
             },
             prepare: function (data, callback) {
                 return callback(null, {
-                    staff : {
-                        forChargePick: data.prepared.staff.forClinicianPick.filter(function(s) {
+                    staffForChargePick: data.prepared.staffForClinicianPick
+                        .filter(function(s) {
                             if (s.id === data.validated.clinicianId) { 
                                 return false;
                             }
 
                             return true;
                         })
-                    }
                 });
             },
             validate: function () {
@@ -209,13 +206,61 @@ $(function() {
                 }                
             },
             prepare: function (data, callback) {
+                if (!data.prepared.mods) {
+                    return callback('no mods, an error has occured.');
+                }
 
+                return callback(null, { 
+                    assignmentForClinicianPodPick: data.prepared.assignments
+                        .filter(function(a) {
+                            if (
+                                a.name === 'A/B' ||
+                                a.name === 'B/C'
+                            ) {
+                                return true;
+                            }
+
+                            return false;
+                        }),
+                    assignmentForChargePodPick: data.prepared.assignments
+                        .filter(function (a) {
+                            if (
+                                a.name === 'A' ||
+                                a.name === 'C'
+                            ) {
+                                return true;
+                            }
+
+                            return false;
+                        })
+                });
             },
             validate: function () {
+                var clinicianPod = document.querySelector('.shift__clinician-pod');
+                var chargePod = document.querySelector('.shift__charge-pod');
 
+                if (!clinicianPod.value || !chargePod.value) {
+                    if (!clinicianPod.value) {
+                        clinicianPod.focus();
+                    } else {
+                        chargePod.focus();
+                    }
+
+                    Flash.insertFlash('warning', 'Choose assignments for both the clinician and the charge nurse.');
+
+                    return false;
+                }
+
+                return true;
             },
-            onvalid: function() {
+            onvalid: function (validatedData) {
+                var clinicianPod = document.querySelector('.shift__clinician-pod');
+                var chargePod = document.querySelector('.shift__charge-pod');
 
+                validatedData = Object.assign(validatedData, { 
+                    clinicianAssignmentId: clinicianPod.value,
+                    chargeAssignmentId: chargePod.value
+                });
             }
         },
         {
@@ -228,7 +273,7 @@ $(function() {
                 var staffPicks;
 
                 if (data.validated.dayOrNight === 'D') {
-                    staffPicks = data.prepared.staff.forChargePick.filter(function (s) {
+                    staffPicks = data.prepared.staffForChargePick.filter(function (s) {
                         if (s.id === data.validated.chargeId) {
                             return false;
                         }
@@ -236,7 +281,7 @@ $(function() {
                         return true;
                     });
                 } else if (data.validated.dayOrNight === 'N') {
-                    staffPicks = data.prepared.staff.forClinicianPick.filter(function (s) {
+                    staffPicks = data.prepared.staffForClinicianPick.filter(function (s) {
                         if (s.id === data.validated.clinicianId) {
                             return false;
                         }
@@ -246,15 +291,14 @@ $(function() {
                 }
 
                 return callback(null, {
-                    staff: {
-                        forBedsidePick: staffPicks
-                    }
+                    staffForBedsidePick: staffPicks
                 });
             },
             validate: function () {
-                var staff = container.querySelectorAll('.shift__bedside input:checked');
+                var staff = container.querySelector('.shift__bedside');
+                var selected = staff.querySelectorAll('option:checked');
 
-                if (staff.length < 1) {
+                if (selected.length < 1) {
                     staff.focus();
                     Flash.insertFlash('warning', 'Need to select at least one staff for the bedside');
 
@@ -264,16 +308,14 @@ $(function() {
                 return true;
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelectorAll('.shift__bedside bedside input:checked');
+                var staff = container.querySelectorAll('.shift__bedside option:checked');
 
                 var bedsides = Array.prototype.slice.call(staff).map(function(s) {
-                    var pod = s.parentNode.nextElementSibling.querySelector('option:selected').value;
-
-                    return {id: s.value, pod: pod};
+                    return s.value;
                 });
 
                 validatedData = Object.assign(validatedData, {
-                    bedsides: bedsides
+                    bedsideIds: bedsides
                 });
             }
         },
@@ -285,19 +327,17 @@ $(function() {
             },
             prepare: function (data, callback) {
                 return callback(null, {
-                    staff: {
-                        forOutreachPick: data.prepared.staff.forBedsidePick.filter(function (s) {
-                            for (var i = 0; i < data.validated.bedsides.length; i++) {
-                                var bedsideId = data.validated.bedsides[i].id;
+                    staffForOutreachPick: data.prepared.staffForBedsidePick.filter(function (s) {
+                        for (var i = 0; i < data.validated.bedsides.length; i++) {
+                            var bedsideId = data.validated.bedsides[i].id;
                                 
-                                if (bedsideId === s.id) {
-                                    return false;
-                                }
+                            if (bedsideId === s.id) {
+                                return false;
                             }
+                        }
 
-                            return true;
-                        })
-                    }
+                        return true;
+                    })            
                 });
             },
             validate: function () {
@@ -329,9 +369,7 @@ $(function() {
             },
             prepare: function (data, callback) {
                 return callback(null, {
-                    staff: {
-                        forAttendantPick: data.prepared.staff.groups.lpn.concat(data.prepared.staff.groups.na)
-                    }
+                    staffForAttendantPick: data.prepared.staff.groups.lpn.concat(data.prepared.staff.groups.na)
                 });
             },
             validate: function () {
@@ -360,9 +398,7 @@ $(function() {
             },
             prepare: function (data, callback) {
                 return callback(null, {
-                    staff: {
-                        forClerkPick: data.prepared.staff.groups.uc
-                    }
+                    staffForClerkPick: data.prepared.staff.groups.uc
                 });
             },
             validate: function () {
@@ -425,7 +461,7 @@ $(function() {
 
 
     var addManyShifts = AddShift(manyShiftSteps, {
-        debug: true,
+        debug: false,
         container: container,
         templates: {
             show: ShiftTracker.templates.shift.add,

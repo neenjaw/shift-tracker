@@ -88,22 +88,60 @@ var AddShift = function (steps, options) {
             } 
         });
 
-        container.addEventListener('mousedown', function(ev) {
-            console.log({targetName: ev.target.localName, targetParent: ev.target.parentNode, isMulti: ev.target.parentNode.multiple});
-            
-            if (ev.target.parentNode.multiple) {
-                ev.preventDefault();                
-            }
-            // var originalScrollTop = $(this).parent().scrollTop();
-            // console.log(originalScrollTop);
-            // $(this).prop('selected', $(this).prop('selected') ? false : true);
-            // var self = this;
-            // $(this).parent().focus();
-            // setTimeout(function () {
-            //     $(self).parent().scrollTop(originalScrollTop);
-            // }, 0);
+        window.addEventListener('keydown', function(ev) {
+            console.log(ev);
 
-            // return false;
+            if (ev.key === 'Enter') {
+                var isNextStep = !document.querySelector('.'+classLists.nextBtn).disabled;
+
+                if (isNextStep) {
+                    nextStep(state);
+                } else {
+                    submit(state);                    
+                }
+            }            
+        });
+
+        container.addEventListener('mousedown', function(ev) {
+            
+            if (ev.target.localName === 'option') {
+                console.log({ target: ev.target, targetName: ev.target.localName, targetParent: ev.target.parentNode, isMulti: ev.target.parentNode.multiple });
+            
+                if (ev.target.parentNode.multiple) {
+                    ev.preventDefault();
+                        
+                    var originalScrollTop = ev.target.parentNode.scrollTop;
+                    // console.log(originalScrollTop);
+
+                    ev.target.selected = ev.target.selected ? false : true;
+
+                    var self = this;
+                    ev.target.parentNode.focus();
+                    setTimeout(function () {
+                        ev.target.parentNode.scrollTop = originalScrollTop;
+                    }, 0);
+                } else if (ev.target.parentNode.classList.contains('shift__clinician-pod')) {
+                    var clinicianPodName = ev.target.dataset.assignment;
+
+                    var mainPod = clinicianPodName.replace(/[B\/]/g, ''); // eslint-disable-line no-useless-escape
+
+                    if (mainPod === 'A') {
+                        document.querySelector('.shift__charge-pod option[data-assignment="C"]').selected = true;
+                    } else if(mainPod === 'C') {
+                        document.querySelector('.shift__charge-pod option[data-assignment="A"]').selected = true;
+                    }
+                } else if (ev.target.parentNode.classList.contains('shift__charge-pod')) {
+                    var chargePodName = ev.target.dataset.assignment;
+
+                    if (chargePodName === 'A') {
+                        document.querySelector('.shift__clinician-pod option[data-assignment="B/C"]').selected = true;
+                    } else if (chargePodName === 'C') {
+                        document.querySelector('.shift__clinician-pod option[data-assignment="A/B"]').selected = true;
+                    }
+                } 
+            }
+
+            return false;
         });
 
         state.areClickListenersSet = true;
