@@ -1,0 +1,19 @@
+<div class="staff">
+    {{#if staffForOutreachPick.length}}
+        <div class="staff-search">
+            <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
+        </div>
+        <div class="staff-list mt-2">
+            <label for="outreach-list-select">Select Shift Outreach</label>
+            <select class="shift__outreach form-control" id="outreach-list-select" size="{{chooseMaxUpTo staffForOutreachPick.length 5 9}}">
+                {{#each staffForOutreachPick}}
+                    <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @first}}selected{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
+                {{/each}}
+            </select>
+        </div>
+    {{else}}
+        <p>All staff have a shift this day already, or there are no staff.</p>
+    {{/if}}
+</div>
+
+{{!-- {{debug}} --}}

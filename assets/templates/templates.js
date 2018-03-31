@@ -1,11 +1,22 @@
-Handlebars.registerPartial("test", Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "seeya later";
-},"useData":true}));
 this["ShiftTracker"] = this["ShiftTracker"] || {};
 this["ShiftTracker"]["templates"] = this["ShiftTracker"]["templates"] || {};
 this["ShiftTracker"]["templates"]["loader"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"main-loader mb-2\">\r\n    <span class=\"main-spinner\"><i class=\"fas fa-spinner fa-pulse\"></i></span>\r\n</div>";
 },"useData":true});
+Handlebars.registerPartial("test", Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "seeya later";
+},"useData":true}));
+this["ShiftTracker"]["templates"]["modal"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {});
+
+  return "<div class=\"modal__body\">\r\n    <div class=\"modal__head\">\r\n        <h2>"
+    + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
+    + "</h2>\r\n    </div>\r\n    <div class=\"modal__content\">\r\n"
+    + ((stack1 = container.invokePartial(helpers.lookup.call(alias1,depth0,"whichContent",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+    + "    </div>\r\n    <div class=\"modal__footer\">\r\n"
+    + ((stack1 = container.invokePartial(helpers.lookup.call(alias1,depth0,"whichFooter",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+    + "        <button class=\"modal-close btn btn-primary\">Close</button>\r\n    </div>\r\n</div>";
+},"usePartial":true,"useData":true});
 Handlebars.registerPartial("add_shift_assignment", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -35,34 +46,14 @@ Handlebars.registerPartial("add_shift_assignment", Handlebars.template({"1":func
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.assignments : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(5, data, 0),"data":data})) != null ? stack1 : "")
     + "</div>";
 },"useData":true}));
-this["ShiftTracker"]["templates"]["modal"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {});
-
-  return "<div class=\"modal__body\">\r\n    <div class=\"modal__head\">\r\n        <h2>"
-    + container.escapeExpression(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h2>\r\n    </div>\r\n    <div class=\"modal__content\">\r\n"
-    + ((stack1 = container.invokePartial(helpers.lookup.call(alias1,depth0,"whichContent",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
-    + "    </div>\r\n    <div class=\"modal__footer\">\r\n"
-    + ((stack1 = container.invokePartial(helpers.lookup.call(alias1,depth0,"whichFooter",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
-    + "        <button class=\"modal-close btn btn-primary\">Close</button>\r\n    </div>\r\n</div>";
-},"usePartial":true,"useData":true});
-Handlebars.registerPartial("add_shift_controls", Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<button class=\"shift-previous-step btn btn-primary\">Previous</a>\r\n<button class=\"shift-next-step btn btn-primary ml-2\">Next</a>\r\n<button class=\"shift-submit btn btn-primary ml-2\">Submit</a>";
-},"useData":true}));
 this["ShiftTracker"]["templates"]["partial"] = this["ShiftTracker"]["templates"]["partial"] || {};
 this["ShiftTracker"]["templates"]["partial"]["holder"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return ((stack1 = container.invokePartial(helpers.lookup.call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,"whichPartial",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"indent":" ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
 },"usePartial":true,"useData":true});
-Handlebars.registerPartial("add_shift_date", Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "<div class=\"date\">\r\n    <label for=\"date\">Enter the shift date:</label>\r\n    <input type=\"date\" id=\"date\" class=\"shift__date\" min=\"2000-01-01\" max=\""
-    + alias4(((helper = (helper = helpers.today || (depth0 != null ? depth0.today : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"today","hash":{},"data":data}) : helper)))
-    + "\" value=\""
-    + alias4(((helper = (helper = helpers.today || (depth0 != null ? depth0.today : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"today","hash":{},"data":data}) : helper)))
-    + "\" placeholder=\"YYYY-MM-DD\">\r\n</div>\r\n<div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\">\r\n    <label class=\"btn btn-secondary active\">\r\n        <input class=\"shift__day-or-night\" type=\"radio\" value=\"D\" autocomplete=\"off\" checked> Day\r\n    </label>\r\n    <label class=\"btn btn-secondary\">\r\n        <input class=\"shift__day-or-night\" type=\"radio\" value=\"N\" autocomplete=\"off\"> Night\r\n    </label>\r\n</div>";
+Handlebars.registerPartial("add_shift_controls", Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<button class=\"shift-previous-step btn btn-primary\">Previous</a>\r\n<button class=\"shift-next-step btn btn-primary ml-2\">Next</a>\r\n<button class=\"shift-submit btn btn-primary ml-2\">Submit</a>";
 },"useData":true}));
 this["ShiftTracker"]["templates"]["shift"] = this["ShiftTracker"]["templates"]["shift"] || {};
 this["ShiftTracker"]["templates"]["shift"]["add"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -73,6 +64,32 @@ this["ShiftTracker"]["templates"]["shift"]["add"] = Handlebars.template({"compil
     + "    </div>\r\n    <div class=\"controls\">\r\n"
     + ((stack1 = container.invokePartial(partials.add_shift_controls,depth0,{"name":"add_shift_controls","data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
     + "    </div>\r\n</div>";
+},"usePartial":true,"useData":true});
+Handlebars.registerPartial("add_shift_date", Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<div class=\"date\">\r\n    <label for=\"date\">Enter the shift date:</label>\r\n    <input type=\"date\" id=\"date\" class=\"shift__date\" min=\"2000-01-01\" max=\""
+    + alias4(((helper = (helper = helpers.today || (depth0 != null ? depth0.today : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"today","hash":{},"data":data}) : helper)))
+    + "\" value=\""
+    + alias4(((helper = (helper = helpers.today || (depth0 != null ? depth0.today : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"today","hash":{},"data":data}) : helper)))
+    + "\" placeholder=\"YYYY-MM-DD\">\r\n</div>\r\n<div class=\"btn-group btn-group-toggle\" data-toggle=\"buttons\">\r\n    <label class=\"btn btn-secondary active\">\r\n        <input class=\"shift__day-or-night\" type=\"radio\" value=\"D\" autocomplete=\"off\" checked> Day\r\n    </label>\r\n    <label class=\"btn btn-secondary\">\r\n        <input class=\"shift__day-or-night\" type=\"radio\" value=\"N\" autocomplete=\"off\"> Night\r\n    </label>\r\n</div>";
+},"useData":true}));
+this["ShiftTracker"]["templates"]["shift"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper;
+
+  return "        <p class=\"text-muted\">"
+    + ((stack1 = ((helper = (helper = helpers.errorMsg || (depth0 != null ? depth0.errorMsg : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"errorMsg","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "</p>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "        <p class=\"text-muted\">There was an error displaying this shift page.</p>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div class=\"add-wrap\">\n    <div class=\"content\">\n        <h2>Page Error</h2>\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.errorMsg : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+    + "    </div>\n    <div class=\"controls\">\n"
+    + ((stack1 = container.invokePartial(partials.add_shift_controls,depth0,{"name":"add_shift_controls","data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+    + "    </div>\n</div>";
 },"usePartial":true,"useData":true});
 Handlebars.registerPartial("add_shift_mod", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
@@ -107,23 +124,6 @@ Handlebars.registerPartial("add_shift_mod", Handlebars.template({"1":function(co
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.hasMods : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(7, data, 0),"data":data})) != null ? stack1 : "")
     + "</div>";
 },"useData":true}));
-this["ShiftTracker"]["templates"]["shift"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, helper;
-
-  return "        <p class=\"text-muted\">"
-    + ((stack1 = ((helper = (helper = helpers.errorMsg || (depth0 != null ? depth0.errorMsg : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"errorMsg","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "</p>\n";
-},"3":function(container,depth0,helpers,partials,data) {
-    return "        <p class=\"text-muted\">There was an error displaying this shift page.</p>\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<div class=\"add-wrap\">\n    <div class=\"content\">\n        <h2>Page Error</h2>\n"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.errorMsg : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + "    </div>\n    <div class=\"controls\">\n"
-    + ((stack1 = container.invokePartial(partials.add_shift_controls,depth0,{"name":"add_shift_controls","data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
-    + "    </div>\n</div>";
-},"usePartial":true,"useData":true});
 this["ShiftTracker"]["templates"]["shift"]["table"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -234,26 +234,6 @@ Handlebars.registerPartial("add_shift_role", Handlebars.template({"1":function(c
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.roles : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(5, data, 0),"data":data})) != null ? stack1 : "")
     + "</div>";
 },"useData":true}));
-this["ShiftTracker"]["templates"]["staff"] = this["ShiftTracker"]["templates"]["staff"] || {};
-this["ShiftTracker"]["templates"]["staff"]["add"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
-
-  return "            <option value=\""
-    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
-    + "\" "
-    + ((stack1 = (helpers.ifMatch || (depth0 && depth0.ifMatch) || helpers.helperMissing).call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.name : depth0),"RN",{"name":"ifMatch","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ">"
-    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
-    + "</option>\n";
-},"2":function(container,depth0,helpers,partials,data) {
-    return "selected";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<form class=\"add-staff\">\n    <div class=\"name\">\n        <div class=\"form-group first\">\n            <label for=\"first-name\">First Name</label>\n            <input type=\"text\" class=\"form-control\" id=\"first-name\" placeholder=\"First\" required>\n        </div>\n        <div class=\"form-group last\">\n            <label for=\"last-name\">Last Name</label>\n            <input type=\"text\" class=\"form-control\" id=\"last-name\" placeholder=\"Last\" required>\n        </div>\n    </div>\n    <div class=\"form-group category\">\n        <label for=\"category\">Category select</label>\n        <select class=\"form-control select-category\" id=\"category\" size=\"4\" required>\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.categories : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "        </select>\n    </div>\n    <div class=\"controls\">\n        <button type=\"submit\" class=\"btn btn-primary btn-lg btn-block\">Create new Staff Member</button>\n    </div>\n</form>\n\n";
-},"useData":true});
 Handlebars.registerPartial("add_shift_staff", Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1;
 
@@ -291,6 +271,55 @@ Handlebars.registerPartial("add_shift_staff", Handlebars.template({"1":function(
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staff : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.program(6, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "")
     + "</div>\n\n";
 },"useData":true,"useDepths":true}));
+this["ShiftTracker"]["templates"]["staff"] = this["ShiftTracker"]["templates"]["staff"] || {};
+this["ShiftTracker"]["templates"]["staff"]["add"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "            <option value=\""
+    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + "\" "
+    + ((stack1 = (helpers.ifMatch || (depth0 && depth0.ifMatch) || helpers.helperMissing).call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.name : depth0),"RN",{"name":"ifMatch","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ">"
+    + alias2(alias1((depth0 != null ? depth0.name : depth0), depth0))
+    + "</option>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    return "selected";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<form class=\"add-staff\">\n    <div class=\"name\">\n        <div class=\"form-group first\">\n            <label for=\"first-name\">First Name</label>\n            <input type=\"text\" class=\"form-control\" id=\"first-name\" placeholder=\"First\" required>\n        </div>\n        <div class=\"form-group last\">\n            <label for=\"last-name\">Last Name</label>\n            <input type=\"text\" class=\"form-control\" id=\"last-name\" placeholder=\"Last\" required>\n        </div>\n    </div>\n    <div class=\"form-group category\">\n        <label for=\"category\">Category select</label>\n        <select class=\"form-control select-category\" id=\"category\" size=\"4\" required>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.categories : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "        </select>\n    </div>\n    <div class=\"controls\">\n        <button type=\"submit\" class=\"btn btn-primary btn-lg btn-block\">Create new Staff Member</button>\n    </div>\n</form>\n\n";
+},"useData":true});
+Handlebars.registerPartial("add_shift_bedside", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
+
+  return "    <div class=\"staff-search\">\n        <input class=\"staff-search-box form-control\" type=\"text\" placeholder=\"Future Search Feature\" readonly>\n    </div>\n    <div class=\"staff-list mt-2\">\n        <label for=\"bedside-list-select\">Select Shift Bedside Nurses</label>\n        <select class=\"shift__bedside form-control\" id=\"bedside-list-select\" size=\""
+    + container.escapeExpression((helpers.chooseMaxUpTo || (depth0 && depth0.chooseMaxUpTo) || helpers.helperMissing).call(alias1,((stack1 = (depth0 != null ? depth0.staffForChargePick : depth0)) != null ? stack1.length : stack1),5,9,{"name":"chooseMaxUpTo","hash":{},"data":data}))
+    + "\" multiple>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.staffForBedsidePick : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "        </select>\n    </div>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "            <option value=\""
+    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + "\">"
+    + alias2(alias1((depth0 != null ? depth0.lastName : depth0), depth0))
+    + ", "
+    + alias2(alias1((depth0 != null ? depth0.firstName : depth0), depth0))
+    + " ("
+    + alias2(alias1((depth0 != null ? depth0.categoryName : depth0), depth0))
+    + ")</option>\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div class=\"staff\">\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffForBedsidePick : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
+    + "</div>\n\n";
+},"useData":true}));
 this["ShiftTracker"]["templates"]["staff"]["display"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -349,6 +378,51 @@ this["ShiftTracker"]["templates"]["staff"]["display"] = Handlebars.template({"1"
     + "</div>\r\n\r\n"
     + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.shifts : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 },"usePartial":true,"useData":true});
+Handlebars.registerPartial("add_shift_bedside_pods", Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1;
+
+  return "    <div>\n        <p>Select Assignment for Bedside Nurses</p>\n    </div>\n    <div class=\"staff-list mt-2\">\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.staffPickedForBedside : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
+    + "    </div>\n";
+},"2":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "        <div class=\"bedside-staff\" data-staff-id=\""
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.id : stack1), depth0))
+    + "\">\n            <span >\n                "
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.lastName : stack1), depth0))
+    + ", "
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.firstName : stack1), depth0))
+    + " ("
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.categoryName : stack1), depth0))
+    + ")\n            </span>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (data && data.root)) && stack1.assignments),{"name":"each","hash":{},"fn":container.program(3, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
+    + "        </div>\n";
+},"3":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "            <span class=\"pod-assignment\">\n                <input class=\"pod\" type=\"checkbox\" id=\""
+    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
+    + "-"
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
+    + "\" value=\""
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.id : stack1), depth0))
+    + "\">\n                <label for=\""
+    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
+    + "-"
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
+    + "\"><span></span>"
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
+    + "</label>\n            </span>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1;
+
+  return "<div class=\"staff\">\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffPickedForBedside : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams),"inverse":container.program(5, data, 0, blockParams),"data":data,"blockParams":blockParams})) != null ? stack1 : "")
+    + "</div>\n\n";
+},"useData":true,"useBlockParams":true}));
 this["ShiftTracker"]["templates"]["staff"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, helper;
 
@@ -363,35 +437,6 @@ this["ShiftTracker"]["templates"]["staff"]["error"] = Handlebars.template({"1":f
   return "<h2>Page Error</h2>\r\n"
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.errorMsg : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "");
 },"useData":true});
-Handlebars.registerPartial("add_shift_bedside", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
-
-  return "    <div class=\"staff-search\">\r\n        <input class=\"staff-search-box form-control\" type=\"text\" placeholder=\"Future Search Feature\" readonly>\r\n    </div>\r\n    <div class=\"staff-list mt-2\">\r\n        <label for=\"bedside-list-select\">Select Shift Bedside Nurses</label>\r\n        <select class=\"shift__bedside form-control\" id=\"bedside-list-select\" size=\""
-    + container.escapeExpression((helpers.chooseMaxUpTo || (depth0 && depth0.chooseMaxUpTo) || helpers.helperMissing).call(alias1,((stack1 = (depth0 != null ? depth0.staffForChargePick : depth0)) != null ? stack1.length : stack1),5,9,{"name":"chooseMaxUpTo","hash":{},"data":data}))
-    + "\" multiple>\r\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.staffForBedsidePick : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "        </select>\r\n    </div>\r\n";
-},"2":function(container,depth0,helpers,partials,data) {
-    var alias1=container.lambda, alias2=container.escapeExpression;
-
-  return "            <option value=\""
-    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
-    + "\">"
-    + alias2(alias1((depth0 != null ? depth0.lastName : depth0), depth0))
-    + ", "
-    + alias2(alias1((depth0 != null ? depth0.firstName : depth0), depth0))
-    + " ("
-    + alias2(alias1((depth0 != null ? depth0.categoryName : depth0), depth0))
-    + ")</option>\r\n";
-},"4":function(container,depth0,helpers,partials,data) {
-    return "    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>\r\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<div class=\"staff\">\r\n"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffForBedsidePick : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
-    + "</div>\r\n\r\n";
-},"useData":true}));
 Handlebars.registerPartial("add_shift_charge", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
@@ -595,6 +640,46 @@ Handlebars.registerPartial("add_shift_clinician", Handlebars.template({"1":funct
 this["ShiftTracker"]["templates"]["staff"]["shiftFormError"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<tr class=\"shift-edit-row\">\r\n    <td colspan=\"4\">\r\n        <div class=\"shift-edit-container hidden\">\r\n            <h2>Error</h2>\r\n            <p>There was an error displaying this shift's information.</p>\r\n        </div>\r\n    </td>\r\n</tr>";
 },"useData":true});
+Handlebars.registerPartial("add_shift_outreach", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
+
+  return "        <div class=\"staff-search\">\n            <input class=\"staff-search-box form-control\" type=\"text\" placeholder=\"Future Search Feature\" readonly>\n        </div>\n        <div class=\"staff-list mt-2\">\n            <label for=\"outreach-list-select\">Select Shift Outreach</label>\n            <select class=\"shift__outreach form-control\" id=\"outreach-list-select\" size=\""
+    + container.escapeExpression((helpers.chooseMaxUpTo || (depth0 && depth0.chooseMaxUpTo) || helpers.helperMissing).call(alias1,((stack1 = (depth0 != null ? depth0.staffForOutreachPick : depth0)) != null ? stack1.length : stack1),5,9,{"name":"chooseMaxUpTo","hash":{},"data":data}))
+    + "\">\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.staffForOutreachPick : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </select>\n        </div>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "                    <option value=\""
+    + alias2(alias1((depth0 != null ? depth0.id : depth0), depth0))
+    + "\" data-category=\""
+    + alias2(alias1((depth0 != null ? depth0.categoryName : depth0), depth0))
+    + "\" "
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(data && data.first),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ">"
+    + alias2(alias1((depth0 != null ? depth0.lastName : depth0), depth0))
+    + ", "
+    + alias2(alias1((depth0 != null ? depth0.firstName : depth0), depth0))
+    + " ("
+    + alias2(alias1((depth0 != null ? depth0.categoryName : depth0), depth0))
+    + ")</option>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "selected";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "        <p>All staff have a shift this day already, or there are no staff.</p>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div class=\"staff\">\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffForOutreachPick : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(5, data, 0),"data":data})) != null ? stack1 : "")
+    + "</div>\n\n";
+},"useData":true}));
+this["ShiftTracker"]["templates"]["test"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = container.invokePartial(helpers.lookup.call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,"which",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
+},"usePartial":true,"useData":true});
 Handlebars.registerPartial("shift_entry_modal_content", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression;
 
@@ -636,11 +721,6 @@ Handlebars.registerPartial("shift_entry_modal_content", Handlebars.template({"1"
     + ((stack1 = helpers.each.call(alias3,(depth0 != null ? depth0.mods : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "                    </select>\r\n                    <button type=\"submit\" class=\"shift-entry__btn btn-primary\">\r\n                        <i class=\"fas fa-plus\"></i>\r\n                    </button>\r\n                </form>\r\n            </div>\r\n        </li>\r\n    </ul>\r\n</div>\r\n";
 },"useData":true}));
-this["ShiftTracker"]["templates"]["test"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return ((stack1 = container.invokePartial(helpers.lookup.call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,"which",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
-},"usePartial":true,"useData":true});
 Handlebars.registerPartial("shift_entry_modal_footer", Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<button class='shift-entry__delete btn btn-danger'>Delete</button>";
 },"useData":true}));

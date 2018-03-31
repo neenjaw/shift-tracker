@@ -320,6 +320,26 @@ $(function() {
             }
         },
         {
+            contentPartial: 'bedside_pods',
+            skippable: true,
+            checkIfShouldSkip: function (data) {
+                if (data.validated.bedsideIds.length < 1) {
+                    return true;
+                }
+
+                return false;
+            },
+            prepare: function (data, callback) {
+                //TODO: pickup from here.
+            },
+            validate: function () {
+
+            },
+            onvalid: function () {
+
+            }
+        },
+        {
             contentPartial: 'outreach',
             skippable: false,
             checkIfShouldSkip: function (data) {
