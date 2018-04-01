@@ -330,13 +330,30 @@ $(function() {
                 return false;
             },
             prepare: function (data, callback) {
-                //TODO: pickup from here.
+                if (!data.prepared.staffGroups.rn) {
+                    return callback('no mods, an error has occured.');
+                }
+
+                return callback(null, {
+                    staffPickedForBedside: data.prepared.staffGroups.rn.filter(function(staff) {
+                        if (data.validated.bedsideIds.includes(staff.id)) {
+                            return true;
+                        }
+
+                        return false;
+                    })
+                //TODO: pickup from here. Need to filter the assignments
+                    
+                });
             },
             validate: function () {
-
+                return false;
             },
-            onvalid: function () {
+            onvalid: function (validatedData) {
 
+                validatedData = Object.assign(validatedData, {
+                    
+                });
             }
         },
         {
