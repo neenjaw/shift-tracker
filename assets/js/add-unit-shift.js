@@ -357,7 +357,7 @@ $(function() {
                 });
             },
             validate: function () {
-                var staff = container.querySelectorAll('.bedside-staff-member');
+                var staff = container.querySelectorAll('.staff-member');
 
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
@@ -381,7 +381,7 @@ $(function() {
                 return true;
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelectorAll('.bedside-staff-member');
+                var staff = container.querySelectorAll('.staff-member');
                 var bedsideAssignments = [];
                 
                 for (var i = 0; i < staff.length; i++) {
@@ -511,7 +511,7 @@ $(function() {
                 });
             },
             validate: function () {
-                var staff = container.querySelectorAll('.attendant-staff-member');
+                var staff = container.querySelectorAll('.staff-member');
 
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
@@ -535,7 +535,7 @@ $(function() {
                 return true;
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelectorAll('.attendant-staff-member');
+                var staff = container.querySelectorAll('.staff-member');
                 var attendantAssignments = [];
                 
                 for (var i = 0; i < staff.length; i++) {
@@ -625,7 +625,7 @@ $(function() {
                 });
             },
             validate: function () {
-                var staff = container.querySelectorAll('.clerk-staff-member');
+                var staff = container.querySelectorAll('.staff-member');
 
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
@@ -649,7 +649,7 @@ $(function() {
                 return true;
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelectorAll('.clerk-staff-member');
+                var staff = container.querySelectorAll('.staff-member');
                 var clerkAssignments = [];
                 
                 for (var i = 0; i < staff.length; i++) {
@@ -669,25 +669,21 @@ $(function() {
             }
         },
         {
+            //vent mod
             contentPartial: 'mods',
             skippable: false,
             checkIfShouldSkip: function (data) {
                 return false;
             },
             prepare: function (data, callback) {
-                if (!data.prepared.mods) {
-                    return callback('no mods, an error has occured.');
-                }
-
-                return callback(null, { ready: true });
+                return prepareModData(data, callback, 'vent');
             },
-            validate: function () {
-                return true;
-            },
+            validate: validateModData,
             onvalid: function (validatedData) {
-
+                handleModDataWhenValid(validatedData, 'vent');
             }
         }
+        //TODO: Continue from here
         /*
         {
             contentPartial: '',
@@ -708,6 +704,50 @@ $(function() {
         */
     ];
 
+    function prepareModData(data, callback, modName) {
+        if (!(data.prepared.mods || data.prepared.staffGroups.rn)) {
+            return callback('no mods, an error has occured.');
+        }
+
+        var prepared = {
+            mod: data.prepared.mods.filter(function (mod) {
+                if (mod.name === modName) {
+                    return true;
+                }
+                return false;
+            })
+        };
+
+        return callback(null, prepared);
+    }
+
+    function validateModData() {
+        //all mods are optional, therefore don't need validation
+        return true;
+    }
+
+    function handleModDataWhenValid(validatedData, modName) {
+        var staff = container.querySelectorAll('.staff-member');
+        var staffWithMod = [];
+
+        for (var i = 0; i < staff.length; i++) {
+            var s = staff[i];
+
+            var checked = s.querySelector('input:checked');
+            
+            if (checked) {
+                staffWithMod.push({
+                    staffId: s.dataset.staffId,
+                    assignmentId: checked.value
+                });
+            }
+        }
+
+        var datum = {};
+        datum['mod_'+modName] = staffWithMod;
+
+        validatedData = Object.assign(validatedData, datum);
+    }
 
     var addManyShifts = AddShift(manyShiftSteps, {
         debug: false,
