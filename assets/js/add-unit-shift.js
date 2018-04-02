@@ -1025,9 +1025,6 @@ $(function() {
                 });
             }
 
-            console.log('💕', {entries});
-            
-
             //submit the entries to the api
             var axiosPostRequests = [];
 
@@ -1035,8 +1032,6 @@ $(function() {
                 axiosPostRequests.push(axios.post('/api/shift/create.php', entry));
             });
 
-            console.log({state});
-            
             axios
                 .all(axiosPostRequests)
                 .then(function(responses) {
