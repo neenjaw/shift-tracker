@@ -722,7 +722,7 @@ function setupShowPage() {
                     });
 
                     datum.forEach(function (data) {
-                        if (data.response == 'OK') {
+                        if (data.response === 'OK') {
                             if (data.message.match(/^shift.+updated\.$/)) {
                                 currentAssignment.innerHTML = selectedAssignmentName;
                                 currentRole.innerHTML = selectedRoleName;

@@ -42,6 +42,7 @@ var AddShift = function (steps, options) {
     var templates = options.templates || {};
     templates.show = templates.show || null;
     templates.error = templates.error || null;
+    templates.summary = templates.summary || null;
 
     templates.strings = templates.strings || {};
     templates.strings.link = templates.strings.link || '/shift/add-one-shift.php';

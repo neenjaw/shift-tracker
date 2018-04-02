@@ -101,7 +101,7 @@ $(function() {
                         if (response.data.response === 'OK') {
                             var groups = {};
 
-                            response.data.records
+                            response.data.records = response.data.records
                                 .map(function (record) {
                                     return {
                                         firstName: record.first_name,
@@ -110,13 +110,15 @@ $(function() {
                                         categoryId: record.category_id,
                                         categoryName: record.category_name
                                     };
-                                })
-                                .forEach(function(record) {
-                                    groups[record.categoryName.toLowerCase()] = groups[record.categoryName.toLowerCase()] || [];
-                                    groups[record.categoryName.toLowerCase()].push(record);
                                 });
 
+                            response.data.records.forEach(function(record) {
+                                groups[record.categoryName.toLowerCase()] = groups[record.categoryName.toLowerCase()] || [];
+                                groups[record.categoryName.toLowerCase()].push(record);
+                            });
+
                             return callback(null, {
+                                staff: response.data.records,
                                 staffGroups: groups,
                                 staffForClinicianPick : groups.rn
                             });
@@ -820,11 +822,8 @@ $(function() {
         }
 
         var prepared = {
-            mod: data.prepared.mods.filter(function (mod) {
-                if (mod.name === modName) {
-                    return true;
-                }
-                return false;
+            mod: data.prepared.mods.find(function (mod) {
+                return (mod.name === modName);
             }),
             modDisplayName: modDisplayName
         };
@@ -871,8 +870,200 @@ $(function() {
             }
         },
         submit: function(state) {
+            var prepared = state.data.prepared;
+            var validated = state.data.validated;
+            var author = 'webuser';
+
+            function makeEntry (date, shiftDorN, staffId, roleId, assignmentId, modList, createdBy) {
+                return {
+                    shift_date: date,
+                    shift_d_or_n: shiftDorN,
+                    staff_id: staffId,
+                    role_id: roleId,
+                    assignment_id: assignmentId,
+                    mods: modList,
+                    created_by: createdBy
+                };
+            }
+
+            var entries = [];
+
+            // make the clinician entry
+            entries.push(makeEntry(
+                validated.date,
+                validated.dayOrNight,
+                validated.clinicianId,
+                prepared.roles.find(function(role) {
+                    return role.name === 'clinician';
+                }).id,
+                validated.clinicianAssignmentId,
+                [],
+                author
+            ));
+
+            // make the charge entry
+            if (validated.dayOrNight === 'D') {
+                entries.push(makeEntry(
+                    validated.date,
+                    validated.dayOrNight,
+                    validated.chargeId,
+                    prepared.roles.find(function(role) {
+                        return role.name === 'charge';
+                    }).id,
+                    validated.chargeAssignmentId,
+                    [],
+                    author
+                ));
+            }
+
+            // make the outreach entry
+            if (validated.outreachId) {
+                entries.push(makeEntry(
+                    validated.date,
+                    validated.dayOrNight,
+                    validated.outreachId,
+                    prepared.roles.find(function(role) {
+                        return role.name === 'outreach';
+                    }).id,
+                    prepared.assignments.find(function(assignment) {
+                        return assignment.name === 'float';
+                    }).id,
+                    [],
+                    author
+                ));
+            } 
+
+            // make the attendant entries           
+            if (
+                validated.attendantIds && 
+                validated.attendantIds.length > 0
+            ) {
+                var attendantRoleId = prepared.roles.find(function(role) {
+                    return role.name === 'nursing attendant';
+                }).id;
+
+                for (var i = 0; i < validated.attendantIds.length; i++) {
+                    var attendantId = validated.attendantIds[i];
+    
+                    entries.push(makeEntry(
+                        validated.date,
+                        validated.dayOrNight,
+                        attendantId,
+                        attendantRoleId,
+                        validated.attendantAssignments[i].assignmentId,
+                        [],
+                        author
+                    ));
+                }
+            }
+
+            // make the clerk entries
+            if (
+                validated.clerkIds && 
+                validated.clerkIds.length > 0
+            ) {
+                var clerkRoleId = prepared.roles.find(function(role) {
+                    return role.name === 'unit clerk';
+                }).id;
+
+                for (var j = 0; j < validated.clerkIds.length; j++) {
+                    var clerkId = validated.clerkIds[j];
+    
+                    entries.push(makeEntry(
+                        validated.date,
+                        validated.dayOrNight,
+                        clerkId,
+                        clerkRoleId,
+                        validated.clerkAssignments[j].assignmentId,
+                        [],
+                        author
+                    ));
+                }
+            }
+
+            // make the bedside entries
+            if (
+                validated.bedsideIds && 
+                validated.bedsideIds.length > 0
+            ) {
+                var bedsideRoleId = prepared.roles.find(function(role) {
+                    return role.name === 'bedside';
+                }).id;
+
+                var bedsideEntriesByStaffId = [];
+
+                for (var k = 0; k < validated.bedsideIds.length; k++) {
+                    var bedsideId = validated.bedsideIds[k];
+    
+                    bedsideEntriesByStaffId[bedsideId] = makeEntry(
+                        validated.date,
+                        validated.dayOrNight,
+                        bedsideId,
+                        bedsideRoleId,
+                        validated.bedsideAssignments[k].assignmentId,
+                        [],
+                        author
+                    );
+                }
+
+                for (var l = 0; l < prepared.mods.length; l++) {
+                    var mod = prepared.mods[l];
+
+                    var modList = validated['mod_'+mod.name];
+
+                    if (!modList) continue;
+
+                    for (var m = 0; m < modList.length; m++) {
+                        var staffModEntry = modList[m];
+
+                        bedsideEntriesByStaffId[staffModEntry.staffId].mods.push(staffModEntry.modId);
+                    }
+                }
+
+                bedsideEntriesByStaffId.forEach(function(entry) {
+                    entries.push(entry);
+                });
+            }
+
+            console.log('💕', {entries});
+            
+
+            //submit the entries to the api
+            var axiosPostRequests = [];
+
+            entries.forEach(function(entry) {
+                axiosPostRequests.push(axios.post('/api/shift/create.php', entry));
+            });
+
             console.log({state});
             
+            axios
+                .all(axiosPostRequests)
+                .then(function(responses) {
+                    var mappedResponseData = responses.map(function (response) {
+                        console.log({response});
+
+                        var staff = prepared.staff.find(function(s) {
+                            return (s.id == response.data.staff_id);
+                        });
+
+                        return {
+                            success: (response.data.response === 'OK'),
+                            created: (response.data.response === 'OK' && response.data.created),
+                            staffId: (response.data.staff_id),
+                            staffName: (staff.firstName + ' ' + staff.lastName + ' ('+staff.categoryName+')'),
+                            date: (response.data.shift_date)
+                        };
+                    });
+
+
+                    ShiftTracker.templates.shift.summary(mappedResponseData);
+                })
+                .catch(function(error) {
+                    console.error('❌',error);
+                    
+                    ShiftTracker.templates.shift.error({errorMsg: 'Problem submitting the shift entries. Sorry.'});
+                });
         }
     });
 });

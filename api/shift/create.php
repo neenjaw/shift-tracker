@@ -110,6 +110,8 @@ try {
     if ($num > 0) {
         $result->message = "Shift for {$shift->staff_id} on {$shift->shift_date} created.";
         $result->created = true;
+        $result->staff_id = $shift->staff_id;
+        $result->shift_date = $shift->shift_date;
     } else {
         $result->message = "Shift not created.";
         $result->created = false;
@@ -122,6 +124,8 @@ try {
     $result = (object) array();
     $result->response = "ERROR";
     $result->message = $e->getMessage();
+    $result->staff_id = $shift->staff_id;
+    $result->shift_date = $shift->shift_date;
     
     echo json_encode($result);
 
