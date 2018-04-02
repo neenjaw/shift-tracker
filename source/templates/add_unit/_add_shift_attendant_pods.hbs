@@ -1,16 +1,16 @@
 <div class="staff">
-    {{#if staffPickedForBedside.length}}
+    {{#if staffPickedForAttendants.length}}
     <div>
         <p>Select Assignment for Bedside Nurses</p>
     </div>
     <div class="staff-list mt-2">
-        {{#each staffPickedForBedside as |staff staffIndex|}}
+        {{#each staffPickedForAttendants as |staff staffIndex|}}
         <div class="staff-member" data-staff-id="{{staff.id}}">
             <span>
                 {{staff.lastName}}, {{staff.firstName}} ({{staff.categoryName}})
             </span>
             <div>
-                {{#each @root.assignmentsForBedside as |assignment assignmentIndex|}}
+                {{#each @root.assignmentsForAttendant as |assignment assignmentIndex|}}
                 <span class="pod-assignment">
                     <input class="pod" type="radio" name="{{staff.id}}-assignment" id="{{staff.id}}-{{assignment.name}}" value="{{assignment.id}}" required>
                     <label for="{{staff.id}}-{{assignment.name}}"><span></span>{{assignment.name}}</label>

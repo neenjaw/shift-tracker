@@ -487,8 +487,8 @@ $(function() {
                 }
 
                 return callback(null, {
-                    staffPickedForAttendants: data.prepared.staff.groups.lpn
-                        .concat(data.prepared.staff.groups.na)
+                    staffPickedForAttendants: data.prepared.staffGroups.lpn
+                        .concat(data.prepared.staffGroups.na)
                         .filter(function(staff) {
                             if (data.validated.attendantIds.includes(staff.id)) {
                                 return true;
@@ -500,11 +500,7 @@ $(function() {
                         if (
                             assignment.name === 'A' ||
                             assignment.name === 'B' ||
-                            assignment.name === 'C' ||
-                            assignment.name === 'A/B' ||
-                            assignment.name === 'B/C' ||
-                            assignment.name === 'A/C' ||
-                            assignment.name === 'A/B/C'
+                            assignment.name === 'C'
                         ) {
                             return true;
                         }
@@ -605,7 +601,7 @@ $(function() {
                 }
 
                 return callback(null, {
-                    staffPickedForClerks: data.prepared.staff.groups.uc
+                    staffPickedForClerks: data.prepared.staffGroups.uc
                         .filter(function(staff) {
                             if (data.validated.clerkIds.includes(staff.id)) {
                                 return true;

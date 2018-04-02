@@ -5,7 +5,7 @@
     </div>
     <div class="staff-list mt-2">
         <label for="bedside-list-select">Select Shift Bedside Nurses</label>
-        <select class="shift__bedside form-control" id="bedside-list-select" size="{{chooseMaxUpTo staffForChargePick.length 5 9}}" multiple>
+        <select class="shift__bedside form-control" id="bedside-list-select" size="{{chooseMaxUpTo staffForBedsidePick.length 5 9}}" multiple>
             {{#each staffForBedsidePick}}
             <option value="{{this.id}}" {{checkIfIdSelected this.id @root.bedsideIds}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
             {{/each}}

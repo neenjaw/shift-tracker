@@ -1,0 +1,19 @@
+<div class="staff">
+    {{#if staffForClerkPick.length}}
+    <div class="staff-search">
+        <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
+    </div>
+    <div class="clerk-list mt-2">
+        <label for="clerks-list-select">Select Shift Clerks</label>
+        <select class="shift__clerks form-control" id="clerks-list-select" size="{{chooseMaxUpTo staffForClerkPick.length 5 9}}" multiple>
+            {{#each staffForClerkPick}}
+            <option value="{{this.id}}" {{checkIfIdSelected this.id @root.clerkIds}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
+            {{/each}}
+        </select>
+    </div>
+    {{else}}
+    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>
+    {{/if}}
+</div>
+
+{{!-- {{debug}} --}}
