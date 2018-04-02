@@ -45,7 +45,7 @@
     border-bottom: 0;
 }
 
-.pod-assignment {
+.pod-assignment, .mod-check {
     margin: 10px;
     padding: 5px;
 
@@ -57,13 +57,15 @@
     background-color: paleturquoise;
 }
 
-.pod-assignment.attention {
+.pod-assignment.attention, .mod-check.attention {
     background-color: palegoldenrod;
 }
 
-.pod-assignment.active-pod {
+.pod-assignment.active-pod, .mod-check.active-mod {
     background-color: palegreen;
 }
+
+/* for radio buttons */
 
 .add-wrap input[type="radio"] {
     display: none;
@@ -110,3 +112,48 @@
     left: 3px;
 }
 
+/* For checkboxes */
+
+.add-wrap input[type="checkbox"] {
+    display: none;
+    cursor: pointer;
+    
+}
+
+.add-wrap input[type="checkbox"]+label {
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+}
+
+.add-wrap input[type="checkbox"]+label span {
+    position: relative;
+    top: -2px;
+
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    vertical-align: middle;
+    cursor: pointer;
+
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    background-color: whitesmoke;
+
+    margin-right: 5px;
+}
+
+.add-wrap input[type="checkbox"]+label span:before {
+    position: relative;
+    left: 2px;
+    top: -5px;
+    content: '✗';
+    font-weight: 700;
+    color: red;
+}
+
+.add-wrap input[type="checkbox"]:checked+label span:before {
+    content: '✓';
+    color: green;
+    top: -4px;
+    left: 3px;
+}

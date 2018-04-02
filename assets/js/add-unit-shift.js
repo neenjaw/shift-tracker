@@ -668,6 +668,99 @@ $(function() {
                 });
             }
         },
+
+        // Shift modifiers start here
+        // Pretty repetitive code, so the functions have been dried out
+        {
+            //admit mod
+            contentPartial: 'mods',
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
+                return prepareModData(data, callback, 'admit', 'Admit');
+            },
+            validate: validateModData,
+            onvalid: function (validatedData) {
+                handleModDataWhenValid(validatedData, 'admit');
+            }
+        },
+        {
+            //codes mod
+            contentPartial: 'mods',
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
+                return prepareModData(data, callback, 'codes', 'Code Pager');
+            },
+            validate: validateModData,
+            onvalid: function (validatedData) {
+                handleModDataWhenValid(validatedData, 'codes');
+            }
+        },
+        {
+            //evd mod
+            contentPartial: 'mods',
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
+                return prepareModData(data, callback, 'evd', 'EVD');
+            },
+            validate: validateModData,
+            onvalid: function (validatedData) {
+                handleModDataWhenValid(validatedData, 'evd');
+            }
+        },
+        {
+            //crrt mod
+            contentPartial: 'mods',
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
+                return prepareModData(data, callback, 'crrt', 'CRRT');
+            },
+            validate: validateModData,
+            onvalid: function (validatedData) {
+                handleModDataWhenValid(validatedData, 'crrt');
+            }
+        },
+        {
+            //burn mod
+            contentPartial: 'mods',
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
+                return prepareModData(data, callback, 'burn', 'Burn');
+            },
+            validate: validateModData,
+            onvalid: function (validatedData) {
+                handleModDataWhenValid(validatedData, 'burn');
+            }
+        },
+        {
+            //double mod
+            contentPartial: 'mods',
+            skippable: false,
+            checkIfShouldSkip: function (data) {
+                return false;
+            },
+            prepare: function (data, callback) {
+                return prepareModData(data, callback, 'double', 'Double');
+            },
+            validate: validateModData,
+            onvalid: function (validatedData) {
+                handleModDataWhenValid(validatedData, 'double');
+            }
+        },
         {
             //vent mod
             contentPartial: 'mods',
@@ -676,14 +769,31 @@ $(function() {
                 return false;
             },
             prepare: function (data, callback) {
-                return prepareModData(data, callback, 'vent');
+                return prepareModData(data, callback, 'vent', 'Non-vented');
             },
             validate: validateModData,
             onvalid: function (validatedData) {
-                handleModDataWhenValid(validatedData, 'vent');
+                var staff = container.querySelectorAll('.staff-member');
+                var staffWithMod = [];
+        
+                for (var i = 0; i < staff.length; i++) {
+                    var s = staff[i];
+        
+                    var input = s.querySelector('input');
+                    
+                    if (!input.checked) {
+                        staffWithMod.push({
+                            staffId: s.dataset.staffId,
+                            modId: input.value
+                        });
+                    }
+                }
+        
+                validatedData = Object.assign(validatedData, {
+                    mod_vent: staffWithMod                    
+                });
             }
         }
-        //TODO: Continue from here
         /*
         {
             contentPartial: '',
@@ -704,7 +814,7 @@ $(function() {
         */
     ];
 
-    function prepareModData(data, callback, modName) {
+    function prepareModData(data, callback, modName, modDisplayName) {
         if (!(data.prepared.mods || data.prepared.staffGroups.rn)) {
             return callback('no mods, an error has occured.');
         }
@@ -715,14 +825,15 @@ $(function() {
                     return true;
                 }
                 return false;
-            })
+            }),
+            modDisplayName: modDisplayName
         };
 
         return callback(null, prepared);
     }
 
     function validateModData() {
-        //all mods are optional, therefore don't need validation
+        //mods are optional, therefore don't need validation
         return true;
     }
 
@@ -738,7 +849,7 @@ $(function() {
             if (checked) {
                 staffWithMod.push({
                     staffId: s.dataset.staffId,
-                    assignmentId: checked.value
+                    modId: checked.value
                 });
             }
         }

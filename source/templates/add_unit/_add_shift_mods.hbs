@@ -1,0 +1,26 @@
+<div class="staff">
+    {{#if staffPickedForBedside.length}}
+    <div>
+        <p>Select Bedside Nurses that had '{{modDisplayName}}'</p>
+    </div>
+    <div class="staff-list mt-2">
+        {{#each staffPickedForBedside as |staff staffIndex|}}
+        <div class="staff-member" data-staff-id="{{staff.id}}">
+            <span>
+                {{staff.lastName}}, {{staff.firstName}} ({{staff.categoryName}})
+            </span>
+            <div>
+                <span class="mod-check">
+                    <input class="mod" type="checkbox" name="{{staff.id}}-mod-{{@root.mod.name}}" id="{{staff.id}}-mod-{{@root.mod.name}}" value="{{@root.mod.id}}" required>
+                    <label for="{{staff.id}}-mod-{{@root.mod.name}}"><span></span>{{@root.modDisplayName}}</label>
+                </span>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>
+    {{/if}}
+</div>
+
+{{!-- {{debug}} --}}
