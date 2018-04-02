@@ -5,16 +5,18 @@
     </div>
     <div class="staff-list mt-2">
         {{#each staffPickedForBedside as |staff staffIndex|}}
-        <div class="bedside-staff" data-staff-id="{{staff.id}}">
-            <span >
+        <div class="bedside-staff-member" data-staff-id="{{staff.id}}">
+            <span>
                 {{staff.lastName}}, {{staff.firstName}} ({{staff.categoryName}})
             </span>
-            {{#each @root.assignments as |assignment assignmentIndex|}}
-            <span class="pod-assignment">
-                <input class="pod" type="checkbox" id="{{staff.id}}-{{assignment.name}}" value="{{assignment.id}}">
-                <label for="{{staff.id}}-{{assignment.name}}"><span></span>{{assignment.name}}</label>
-            </span>
-            {{/each}}
+            <div>
+                {{#each @root.assignmentsForBedside as |assignment assignmentIndex|}}
+                <span class="pod-assignment">
+                    <input class="pod" type="radio" name="{{staff.id}}-assignment" id="{{staff.id}}-{{assignment.name}}" value="{{assignment.id}}" required>
+                    <label for="{{staff.id}}-{{assignment.name}}"><span></span>{{assignment.name}}</label>
+                </span>
+                {{/each}}
+            </div>
         </div>
         {{/each}}
     </div>

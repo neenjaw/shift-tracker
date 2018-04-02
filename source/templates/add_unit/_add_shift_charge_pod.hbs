@@ -1,9 +1,9 @@
 <div class="staff">
     <div class="form-group">
         <label for="clinician-pod-select">Select Clinican Assignment</label>
-        <select class="shift__clinician-pod form-control" id="charge-list-select" size="2">
+        <select class="shift__clinician-pod form-control" id="clinician-pod-select" size="2">
             {{#each assignmentForClinicianPodPick}}
-                <option value="{{this.id}}" data-assignment="{{this.name}}" {{#if ../clinicianAssignmentId}}{{#ifMatch ../clinicianAssignmentId this.id}}selected{{/ifMatch}}{{else}}{{#ifMatch this.name 'A/B'}}selected{{/ifMatch}}{{/if}}>
+                <option value="{{this.id}}" data-assignment="{{this.name}}" {{#if @root.clinicianAssignmentId}}{{#ifMatch @root.clinicianAssignmentId this.id}}selected{{/ifMatch}}{{else}}{{#ifMatch this.name 'A/B'}}selected{{/ifMatch}}{{/if}}>
                     {{this.name}}
                 </option>
             {{/each}}
@@ -12,9 +12,9 @@
     {{#ifMatch dayOrNight 'D'}}
     <div class="form-group">
         <label for="charge-pod-select">Select Change Assignment</label>
-        <select class="shift__charge-pod form-control" id="charge-list-select" size="2">
+        <select class="shift__charge-pod form-control" id="charge-pod-select" size="2">
             {{#each assignmentForChargePodPick}}
-                <option value="{{this.id}}" data-assignment="{{this.name}}" {{#if ../chargeAssignmentId}}{{#ifMatch ../chargeAssignmentId this.id}}selected{{/ifMatch}}{{else}}{{#ifMatch this.name 'C'}}selected{{/ifMatch}}{{/if}}>
+                <option value="{{this.id}}" data-assignment="{{this.name}}" {{#if @root.chargeAssignmentId}}{{#ifMatch @root.chargeAssignmentId this.id}}selected{{/ifMatch}}{{else}}{{#ifMatch this.name 'C'}}selected{{/ifMatch}}{{/if}}>
                     {{this.name}}
                 </option>
             {{/each}}

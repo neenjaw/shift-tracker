@@ -68,6 +68,19 @@ Handlebars.registerHelper('checkIfChecked', function (id, mods) {
 });
 
 // add the checkIfChecked helper
+Handlebars.registerHelper('checkIfIdSelected', function (id, idList) {
+    idList = idList || null;
+
+    if (idList === null) return '';
+
+    if (idList.includes(id)) {
+        return 'selected';
+    }
+
+    return '';
+});
+
+// add the checkIfChecked helper
 Handlebars.registerHelper('checkIfSelected', function (id, assignmentId) {
     if (assignmentId == id) {
         return 'selected';

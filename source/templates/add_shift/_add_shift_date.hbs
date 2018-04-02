@@ -3,10 +3,10 @@
     <input type="date" id="date" class="shift__date" min="2000-01-01" max="{{today}}" value="{{today}}" placeholder="YYYY-MM-DD">
 </div>
 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-    <label class="btn btn-secondary active">
-        <input class="shift__day-or-night" type="radio" value="D" autocomplete="off" checked> Day
+    <label class="btn btn-secondary {{#if dayOrNight}}{{#ifMatch dayOrNight 'D'}}active{{/ifMatch}}{{else}}active{{/if}}">
+        <input class="shift__day-or-night" type="radio" value="D" autocomplete="off"> Day
     </label>
-    <label class="btn btn-secondary">
+    <label class="btn btn-secondary {{#if dayOrNight}}{{#ifMatch dayOrNight 'N'}}active{{/ifMatch}}{{/if}}">
         <input class="shift__day-or-night" type="radio" value="N" autocomplete="off"> Night
     </label>
 </div>

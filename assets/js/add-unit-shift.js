@@ -341,18 +341,62 @@ $(function() {
                         }
 
                         return false;
+                    }),
+                    assignmentsForBedside: data.prepared.assignments.filter(function(assignment) {
+                        if (
+                            assignment.name === 'A' ||
+                            assignment.name === 'B' ||
+                            assignment.name === 'C'
+                        ) {
+                            return true;
+                        }
+
+                        return false;
                     })
-                //TODO: pickup from here. Need to filter the assignments
                     
                 });
             },
             validate: function () {
-                return false;
+                var staff = container.querySelectorAll('.bedside-staff-member');
+
+                for (var i = 0; i < staff.length; i++) {
+                    var s = staff[i];
+                    
+                    var checkedPod = s.querySelector('input:checked');
+
+                    if (!checkedPod) {
+                        Flash.insertFlash('warning', 'You must select an assignment for "'+s.querySelector('span:first-child').innerText.trim()+'"!');
+                        var pods = s.querySelectorAll('.pod-assignment');
+
+                        for (var j = 0; j < pods.length; j++) {
+                            var pod = pods[j];
+                            
+                            pod.classList.add('attention');
+                        }
+
+                        return false;
+                    }
+                }
+
+                return true;
             },
             onvalid: function (validatedData) {
+                var staff = container.querySelectorAll('.bedside-staff-member');
+                var bedsideAssignments = [];
+                
+                for (var i = 0; i < staff.length; i++) {
+                    var s = staff[i];
+
+                    var checkedPod = s.querySelector('input:checked').value;
+
+                    bedsideAssignments.push({
+                        staffId: s.dataset.staffId,
+                        assignmentId: checkedPod
+                    });
+                }
 
                 validatedData = Object.assign(validatedData, {
-                    
+                    bedsideAssignments: bedsideAssignments
                 });
             }
         },
@@ -365,12 +409,8 @@ $(function() {
             prepare: function (data, callback) {
                 return callback(null, {
                     staffForOutreachPick: data.prepared.staffForBedsidePick.filter(function (s) {
-                        for (var i = 0; i < data.validated.bedsides.length; i++) {
-                            var bedsideId = data.validated.bedsides[i].id;
-                                
-                            if (bedsideId === s.id) {
-                                return false;
-                            }
+                        if (data.validated.bedsideIds.includes(s.id)) {
+                            return false;
                         }
 
                         return true;
@@ -378,9 +418,10 @@ $(function() {
                 });
             },
             validate: function () {
-                var staff = container.querySelector('.shift__outreach input:checked');
+                var staff = container.querySelector('.shift__outreach');
+                var selected = staff.querySelector('option:checked');
 
-                if (!staff) {
+                if (!selected) {
                     staff.focus();
                     Flash.insertFlash('warning', 'Choose an outreach person for the shift.');
 
@@ -391,7 +432,7 @@ $(function() {
 
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelector('.shift__outreach input:checked');
+                var staff = container.querySelector('.shift__outreach option:checked');
 
                 validatedData = Object.assign(validatedData, {
                     outreachId: staff.value
@@ -405,25 +446,115 @@ $(function() {
                 return false;
             },
             prepare: function (data, callback) {
+                data.prepared.staffGroups.lpn = data.prepared.staffGroups.lpn || [];
+                data.prepared.staffGroups.na = data.prepared.staffGroups.na || [];
+
                 return callback(null, {
-                    staffForAttendantPick: data.prepared.staff.groups.lpn.concat(data.prepared.staff.groups.na)
+                    staffForAttendantPick: data.prepared.staffGroups.lpn.concat(data.prepared.staffGroups.na)
                 });
             },
             validate: function () {
                 return true;
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelectorAll('.shift__attendants attendant input:checked');
+                var staff = container.querySelectorAll('.shift__attendants option:checked');
 
-                var attendants = Array.prototype.slice.call(staff).map(function (s) {
-                    var id = s.value;
-                    var pod = s.parentNode.nextElementSibling.querySelector('option:selected').value;
+                staff = staff || [];
+                staff = Array.prototype.slice.call(staff);
 
-                    return {attendandId: id, assignmentId: pod};
+                var attendants = staff.map(function (s) {
+                    return s.value;
                 });
 
                 validatedData = Object.assign(validatedData, {
-                    attendants: attendants
+                    attendantIds: attendants
+                });
+            }
+        },
+        {
+            contentPartial: 'attendant_pods',
+            skippable: true,
+            checkIfShouldSkip: function (data) {
+                if (data.validated.attendantIds.length < 1) {
+                    return true;
+                }
+
+                return false;
+            },
+            prepare: function (data, callback) {
+                if (!(data.prepared.staffGroups.lpn || data.prepared.staffGroups.na)) {
+                    return callback('no lpn or na, an error has occured.');
+                }
+
+                return callback(null, {
+                    staffPickedForAttendants: data.prepared.staff.groups.lpn
+                        .concat(data.prepared.staff.groups.na)
+                        .filter(function(staff) {
+                            if (data.validated.attendantIds.includes(staff.id)) {
+                                return true;
+                            }
+
+                            return false;
+                        }),
+                    assignmentsForAttendant: data.prepared.assignments.filter(function(assignment) {
+                        if (
+                            assignment.name === 'A' ||
+                            assignment.name === 'B' ||
+                            assignment.name === 'C' ||
+                            assignment.name === 'A/B' ||
+                            assignment.name === 'B/C' ||
+                            assignment.name === 'A/C' ||
+                            assignment.name === 'A/B/C'
+                        ) {
+                            return true;
+                        }
+
+                        return false;
+                    })
+                    
+                });
+            },
+            validate: function () {
+                var staff = container.querySelectorAll('.attendant-staff-member');
+
+                for (var i = 0; i < staff.length; i++) {
+                    var s = staff[i];
+                    
+                    var checkedPod = s.querySelector('input:checked');
+
+                    if (!checkedPod) {
+                        Flash.insertFlash('warning', 'You must select an assignment for "'+s.querySelector('span:first-child').innerText.trim()+'"!');
+                        var pods = s.querySelectorAll('.pod-assignment');
+
+                        for (var j = 0; j < pods.length; j++) {
+                            var pod = pods[j];
+                            
+                            pod.classList.add('attention');
+                        }
+
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            onvalid: function (validatedData) {
+                var staff = container.querySelectorAll('.attendant-staff-member');
+                var attendantAssignments = [];
+                
+                for (var i = 0; i < staff.length; i++) {
+                    var s = staff[i];
+
+                    var checkedPod = s.querySelector('input:checked').value;
+
+                    attendantAssignments.push({
+                        staffId: s.dataset.staffId,
+                        assignmentId: checkedPod
+                    });
+                }
+
+                validatedData = Object.assign(validatedData, {
+                    attendantAssignments: attendantAssignments
                 });
             }
         },
@@ -434,25 +565,110 @@ $(function() {
                 return false;
             },
             prepare: function (data, callback) {
+                data.prepared.staffGroups.uc = data.prepared.staffGroups.uc || [];
+
                 return callback(null, {
-                    staffForClerkPick: data.prepared.staff.groups.uc
+                    staffForClerkPick: data.prepared.staffGroups.uc
                 });
             },
             validate: function () {
                 return true;
             },
             onvalid: function (validatedData) {
-                var staff = container.querySelectorAll('.shift__clerks clerk input:checked');
+                var staff = container.querySelectorAll('.shift__clerks option:checked');
 
-                var clerks = Array.prototype.slice.call(staff).map(function (s) {
-                    var id = s.value;
-                    var pod = s.parentNode.nextElementSibling.querySelector('option:selected').value;
+                staff = staff || [];
+                staff = Array.prototype.slice.call(staff);
 
-                    return { attendandId: id, assignmentId: pod };
+                var clerks = staff.map(function (s) {
+                    return s.value;
                 });
 
                 validatedData = Object.assign(validatedData, {
-                    clerks: clerks
+                    clerkIds: clerks
+                });
+            }
+        },
+        {
+            contentPartial: 'clerk_pods',
+            skippable: true,
+            checkIfShouldSkip: function (data) {
+                if (data.validated.clerkIds.length < 1) {
+                    return true;
+                }
+
+                return false;
+            },
+            prepare: function (data, callback) {
+                if (!(data.prepared.staffGroups.uc)) {
+                    return callback('no uc, an error has occured.');
+                }
+
+                return callback(null, {
+                    staffPickedForClerks: data.prepared.staff.groups.uc
+                        .filter(function(staff) {
+                            if (data.validated.clerkIds.includes(staff.id)) {
+                                return true;
+                            }
+
+                            return false;
+                        }),
+                    assignmentsForClerk: data.prepared.assignments.filter(function(assignment) {
+                        if (
+                            assignment.name === 'A' ||
+                            assignment.name === 'B' ||
+                            assignment.name === 'C' ||
+                            assignment.name === 'A/B/C'
+                        ) {
+                            return true;
+                        }
+
+                        return false;
+                    })
+                    
+                });
+            },
+            validate: function () {
+                var staff = container.querySelectorAll('.clerk-staff-member');
+
+                for (var i = 0; i < staff.length; i++) {
+                    var s = staff[i];
+                    
+                    var checkedPod = s.querySelector('input:checked');
+
+                    if (!checkedPod) {
+                        Flash.insertFlash('warning', 'You must select an assignment for "'+s.querySelector('span:first-child').innerText.trim()+'"!');
+                        var pods = s.querySelectorAll('.pod-assignment');
+
+                        for (var j = 0; j < pods.length; j++) {
+                            var pod = pods[j];
+                            
+                            pod.classList.add('attention');
+                        }
+
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            onvalid: function (validatedData) {
+                var staff = container.querySelectorAll('.clerk-staff-member');
+                var clerkAssignments = [];
+                
+                for (var i = 0; i < staff.length; i++) {
+                    var s = staff[i];
+
+                    var checkedPod = s.querySelector('input:checked').value;
+
+                    clerkAssignments.push({
+                        staffId: s.dataset.staffId,
+                        assignmentId: checkedPod
+                    });
+                }
+
+                validatedData = Object.assign(validatedData, {
+                    clerkAssignments: clerkAssignments
                 });
             }
         },
@@ -472,7 +688,7 @@ $(function() {
             validate: function () {
                 return true;
             },
-            onvalid: function () {
+            onvalid: function (validatedData) {
 
             }
         }

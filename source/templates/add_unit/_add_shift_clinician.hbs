@@ -7,7 +7,7 @@
             <label for="clinician-list-select">Select Shift Clinician</label>
             <select class="shift__clinician form-control" id="clinician-list-select" size="{{chooseMaxUpTo staffForClinicianPick.length 5 9}}">
                 {{#each staffForClinicianPick}}
-                    <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @first}}selected{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
+                    <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @root.clinicianId}}{{#ifMatch @root.clinicianId this.id}}selected{{/ifMatch}}{{else}}{{#if @first}}selected{{/if}}{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
                 {{/each}}
             </select>
         </div>

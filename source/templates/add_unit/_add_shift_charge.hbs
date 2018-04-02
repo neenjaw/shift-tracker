@@ -7,7 +7,7 @@
             <label for="charge-list-select">Select Shift Charge</label>
             <select class="shift__charge form-control" id="charge-list-select" size="{{chooseMaxUpTo staffForChargePick.length 5 9}}">
                 {{#each staffForChargePick}}
-                    <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @first}}selected{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
+                    <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @root.chargeId}}{{#ifMatch @root.chargeId this.id}}selected{{/ifMatch}}{{else}}{{#if @first}}selected{{/if}}{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
                 {{/each}}
             </select>
         </div>

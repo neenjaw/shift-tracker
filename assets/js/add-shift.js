@@ -72,6 +72,35 @@ var AddShift = function (steps, options) {
 
     //Set the click listeners
     if (!state.areClickListenersSet) {
+
+        container.addEventListener('change', function(ev) {
+            if (ev.target.classList.contains('shift__clinician-pod')) {
+                var clinicianPodName = ev.target.selectedOptions[0].dataset.assignment;
+
+                var mainPod = clinicianPodName.replace(/[B\/]/g, ''); // eslint-disable-line no-useless-escape
+
+                if (mainPod === 'A') {
+                    document.getElementById('charge-pod-select').querySelector('option[data-assignment="C"]').selected = true;
+                    // document.querySelector('.shift__charge-pod option[data-assignment="C"]').selected = true;
+                } else if(mainPod === 'C') {
+                    document.getElementById('charge-pod-select').querySelector('option[data-assignment="A"]').selected = true;
+                    // document.querySelector('.shift__charge-pod option[data-assignment="A"]').selected = true;
+                }
+            } else if (ev.target.classList.contains('shift__charge-pod')) {
+                var chargePodName = ev.target.selectedOptions[0].dataset.assignment;
+
+                if (chargePodName === 'A') {
+                    document.getElementById('clinician-pod-select').querySelector('option[data-assignment="B/C"]').selected = true;
+                    // document.querySelector('.shift__clinician-pod option[data-assignment="B/C"]').selected = true;
+                } else if (chargePodName === 'C') {
+                    document.getElementById('clinician-pod-select').querySelector('option[data-assignment="A/B"]').selected = true;
+                    // document.querySelector('.shift__clinician-pod option[data-assignment="A/B"]').selected = true;
+                }
+            }
+
+            return false;
+        });
+
         container.addEventListener('click', function (ev) {
             if (state.debug) console.log({event: ev, target: ev.target, classList: ev.target.classList});            
 
@@ -103,42 +132,19 @@ var AddShift = function (steps, options) {
         });
 
         container.addEventListener('mousedown', function(ev) {
-            
-            if (ev.target.localName === 'option') {
-                console.log({ target: ev.target, targetName: ev.target.localName, targetParent: ev.target.parentNode, isMulti: ev.target.parentNode.multiple });
-            
-                if (ev.target.parentNode.multiple) {
-                    ev.preventDefault();
+            if (ev.target.localName === 'option' && ev.target.parentNode.multiple) {
+                ev.preventDefault();
                         
-                    var originalScrollTop = ev.target.parentNode.scrollTop;
-                    // console.log(originalScrollTop);
+                var originalScrollTop = ev.target.parentNode.scrollTop;
+                // console.log(originalScrollTop);
 
-                    ev.target.selected = ev.target.selected ? false : true;
+                ev.target.selected = ev.target.selected ? false : true;
 
-                    var self = this;
-                    ev.target.parentNode.focus();
-                    setTimeout(function () {
-                        ev.target.parentNode.scrollTop = originalScrollTop;
-                    }, 0);
-                } else if (ev.target.parentNode.classList.contains('shift__clinician-pod')) {
-                    var clinicianPodName = ev.target.dataset.assignment;
-
-                    var mainPod = clinicianPodName.replace(/[B\/]/g, ''); // eslint-disable-line no-useless-escape
-
-                    if (mainPod === 'A') {
-                        document.querySelector('.shift__charge-pod option[data-assignment="C"]').selected = true;
-                    } else if(mainPod === 'C') {
-                        document.querySelector('.shift__charge-pod option[data-assignment="A"]').selected = true;
-                    }
-                } else if (ev.target.parentNode.classList.contains('shift__charge-pod')) {
-                    var chargePodName = ev.target.dataset.assignment;
-
-                    if (chargePodName === 'A') {
-                        document.querySelector('.shift__clinician-pod option[data-assignment="B/C"]').selected = true;
-                    } else if (chargePodName === 'C') {
-                        document.querySelector('.shift__clinician-pod option[data-assignment="A/B"]').selected = true;
-                    }
-                } 
+                var self = this;
+                ev.target.parentNode.focus();
+                setTimeout(function () {
+                    ev.target.parentNode.scrollTop = originalScrollTop;
+                }, 0);
             }
 
             return false;
@@ -181,6 +187,14 @@ var AddShift = function (steps, options) {
             }, 100);
         }
 
+        function focusFirstInput() {
+            var firstInput = container.querySelector('input:nth-of-type(1):not([readonly]), select:nth-of-type(1)');
+
+            if (firstInput) {
+                firstInput.focus();
+            }
+        }
+
         state.steps[state.currentStep].prepare(state.data, function (err, result) {
             if (err) {
                 console.error(err);
@@ -202,6 +216,8 @@ var AddShift = function (steps, options) {
                 step: state.currentStep + 1,
                 totalSteps: state.steps.length
             }, data, state.data.prepared, state.data.validated));
+
+            focusFirstInput();
 
             toggleNext(data.isNextStep);
             togglePrevious(data.isPreviousStep);
@@ -244,6 +260,10 @@ var AddShift = function (steps, options) {
 
         if (state.currentStep !== null && state.currentStep > 0) {
             state.currentStep -= 1;
+
+            while (state.steps[state.currentStep].skippable && state.steps[state.currentStep].checkIfShouldSkip(state.data)) {
+                state.currentStep -= 1;
+            }
 
             var previous = (state.currentStep > 0);
             var next = true;
