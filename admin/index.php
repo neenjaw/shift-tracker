@@ -7,7 +7,7 @@
 
 <div class="title rounded-outline">
     <h2>Admin</h2>
-    <h4 class="text-muted">Perform administration tasks.</h4>
+    <h4 class="text-muted">Perform admin tasks.</h4>
 </div>
 
 <div class="admin-container rounded-outline">

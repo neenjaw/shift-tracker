@@ -1,0 +1,24 @@
+.admin-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+
+    width: 50vw;
+}
+
+.admin-buttons .btn {
+    margin: 10px;
+}
+
+@media only screen and (max-width: 500px) {
+    .admin-buttons {
+        width: 100%;
+    }
+}
