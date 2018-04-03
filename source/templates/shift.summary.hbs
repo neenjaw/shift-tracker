@@ -1,7 +1,50 @@
 <div class="add-wrap">
     <div class="content">
-        content
+        <table class="table table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Sent?</th>
+                    <th scope="col">Created?</th>
+                    <th scope="col">Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each createStatus as |status statusIndex|}}
+                <tr class="request">
+                    <td class="connection text-center">
+                        <span class="fa-layers fa-fw">
+                            <i class="fas fa-exchange-alt"></i>
+                            {{#iftrue status.success}}
+                                <i class="fas fa-check" data-fa-transform="shrink-3 up-4 right-4" style="color:green"></i>
+                            {{else}}
+                                <i class="fas fa-times" data-fa-transform="shrink-3 up-4 right-4" style="color:firebrick"></i>
+                            {{/iftrue}}
+                        </span>
+                    </td>
+                    <td class="creation text-center">
+                        <span class="fa-layers fa-fw">
+                            <i class="far fa-file"></i>
+                            {{#iftrue status.created}}
+                                <i class="fas fa-check" data-fa-transform="shrink-3 up-4 right-4" style="color:green"></i>
+                            {{else}}
+                                <i class="fas fa-times" data-fa-transform="shrink-3 up-4 right-4" style="color:firebrick"></i>
+                            {{/iftrue}}
+                        </span>
+                    </td>
+                    <td class="message">
+                        {{#iftrue status.created}}
+                            Shift created for {{status.staffName}} on {{printInlineDate status.date}}
+                        {{else}}
+                            Unable to create shift for {{status.staffName}} on {{printInlineDate status.date}}.
+                        {{/iftrue}}
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 </div>
+
+{{!-- {success: true, created: true, staffId: "25", staffName: "Shaw Internet (UC)", date: "2018-04-02"} --}}
 
 {{debug}}

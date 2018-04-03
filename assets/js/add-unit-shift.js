@@ -1051,13 +1051,14 @@ $(function() {
                         };
                     });
 
-
-                    ShiftTracker.templates.shift.summary(mappedResponseData);
+                    container.innerHTML = ShiftTracker.templates.shift.summary({
+                        createStatus: mappedResponseData
+                    });
                 })
                 .catch(function(error) {
                     console.error('❌',error);
                     
-                    ShiftTracker.templates.shift.error({errorMsg: 'Problem submitting the shift entries. Sorry.'});
+                    container.innerHTML = ShiftTracker.templates.shift.error({errorMsg: 'Problem submitting the shift entries. Sorry.'});
                 });
         }
     });

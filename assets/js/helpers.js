@@ -10,6 +10,13 @@ Handlebars.registerHelper('printDate', function (dateString) {
     return new Handlebars.SafeString(month + '<br>' + day);
 });
 
+Handlebars.registerHelper('printInlineDate', function (dateString) {
+    var momentDate = moment(dateString, 'YYYY-MM-DD');
+    var str = momentDate.format('MMM-D');
+
+    return new Handlebars.SafeString(str);
+});
+
 // add the stringToProperCase helper
 Handlebars.registerHelper('stringToProperCase', function (str) {
     var splits = str.split(' ');
@@ -39,6 +46,14 @@ Handlebars.registerHelper('printPercent', function (v1, v2) {
 // add the ifgtZero helper
 Handlebars.registerHelper('ifgtZero', function (v1, options) {
     if (v1 > 0) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+// add the ifgtZero helper
+Handlebars.registerHelper('iftrue', function (v1, options) {
+    if (v1 === true) {
         return options.fn(this);
     }
     return options.inverse(this);
