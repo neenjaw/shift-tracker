@@ -1,5 +1,6 @@
 /* global axios */
 /* global Flash */
+/* global Username */
 
 /*
 required options:
@@ -306,7 +307,7 @@ var AddShift = function (steps, options) {
                 staff_id: state.data.validated.staffId,
                 role_id: state.data.validated.role,
                 assignment_id: state.data.validated.assignment,
-                created_by: 'webuser',
+                created_by: Username,
                 mods: state.data.validated.mod
             })
             .then(function (response) {

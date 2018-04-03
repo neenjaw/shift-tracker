@@ -88,23 +88,6 @@ this["ShiftTracker"]["templates"]["shift"]["add"] = Handlebars.template({"compil
     + ((stack1 = container.invokePartial(partials.add_shift_controls,depth0,{"name":"add_shift_controls","data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
     + "    </div>\r\n</div>";
 },"usePartial":true,"useData":true});
-this["ShiftTracker"]["templates"]["shift"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, helper;
-
-  return "        <p class=\"text-muted\">"
-    + ((stack1 = ((helper = (helper = helpers.errorMsg || (depth0 != null ? depth0.errorMsg : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"errorMsg","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "</p>\n";
-},"3":function(container,depth0,helpers,partials,data) {
-    return "        <p class=\"text-muted\">There was an error displaying this shift page.</p>\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<div class=\"add-wrap\">\n    <div class=\"content\">\n        <h2>Page Error</h2>\n"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.errorMsg : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
-    + "    </div>\n    <div class=\"controls\">\n"
-    + ((stack1 = container.invokePartial(partials.add_shift_controls,depth0,{"name":"add_shift_controls","data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
-    + "    </div>\n</div>";
-},"usePartial":true,"useData":true});
 Handlebars.registerPartial("add_shift_mod", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -138,6 +121,23 @@ Handlebars.registerPartial("add_shift_mod", Handlebars.template({"1":function(co
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.hasMods : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(7, data, 0),"data":data})) != null ? stack1 : "")
     + "</div>";
 },"useData":true}));
+this["ShiftTracker"]["templates"]["shift"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper;
+
+  return "        <p class=\"text-muted\">"
+    + ((stack1 = ((helper = (helper = helpers.errorMsg || (depth0 != null ? depth0.errorMsg : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"errorMsg","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "</p>\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "        <p class=\"text-muted\">There was an error displaying this shift page.</p>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<div class=\"add-wrap\">\n    <div class=\"content\">\n        <h2>Page Error</h2>\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.errorMsg : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+    + "    </div>\n    <div class=\"controls\">\n"
+    + ((stack1 = container.invokePartial(partials.add_shift_controls,depth0,{"name":"add_shift_controls","data":data,"indent":"        ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+    + "    </div>\n</div>";
+},"usePartial":true,"useData":true});
 Handlebars.registerPartial("add_shift_role", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -215,9 +215,9 @@ this["ShiftTracker"]["templates"]["shift"]["summary"] = Handlebars.template({"1"
     + ((stack1 = (helpers.iftrue || (depth0 && depth0.iftrue) || alias2).call(alias1,((stack1 = blockParams[0][0]) != null ? stack1.created : stack1),{"name":"iftrue","hash":{},"fn":container.program(6, data, 0, blockParams),"inverse":container.program(8, data, 0, blockParams),"data":data,"blockParams":blockParams})) != null ? stack1 : "")
     + "                    </td>\n                </tr>\n";
 },"2":function(container,depth0,helpers,partials,data) {
-    return "                                <i class=\"fas fa-check\" data-fa-transform=\"shrink-3 up-4 right-4\" style=\"color:green\"></i>\n";
+    return "                                <i class=\"fas fa-check\" data-fa-transform=\"shrink-2 up-4 right-4\" style=\"color:green\"></i>\n";
 },"4":function(container,depth0,helpers,partials,data) {
-    return "                                <i class=\"fas fa-times\" data-fa-transform=\"shrink-3 up-4 right-4\" style=\"color:firebrick\"></i>\n";
+    return "                                <i class=\"fas fa-times\" data-fa-transform=\"shrink-2 up-4 right-4\" style=\"color:firebrick\"></i>\n";
 },"6":function(container,depth0,helpers,partials,data,blockParams) {
     var stack1, alias1=container.escapeExpression;
 
@@ -237,9 +237,9 @@ this["ShiftTracker"]["templates"]["shift"]["summary"] = Handlebars.template({"1"
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
-  return "<div class=\"add-wrap\">\n    <div class=\"content\">\n        <table class=\"table table-sm\">\n            <thead class=\"thead-light\">\n                <tr>\n                    <th scope=\"col\">Sent?</th>\n                    <th scope=\"col\">Created?</th>\n                    <th scope=\"col\">Message</th>\n                </tr>\n            </thead>\n            <tbody>\n"
+  return "<div class=\"add-wrap\">\n    <div class=\"header\">\n        <h5>Shift entry complete.</h5>\n        <h6 class=\"text-muted\">Check below to make sure all the shifts were entered into the database.</h6>\n    </div>\n    <div class=\"content\">\n        <table class=\"table table-sm\">\n            <thead class=\"thead-light\">\n                <tr>\n                    <th scope=\"col\" class=\"text-center\">Sent?</th>\n                    <th scope=\"col\" class=\"text-center\">Created?</th>\n                    <th scope=\"col\">Message</th>\n                </tr>\n            </thead>\n            <tbody>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.createStatus : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
-    + "            </tbody>\n        </table>\n    </div>\n</div>\n\n\n"
+    + "            </tbody>\n        </table>\n    </div>\n    <div class=\"summary controls\">\n        <a href=\"/shift/add-one-shift.php\" class=\"btn btn-primary\"><i class=\"fas fa-plus\"></i> Add a single shift</a>\n        <a href=\"/shift/add-unit-shift.php\" class=\"btn btn-primary\"><i class=\"fas fa-plus\"></i> Add another shift</a>\n        <a href=\"/home\" class=\"btn btn-primary\"><i class=\"fas fa-home\"></i> Home</a>\n    </div>\n</div>\n\n"
     + container.escapeExpression(((helper = (helper = helpers.debug || (depth0 != null ? depth0.debug : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"debug","hash":{},"data":data,"blockParams":blockParams}) : helper)));
 },"useData":true,"useBlockParams":true});
 Handlebars.registerPartial("add_shift_attendants", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -273,53 +273,6 @@ Handlebars.registerPartial("add_shift_attendants", Handlebars.template({"1":func
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffForAttendantPick : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
     + "</div>\n\n";
 },"useData":true}));
-Handlebars.registerPartial("add_shift_attendant_pods", Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams) {
-    var stack1;
-
-  return "    <div>\n        <p>Select Assignment for Bedside Nurses</p>\n    </div>\n    <div class=\"staff-list mt-2\">\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.staffPickedForAttendants : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
-    + "    </div>\n";
-},"2":function(container,depth0,helpers,partials,data,blockParams) {
-    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
-
-  return "        <div class=\"staff-member\" data-staff-id=\""
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.id : stack1), depth0))
-    + "\">\n            <span>\n                "
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.lastName : stack1), depth0))
-    + ", "
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.firstName : stack1), depth0))
-    + " ("
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.categoryName : stack1), depth0))
-    + ")\n            </span>\n            <div>\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (data && data.root)) && stack1.assignmentsForAttendant),{"name":"each","hash":{},"fn":container.program(3, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
-    + "            </div>\n        </div>\n";
-},"3":function(container,depth0,helpers,partials,data,blockParams) {
-    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
-
-  return "                <span class=\"pod-assignment\">\n                    <input class=\"pod\" type=\"radio\" name=\""
-    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
-    + "-assignment\" id=\""
-    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
-    + "-"
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
-    + "\" value=\""
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.id : stack1), depth0))
-    + "\" required>\n                    <label for=\""
-    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
-    + "-"
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
-    + "\"><span></span>"
-    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
-    + "</label>\n                </span>\n";
-},"5":function(container,depth0,helpers,partials,data) {
-    return "    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams) {
-    var stack1;
-
-  return "<div class=\"staff\">\n"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffPickedForAttendants : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams),"inverse":container.program(5, data, 0, blockParams),"data":data,"blockParams":blockParams})) != null ? stack1 : "")
-    + "</div>\n\n";
-},"useData":true,"useBlockParams":true}));
 this["ShiftTracker"]["templates"]["shift"]["table"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -401,6 +354,53 @@ this["ShiftTracker"]["templates"]["shift"]["table"] = Handlebars.template({"1":f
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.groups : depth0),{"name":"each","hash":{},"fn":container.program(6, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + " \r\n  </div>\r\n</div>\r\n";
 },"useData":true,"useDepths":true});
+Handlebars.registerPartial("add_shift_attendant_pods", Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1;
+
+  return "    <div>\n        <p>Select Assignment for Bedside Nurses</p>\n    </div>\n    <div class=\"staff-list mt-2\">\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.staffPickedForAttendants : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
+    + "    </div>\n";
+},"2":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "        <div class=\"staff-member\" data-staff-id=\""
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.id : stack1), depth0))
+    + "\">\n            <span>\n                "
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.lastName : stack1), depth0))
+    + ", "
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.firstName : stack1), depth0))
+    + " ("
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.categoryName : stack1), depth0))
+    + ")\n            </span>\n            <div>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (data && data.root)) && stack1.assignmentsForAttendant),{"name":"each","hash":{},"fn":container.program(3, data, 2, blockParams),"inverse":container.noop,"data":data,"blockParams":blockParams})) != null ? stack1 : "")
+    + "            </div>\n        </div>\n";
+},"3":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "                <span class=\"pod-assignment\">\n                    <input class=\"pod\" type=\"radio\" name=\""
+    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
+    + "-assignment\" id=\""
+    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
+    + "-"
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
+    + "\" value=\""
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.id : stack1), depth0))
+    + "\" required>\n                    <label for=\""
+    + alias2(alias1(((stack1 = blockParams[1][0]) != null ? stack1.id : stack1), depth0))
+    + "-"
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
+    + "\"><span></span>"
+    + alias2(alias1(((stack1 = blockParams[0][0]) != null ? stack1.name : stack1), depth0))
+    + "</label>\n                </span>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "    <p>All staff have a shift this day already, or there are no staff, use the single shift add form to add individual shifts.</p>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams) {
+    var stack1;
+
+  return "<div class=\"staff\">\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffPickedForAttendants : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams),"inverse":container.program(5, data, 0, blockParams),"data":data,"blockParams":blockParams})) != null ? stack1 : "")
+    + "</div>\n\n";
+},"useData":true,"useBlockParams":true}));
 this["ShiftTracker"]["templates"]["staff"] = this["ShiftTracker"]["templates"]["staff"] || {};
 this["ShiftTracker"]["templates"]["staff"]["add"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
@@ -557,6 +557,20 @@ Handlebars.registerPartial("add_shift_bedside_pods", Handlebars.template({"1":fu
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffPickedForBedside : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0, blockParams),"inverse":container.program(5, data, 0, blockParams),"data":data,"blockParams":blockParams})) != null ? stack1 : "")
     + "</div>\n\n";
 },"useData":true,"useBlockParams":true}));
+this["ShiftTracker"]["templates"]["staff"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper;
+
+  return "<p class=\"text-muted\">"
+    + ((stack1 = ((helper = (helper = helpers.errorMsg || (depth0 != null ? depth0.errorMsg : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"errorMsg","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+    + "</p>\r\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "<p class=\"text-muted\">There was an error displaying this staff page.</p>\r\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<h2>Page Error</h2>\r\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.errorMsg : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "");
+},"useData":true});
 Handlebars.registerPartial("add_shift_charge", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
@@ -600,19 +614,29 @@ Handlebars.registerPartial("add_shift_charge", Handlebars.template({"1":function
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffForChargePick : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(8, data, 0),"data":data})) != null ? stack1 : "")
     + "</div>\n\n";
 },"useData":true}));
-this["ShiftTracker"]["templates"]["staff"]["error"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, helper;
+this["ShiftTracker"]["templates"]["staff"]["index"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
-  return "<p class=\"text-muted\">"
-    + ((stack1 = ((helper = (helper = helpers.errorMsg || (depth0 != null ? depth0.errorMsg : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"errorMsg","hash":{},"data":data}) : helper))) != null ? stack1 : "")
-    + "</p>\r\n";
-},"3":function(container,depth0,helpers,partials,data) {
-    return "<p class=\"text-muted\">There was an error displaying this staff page.</p>\r\n";
+  return "            <tr>\r\n                <th scope=\"row\" colspan=\"3\">"
+    + container.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</td>\r\n            </tr>\r\n\r\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.staff : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"2":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "                <tr>\r\n                    <th scope=\"row\">&nbsp;</th>\r\n                    <td>"
+    + alias4(((helper = (helper = helpers.last_name || (depth0 != null ? depth0.last_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"last_name","hash":{},"data":data}) : helper)))
+    + ", "
+    + alias4(((helper = (helper = helpers.first_name || (depth0 != null ? depth0.first_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"first_name","hash":{},"data":data}) : helper)))
+    + "</td>\r\n                    <td class=\"text-center\"><a href=\"/staff?staff_id="
+    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\"><i class=\"fas fa-info-circle\"></i></a></td>\r\n                </tr>\r\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<h2>Page Error</h2>\r\n"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.errorMsg : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "");
+  return "<div class=\"title rounded-outline\">\r\n    <h2>All Staff</h2>\r\n    <h4 class=\"text-muted\">Pick someone to view details.</h4>\r\n</div>\r\n\r\n<table class=\"table table-sm\">\r\n    <thead class=\"thead-dark\">\r\n        <tr>\r\n            <th scope=\"col\">Category</th>\r\n            <th scope=\"col\">Name</th>\r\n            <th scope=\"col\" class=\"text-center\">Profile</th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n\r\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.groups : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </tbody>\r\n</table>";
 },"useData":true});
 Handlebars.registerPartial("add_shift_charge_pod", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
@@ -671,30 +695,6 @@ Handlebars.registerPartial("add_shift_charge_pod", Handlebars.template({"1":func
     + ((stack1 = (helpers.ifMatch || (depth0 && depth0.ifMatch) || helpers.helperMissing).call(alias1,(depth0 != null ? depth0.dayOrNight : depth0),"D",{"name":"ifMatch","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</div>\n\n";
 },"useData":true}));
-this["ShiftTracker"]["templates"]["staff"]["index"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {});
-
-  return "            <tr>\r\n                <th scope=\"row\" colspan=\"3\">"
-    + container.escapeExpression(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n            </tr>\r\n\r\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.staff : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-},"2":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "                <tr>\r\n                    <th scope=\"row\">&nbsp;</th>\r\n                    <td>"
-    + alias4(((helper = (helper = helpers.last_name || (depth0 != null ? depth0.last_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"last_name","hash":{},"data":data}) : helper)))
-    + ", "
-    + alias4(((helper = (helper = helpers.first_name || (depth0 != null ? depth0.first_name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"first_name","hash":{},"data":data}) : helper)))
-    + "</td>\r\n                    <td class=\"text-center\"><a href=\"/staff?staff_id="
-    + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\"><i class=\"fas fa-info-circle\"></i></a></td>\r\n                </tr>\r\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "<div class=\"title rounded-outline\">\r\n    <h2>All Staff</h2>\r\n    <h4 class=\"text-muted\">Pick someone to view details.</h4>\r\n</div>\r\n\r\n<table class=\"table table-sm\">\r\n    <thead class=\"thead-dark\">\r\n        <tr>\r\n            <th scope=\"col\">Category</th>\r\n            <th scope=\"col\">Name</th>\r\n            <th scope=\"col\" class=\"text-center\">Profile</th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n\r\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.groups : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "    </tbody>\r\n</table>";
-},"useData":true});
 Handlebars.registerPartial("add_shift_clerks", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
@@ -825,6 +825,11 @@ Handlebars.registerPartial("add_shift_clerk_pods", Handlebars.template({"1":func
 this["ShiftTracker"]["templates"]["staff"]["shiftFormError"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<tr class=\"shift-edit-row\">\r\n    <td colspan=\"4\">\r\n        <div class=\"shift-edit-container hidden\">\r\n            <h2>Error</h2>\r\n            <p>There was an error displaying this shift's information.</p>\r\n        </div>\r\n    </td>\r\n</tr>";
 },"useData":true});
+this["ShiftTracker"]["templates"]["test"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = container.invokePartial(helpers.lookup.call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,"which",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
+},"usePartial":true,"useData":true});
 Handlebars.registerPartial("add_shift_clinician", Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
@@ -868,11 +873,6 @@ Handlebars.registerPartial("add_shift_clinician", Handlebars.template({"1":funct
     + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.staffForClinicianPick : depth0)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(8, data, 0),"data":data})) != null ? stack1 : "")
     + "</div>\n\n";
 },"useData":true}));
-this["ShiftTracker"]["templates"]["test"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return ((stack1 = container.invokePartial(helpers.lookup.call(depth0 != null ? depth0 : (container.nullContext || {}),depth0,"which",{"name":"lookup","hash":{},"data":data}),depth0,{"data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
-},"usePartial":true,"useData":true});
 Handlebars.registerPartial("add_shift_mods", Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {});
 
@@ -1104,16 +1104,34 @@ Handlebars.registerPartial("staff_detail_statistics", Handlebars.template({"1":f
     + " ("
     + alias2((helpers.printPercent || (depth0 && depth0.printPercent) || alias4).call(alias3,(depth0 != null ? depth0.count : depth0),(depths[1] != null ? depths[1].shiftCount : depths[1]),{"name":"printPercent","hash":{},"data":data}))
     + ")</p>\r\n        </div>\r\n";
-},"11":function(container,depth0,helpers,partials,data,blockParams,depths) {
+},"11":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "    <div class=\"rounded-outline staff__role-stats\">\r\n        <h5>Shift Statistics</h5>\r\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.modStats : depth0),{"name":"each","hash":{},"fn":container.program(9, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+  return "    <div class=\"rounded-outline staff__role-stats\">\r\n        <h5>Shift Statistics <span class=\"text-muted\">(as a proportion of bedside shifts)</span></h5>\r\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.modStats : depth0),{"name":"each","hash":{},"fn":container.program(12, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\r\n";
-},"13":function(container,depth0,helpers,partials,data) {
+},"12":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : (container.nullContext || {}), alias4=helpers.helperMissing;
+
+  return "        <div class=\"stat__item\" data-stat-count=\""
+    + alias2(alias1((depth0 != null ? depth0.count : depth0), depth0))
+    + "\" data-stat-total=\""
+    + alias2(alias1(((stack1 = (data && data.root)) && stack1.bedsideCount), depth0))
+    + "\" data-stat-percent=\""
+    + alias2((helpers.printPercent || (depth0 && depth0.printPercent) || alias4).call(alias3,(depth0 != null ? depth0.count : depth0),((stack1 = (data && data.root)) && stack1.bedsideCount),{"name":"printPercent","hash":{},"data":data}))
+    + "\">\r\n            <p>"
+    + alias2((helpers.stringToProperCase || (depth0 && depth0.stringToProperCase) || alias4).call(alias3,(depth0 != null ? depth0.name : depth0),{"name":"stringToProperCase","hash":{},"data":data}))
+    + ": "
+    + alias2(alias1((depth0 != null ? depth0.count : depth0), depth0))
+    + " / "
+    + alias2(alias1(((stack1 = (data && data.root)) && stack1.bedsideCount), depth0))
+    + " ("
+    + alias2((helpers.printPercent || (depth0 && depth0.printPercent) || alias4).call(alias3,(depth0 != null ? depth0.count : depth0),((stack1 = (data && data.root)) && stack1.bedsideCount),{"name":"printPercent","hash":{},"data":data}))
+    + ")</p>\r\n        </div>\r\n";
+},"14":function(container,depth0,helpers,partials,data) {
     return "    <div class=\"rounded-outline\">No statistics to display.  No shifts entered for this user.</div>\r\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1;
 
-  return ((stack1 = (helpers.ifgtZero || (depth0 && depth0.ifgtZero) || helpers.helperMissing).call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.shiftCount : depth0),{"name":"ifgtZero","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.program(13, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "");
+  return ((stack1 = (helpers.ifgtZero || (depth0 && depth0.ifgtZero) || helpers.helperMissing).call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.shiftCount : depth0),{"name":"ifgtZero","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.program(14, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "");
 },"useData":true,"useDepths":true}));

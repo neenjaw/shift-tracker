@@ -2,6 +2,7 @@
 /*global Handlebars*/
 /*global ShiftTracker*/
 /*global getURLParameter*/
+/*global Username*/
 
 var StaffPage = (function () {
 
@@ -18,7 +19,6 @@ var StaffPage = (function () {
         return height;
     }
 
-    //FIXME: There is a problem with the non-vent counting.  It is counting the inverse of the vented shifts, but it should only cound the inverse of the vented shifts when AT THE BEDSIDE
     function getShiftStats(records) {
         var roleStats = {};
         var categoryStats = {};
@@ -26,6 +26,7 @@ var StaffPage = (function () {
         var modStats = {};
         var dCount = 0;
         var nCount = 0;
+        var bedsideCount = 0;
 
         records.forEach(function (record) {
             categoryStats[record.category_id] = categoryStats[record.category_id] || { name: record.category_name, count: 0 };
@@ -33,6 +34,8 @@ var StaffPage = (function () {
 
             roleStats[record.role_id] = roleStats[record.role_id] || { name: record.role_name, count: 0 };
             roleStats[record.role_id].count++;
+
+            if (record.role_name === 'bedside') bedsideCount++;
 
             assignmentStats[record.assignment_id] = assignmentStats[record.assignment_id] || { name: record.assignment_name, count: 0 };
             assignmentStats[record.assignment_id].count++;
@@ -51,7 +54,7 @@ var StaffPage = (function () {
         });
 
         if (modStats.vent) {
-            modStats.nonvent = { name: 'non-vented', count: (records.length - modStats.vent.count)};
+            modStats.nonvent = { name: 'non-vented', count: (bedsideCount - modStats.vent.count)};
         } else {
             modStats.nonvent = { name: 'non-vented', count: (records.length) };            
         }
@@ -67,7 +70,8 @@ var StaffPage = (function () {
             categoryStats:categoryStats,
             modStats:modStats,
             dayCount: dCount,
-            nightCount: nCount
+            nightCount: nCount,
+            bedsideCount: bedsideCount
         };
     }
 
@@ -87,7 +91,8 @@ var StaffPage = (function () {
                         categoryStats: stats.categoryStats,
                         modStats: stats.modStats,
                         dayCount: stats.dayCount,
-                        nightCount: stats.nightCount
+                        nightCount: stats.nightCount,
+                        bedsideCount: stats.bedsideCount
                     });
 
                     if(isFunction(callback)) {
@@ -176,7 +181,8 @@ var StaffPage = (function () {
                         categoryStats: stats.categoryStats,
                         modStats: stats.modStats,
                         dayCount: stats.dayCount,
-                        nightCount: stats.nightCount
+                        nightCount: stats.nightCount,
+                        bedsideCount: stats.bedsideCount
                     };
 
                     container.innerHTML = ShiftTracker.templates.staff.display(data);
@@ -430,7 +436,7 @@ function setupShowPage() {
         axios
             .post('/api/staff_member/update.php', {
                 id: staffId.value,
-                updated_by: 'webuser',
+                updated_by: Username,
                 category_id: categoryId
             })
             .then(function (response) {
@@ -461,7 +467,7 @@ function setupShowPage() {
         axios
             .post('/api/staff_member/update.php', {
                 id: staffId.value,
-                updated_by: 'webuser',
+                updated_by: Username,
                 active: ((activeValue === '1') ? 'true' : 'false')
             })
             .then(function (response) {
@@ -677,7 +683,7 @@ function setupShowPage() {
         var updateShift = false;
         var shiftParams = {
             id: shiftId,
-            updated_by: 'webuser'
+            updated_by: Username
         };
         
         if (currentAssignmentName !== selectedAssignmentName) {

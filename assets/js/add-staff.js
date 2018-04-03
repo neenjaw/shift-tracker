@@ -1,6 +1,7 @@
 /* global axios */
 /* global Flash */
 /* global ShiftTracker */
+/* global Username */
 
 var AddStaff = function(options) {
     var settings = options || {};
@@ -47,7 +48,7 @@ var AddStaff = function(options) {
                 first_name: first,
                 last_name: last,
                 category_id: cid,
-                created_by: 'webuser'
+                created_by: Username
             })
             .then(function (response) {
                 var data = response.data;

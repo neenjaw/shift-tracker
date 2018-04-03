@@ -34,10 +34,10 @@
 
     {{#if modStats}}
     <div class="rounded-outline staff__role-stats">
-        <h5>Shift Statistics</h5>
+        <h5>Shift Statistics <span class="text-muted">(as a proportion of bedside shifts)</span></h5>
         {{#each modStats}}
-        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{../shiftCount}}" data-stat-percent="{{printPercent this.count ../shiftCount}}">
-            <p>{{stringToProperCase this.name}}: {{this.count}} / {{../shiftCount}} ({{printPercent this.count ../shiftCount}})</p>
+        <div class="stat__item" data-stat-count="{{this.count}}" data-stat-total="{{@root.bedsideCount}}" data-stat-percent="{{printPercent this.count @root.bedsideCount}}">
+            <p>{{stringToProperCase this.name}}: {{this.count}} / {{@root.bedsideCount}} ({{printPercent this.count @root.bedsideCount}})</p>
         </div>
         {{/each}}
     </div>
