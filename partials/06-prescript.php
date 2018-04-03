@@ -9,6 +9,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" integrity="sha256-9YAuB2VnFZNJ+lKfpaQ3dKQT9/C0j3VUla76hHbiVF8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.min.js" integrity="sha256-UoS1yAHj9HqfbFL+oYoF0gkPrJiMK9t4zeciRCafl8I=" crossorigin="anonymous"></script>
     <!-- JS - Compiled HBS Template, Custom JS -->
-    <script>var Username = '<?= $_SESSION['user']->login ?>';</script>
+    <script>
+    var User = {
+        name: '<?= $_SESSION['user']->login ?>',
+        admin: <?= ($_SESSION['user']->admin) ? 'true' : 'false' ?>
+    };
+    </script>
     <script src="/assets/templates/templates.js"></script>
     <script src="/assets/js/helpers.js"></script>

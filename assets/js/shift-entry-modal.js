@@ -1,6 +1,7 @@
 /* global axios */
 /* global ShiftTracker */
 /* global Modal */
+/* global User */
 
 var ShiftEntryModal = (function(){
 
@@ -156,7 +157,7 @@ var ShiftEntryModal = (function(){
             axios
                 .post('/api/shift/update.php', {
                     id: shiftId,
-                    updated_by: Username,
+                    updated_by: User.name,
                     role_id: roleId
                 })
                 .then(function (response) {
@@ -191,7 +192,7 @@ var ShiftEntryModal = (function(){
             axios
                 .post('/api/shift/update.php', {
                     id: shiftId,
-                    updated_by: Username,
+                    updated_by: User.name,
                     assignment_id: assignmentId
                 })
                 .then(function (response) {

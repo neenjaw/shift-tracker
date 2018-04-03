@@ -3,7 +3,7 @@
 /* global axios */
 /* global moment */
 /* global AddShift */
-/* global Username */
+/* global User */
 
 $(function() {
     var container = document.querySelector('.add-container');
@@ -873,7 +873,7 @@ $(function() {
         submit: function(state) {
             var prepared = state.data.prepared;
             var validated = state.data.validated;
-            var author = Username;
+            var author = User.name;
 
             function makeEntry (date, shiftDorN, staffId, roleId, assignmentId, modList, createdBy) {
                 return {

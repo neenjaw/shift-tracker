@@ -2,7 +2,7 @@
 /*global Handlebars*/
 /*global ShiftTracker*/
 /*global getURLParameter*/
-/*global Username*/
+/*global User*/
 
 var StaffPage = (function () {
 
@@ -436,7 +436,7 @@ function setupShowPage() {
         axios
             .post('/api/staff_member/update.php', {
                 id: staffId.value,
-                updated_by: Username,
+                updated_by: User.name,
                 category_id: categoryId
             })
             .then(function (response) {
@@ -467,7 +467,7 @@ function setupShowPage() {
         axios
             .post('/api/staff_member/update.php', {
                 id: staffId.value,
-                updated_by: Username,
+                updated_by: User.name,
                 active: ((activeValue === '1') ? 'true' : 'false')
             })
             .then(function (response) {
@@ -683,7 +683,7 @@ function setupShowPage() {
         var updateShift = false;
         var shiftParams = {
             id: shiftId,
-            updated_by: Username
+            updated_by: User.name
         };
         
         if (currentAssignmentName !== selectedAssignmentName) {

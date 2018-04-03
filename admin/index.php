@@ -5,7 +5,14 @@
 <?php require('../partials/04-nav.php'); ?>
 <?php require('../partials/05-flash.php'); ?>
 
-    <h1>admin!</h1>
+<div class="title rounded-outline">
+    <h2>Admin</h2>
+    <h4 class="text-muted">Perform administration tasks.</h4>
+</div>
+
+<div class="admin-container rounded-outline">
+
+</div>
     
 <?php require('../partials/06-prescript.php'); ?>
     <script src="/assets/js/main.js"></script>
