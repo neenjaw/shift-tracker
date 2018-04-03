@@ -18,6 +18,7 @@ var StaffPage = (function () {
         return height;
     }
 
+    //FIXME: There is a problem with the non-vent counting.  It is counting the inverse of the vented shifts, but it should only cound the inverse of the vented shifts when AT THE BEDSIDE
     function getShiftStats(records) {
         var roleStats = {};
         var categoryStats = {};
