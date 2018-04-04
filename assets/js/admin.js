@@ -72,8 +72,8 @@ $(function() {
 
                     if (data.password_changed) {
                         Flash.insertFlash('success', 'Password Successfully changed.');
-                        ev.target.reset();
-                        oldpw.focus();
+                        window.history.pushState(null, 'Shift Tracker', '/admin');
+                        target.innerHTML = ShiftTracker.templates.admin.default({});
                     } 
                 })
                 .catch(function (error) {
