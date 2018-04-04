@@ -11,7 +11,7 @@ include_once '../objects/user.php';
 
 try {
     //only let admin users use this these
-    if ($_SESSION['user']->admin)
+    if (!$_SESSION['user']->admin)
     {
         throw new Exception("You lack administrator privledges.");
     }

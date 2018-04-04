@@ -13,6 +13,11 @@ include_once '../config/database.php';
 include_once '../objects/user.php';
 
 try {
+    //only let admin users use this these
+    if (!$_SESSION['user']->admin)
+    {
+        throw new Exception("You lack administrator privledges.");
+    }
 
     // instantiate database and product object
     $database = new Database();
@@ -63,6 +68,8 @@ try {
 
     //check for admin flag
     if (isset($data->admin)) {
+        $user->admin = 0;
+        
         if ($data->admin === 'true') {
             $user->admin = 1;
         }
@@ -72,12 +79,15 @@ try {
 
     //check for active flag
     if (isset($data->active)) {
+        $user->active = 1;
+
         if ($data->active === 'false') {
             $user->active = 0;
         }
     } else {
         $user->active = 1;
     }
+
 
     // query products
     $stmt = $user->create();
@@ -88,8 +98,10 @@ try {
     $result->response = "OK";
     
     if ($num > 0) {
+        $result->created = true;
         $result->message = "User {$user->username} created.";
     } else {
+        $result->created = false;
         $result->message = "User not created.";
     }
 

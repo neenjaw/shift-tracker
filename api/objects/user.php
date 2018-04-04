@@ -43,7 +43,7 @@ class User {
         if (!isset($this->created_by)) throw new Exception('created_by must be provided');
 
         //check flags
-        if (!($this->admin === 0 || $this->admin === 1)) throw new Exception('active must be either 0 or 1');
+        if (!($this->admin === 0 || $this->admin === 1)) throw new Exception('admin must be either 0 or 1');
         if (!($this->active === 0 || $this->active === 1)) throw new Exception('active must be either 0 or 1');
 
         //sanitize strings
