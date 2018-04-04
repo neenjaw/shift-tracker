@@ -10,6 +10,11 @@ include_once '../config/database.php';
 include_once '../objects/user.php';
 
 try {
+    //only let admin users use this these
+    if ($_SESSION['user']->admin)
+    {
+        throw new Exception("You lack administrator privledges.");
+    }
 
     // instantiate database and product object
     $database = new Database();

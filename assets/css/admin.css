@@ -22,3 +22,15 @@
         width: 100%;
     }
 }
+
+.admin-container input:invalid, .admin-container input.invalid {
+    border-bottom: 2px solid firebrick;
+}
+
+.admin-container input:valid:not(.indeterminate):not(.invalid), .admin-container input.valid {
+    border-bottom: 2px solid green;
+}
+
+.admin-container input.indeterminate {
+    border-bottom: 2px solid goldenrod;
+}

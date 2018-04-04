@@ -23,13 +23,13 @@ try {
     if (isset($data->username)) {
         $user->username = trim($data->username);
     } else {
-        throw new Exception("user username not provided for delete");
+        throw new Exception("user username not provided");
     }
 
     if (isset($data->password)) {
         $user->password = trim($data->password);
     } else {
-        throw new Exception("user password not provided for delete");
+        throw new Exception("user password not provided");
     }
     
     // query products

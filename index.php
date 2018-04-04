@@ -28,7 +28,7 @@ if (isset($_SESSION['user'])) {
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" placeholder="password" 
-                    required  minlength="6" maxlength="20" pattern="\S{6,20}">
+                    required  minlength="8" maxlength="16" pattern="\S{8,16}">
             </div>
             <button type="submit" class="btn btn-block btn-primary">Log in</button>
         </form>
