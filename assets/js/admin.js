@@ -153,7 +153,7 @@ $(function() {
                     password: newPw.value,
                     repeatpw: rptPw.value,
                     created_by: User.name,
-                    admin: 'false',
+                    admin: 'false', //TODO: add a checkbox to get this value from the form
                     active: 'true'
                 })
                 .then(function (response) {
