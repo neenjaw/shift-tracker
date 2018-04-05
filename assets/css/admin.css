@@ -2,6 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding: 0;
+}
+
+.wrap > div {
+    padding: 5px;
 }
 
 .admin-buttons {
@@ -33,4 +39,12 @@
 
 .admin-container input.indeterminate {
     border-bottom: 2px solid goldenrod;
+}
+
+.wrap {
+    width: 100%;
+}
+
+.user {
+    border-bottom: 1px solid rgba(0,0,0,0.2);
 }

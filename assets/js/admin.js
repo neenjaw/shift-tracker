@@ -73,7 +73,7 @@ $(function() {
         } else if (action === 'adduser' && User.admin) {
             createUserHandler(container);
         } else if (action === 'modifyuser' && User.admin) {
-            // modifyUserHandler(container);
+            modifyUserHandler(container);
         } else if (action === 'deletestaff' && User.admin) {
             // deleteStaffHandler(container);
         }
@@ -143,6 +143,7 @@ $(function() {
             var newUsername = document.getElementById('username');
             var newPw = document.getElementById('newPassword');
             var rptPw = document.getElementById('rptPassword');
+            var isAdmin = document.getElementById('isAdmin');
 
             validateMatchingPassword(newPw, rptPw);
 
@@ -153,7 +154,7 @@ $(function() {
                     password: newPw.value,
                     repeatpw: rptPw.value,
                     created_by: User.name,
-                    admin: 'false', //TODO: add a checkbox to get this value from the form
+                    admin: ((isAdmin.checked) ? 'true' : 'false'),
                     active: 'true'
                 })
                 .then(function (response) {
@@ -178,6 +179,16 @@ $(function() {
                     }
                     console.error(error);
                 });
+        });
+    }
+
+    function modifyUserHandler(target) {
+        target.innerHTML = ShiftTracker.templates.admin.modify();
+
+        setPasswordRepeatChecker();
+
+        target.addEventListener('submit', function (ev) {
+            ev.preventDefault();
         });
     }
 });

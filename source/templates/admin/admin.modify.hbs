@@ -1,3 +1,39 @@
-<div class="main-loader mb-2">
-    <span class="main-spinner"><i class="fas fa-spinner fa-pulse"></i></span>
+<div class="wrap">
+    <div>
+        <h6>Modify a user</h6>
+    </div>
+    <div class="user">
+        <form>
+            <div class="form-group">
+                <label for="user-select">Select a user:</label>
+                <select class="form-control" id="user-select">
+                </select>
+            </div>
+            <button type="submit" class="btn btn-block btn-secondary">Edit User</button>
+        </form>
+    </div>
+    <div class="edit hidden mt-3">
+        <form>
+            <div class="form-group">
+                <label for="username">New Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter a username" minlength="4" maxlength="16" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" class="form-control" id="newPassword" placeholder="New Password" aria-describedby="passwordHelp" minlength="8"
+                    maxlength="16" pattern="[a-zA-Z0-9]{8,16}" required>
+                <small id="passwordHelp" class="form-text text-muted">Choose an alphanumeric string between 8 and 16 characters</small>
+            </div>
+            <div class="form-group">
+                <label for="rptPassword">Repeat New Password</label>
+                <input type="password" class="form-control" id="rptPassword" placeholder="Repeat New Password" required>
+            </div>
+            <div class="form-check mb-4">
+                <input type="checkbox" class="form-check-input" id="isAdmin" value="yes">
+                <label class="form-check-label" for="isAdmin">Give admin priveliges?</label>
+            </div>
+            {{!-- TODO: add a checkbox to get the administrator state for the new user --}}
+            <button type="submit" class="btn btn-block btn-primary">Create new user</button>
+        </form>
+    </div>
 </div>
