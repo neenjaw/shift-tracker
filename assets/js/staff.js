@@ -56,7 +56,7 @@ var StaffPage = (function () {
         if (modStats.vent) {
             modStats.nonvent = { name: 'non-vented', count: (bedsideCount - modStats.vent.count)};
         } else {
-            modStats.nonvent = { name: 'non-vented', count: (records.length) };            
+            modStats.nonvent = { name: 'non-vented', count: (bedsideCount) };            
         }
 
         roleStats = Object.values(roleStats);

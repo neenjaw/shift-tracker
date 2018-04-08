@@ -1,3 +1,19 @@
-<div class="main-loader mb-2">
-    <span class="main-spinner"><i class="fas fa-spinner fa-pulse"></i></span>
+<div class="wrap rounded-outline">
+    <div>
+        <h5>Delete a staff member</h5>
+        <h6 class="danger-text">WARNING -- Deleting a staff member is irreversible and cannot be recovered.</h6>
+    </div>
+    <div>
+        <form id="staff-form">
+            <div class="form-group">
+                <label for="staff-select">Select a staff member:</label>
+                <select class="form-control" id="staff-select" required>
+                    {{#each staffMembers as |staff staffIndex|}}
+                        <option value="{{staff.id}}" data-staff-active="{{binaryToBoolean staff.active}}">{{staff.lastName}}, {{staff.firstName}} ({{staff.categoryName}})</option>
+                    {{/each}}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-block btn-danger"><i class="fas fa-times"></i> Delete Staff Member</button>
+        </form>
+    </div>
 </div>

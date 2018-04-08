@@ -92,7 +92,7 @@ $(function() {
         } else if (action === 'modifyuser' && User.admin) {
             modifyUserHandler(container);
         } else if (action === 'deletestaff' && User.admin) {
-            // deleteStaffHandler(container);
+            deleteStaffHandler(container);
         }
     }
 
@@ -319,6 +319,62 @@ $(function() {
                 console.error(error);
                 
                 target.innerHTML = ShiftTracker.templates.admin.error();
+            });
+    }
+
+    function deleteStaffHandler(target) {
+        axios
+            .get('/api/staff_member/read.php')
+            .then(function(response) {
+                var data = response.data;
+
+                if (data.response !== 'OK') {
+                    throw data.message;
+                }
+
+                target.innerHTML = ShiftTracker.templates.admin.deleteStaff({
+                    staffMembers: data.records.map(function(record) {
+                        return {
+                            firstName: record.first_name,
+                            lastName: record.last_name,
+                            id: record.id,
+                            categoryName: record.category_name
+                        };
+                    })
+                });       
+                
+                target.addEventListener('submit', function(ev) {
+                    ev.preventDefault();
+
+                    var formElement = ev.target;
+                    var staffSelect = formElement.querySelector('select');
+                    var staffOption = staffSelect.querySelector('option[value="'+staffSelect.value+'"]');
+        
+                    if (confirm('Are you sure you want to delete '+staffOption.innerText.trim()+'?')) {
+                        axios
+                            .post('/api/staff_member/delete.php', { id: staffSelect.value })
+                            .then(function(response) {
+                                var data = response.data;
+
+                                if (data.response !== 'OK' || !data.deleted) {
+                                    throw data.message;
+                                }
+
+                                Flash.insertFlash('success', 'Staff member successfully deleted.');
+                                onCommandSuccess(target);
+                            })
+                            .catch(function(error) {
+                                console.error(error);
+                                target.innerHTML = ShiftTracker.templates.admin.error({errorMsg: 'There was a problem deleting the staff member.'});       
+                            });
+
+                    }
+                });
+            })
+            .catch(function(error) {
+                console.error(error);
+                
+                target.innerHTML = ShiftTracker.templates.admin.error({});       
             });
     }
 });

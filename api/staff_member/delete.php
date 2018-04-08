@@ -33,7 +33,10 @@ try {
     // products array
     $result = (object) array();
     $result->response = "OK";
+    $result->deleted = false;
+
     if ($num > 0) {
+        $result->deleted = true;
         $result->message = "staff member with id {$staff_member->id} deleted.";
     } else {
         $result->message = "Nothing deleted.";
