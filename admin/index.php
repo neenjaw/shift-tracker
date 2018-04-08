@@ -10,7 +10,7 @@
     <h4 class="text-muted">Perform admin tasks.</h4>
 </div>
 
-<div class="admin-container rounded-outline">
+<div class="admin-container">
 
 </div>
     

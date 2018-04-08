@@ -1,36 +1,50 @@
-<div class="wrap">
+<div class="wrap rounded-outline">
     <div>
-        <h6>Modify a user</h6>
+        <h5>Modify a user</h5>
     </div>
     <div class="user">
-        <form>
+        <form id="user-form">
             <div class="form-group">
                 <label for="user-select">Select a user:</label>
-                <select class="form-control" id="user-select">
+                <select class="form-control" id="user-select" required>
+                    {{#each users as |user userIndex|}}
+                        <option value="{{user.id}}" data-user-active="{{binaryToBoolean user.active}}" data-user-admin="{{binaryToBoolean user.admin}}">{{user.username}}</option>
+                    {{/each}}
                 </select>
             </div>
             <button type="submit" class="btn btn-block btn-secondary">Edit User</button>
         </form>
     </div>
-    <div class="edit hidden mt-3">
-        <form>
+    <div class="edit hidden">
+        <form id="modify-form">
+            <input type="hidden" id="userId">
             <div class="form-group">
-                <label for="username">New Username</label>
+                <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" placeholder="Enter a username" minlength="4" maxlength="16" required>
             </div>
-            <div class="form-group">
-                <label for="newPassword">New Password</label>
-                <input type="password" class="form-control" id="newPassword" placeholder="New Password" aria-describedby="passwordHelp" minlength="8"
-                    maxlength="16" pattern="[a-zA-Z0-9]{8,16}" required>
-                <small id="passwordHelp" class="form-text text-muted">Choose an alphanumeric string between 8 and 16 characters</small>
+            <div class="rounded-outline">
+                <div class="form-check mb-4">
+                    <input type="checkbox" class="form-check-input" id="changePw" value="yes">
+                    <label class="form-check-label" for="isAdmin">Change Password?</label>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" class="form-control" id="newPassword" placeholder="New Password" aria-describedby="passwordHelp" minlength="8"
+                        maxlength="16" pattern="[a-zA-Z0-9]{8,16}" required disabled>
+                    <small id="passwordHelp" class="form-text text-muted">Choose an alphanumeric string between 8 and 16 characters</small>
+                </div>
+                <div class="form-group">
+                    <label for="rptPassword">Repeat New Password</label>
+                    <input type="password" class="form-control" id="rptPassword" placeholder="Repeat New Password" required disabled>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="rptPassword">Repeat New Password</label>
-                <input type="password" class="form-control" id="rptPassword" placeholder="Repeat New Password" required>
+            <div class="form-check mb-4">
+                <input type="checkbox" class="form-check-input" id="isActive" value="yes">
+                <label class="form-check-label" for="isAdmin">Is the user active?</label>
             </div>
             <div class="form-check mb-4">
                 <input type="checkbox" class="form-check-input" id="isAdmin" value="yes">
-                <label class="form-check-label" for="isAdmin">Give admin priveliges?</label>
+                <label class="form-check-label" for="isAdmin">Does the user have admin privileges?</label>
             </div>
             {{!-- TODO: add a checkbox to get the administrator state for the new user --}}
             <button type="submit" class="btn btn-block btn-primary">Create new user</button>

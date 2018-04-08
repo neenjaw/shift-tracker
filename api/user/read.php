@@ -21,9 +21,9 @@ try {
     $stmt = $user->read();
  
     // products array
-    $user_arr = (object) array();
-    $user_arr->records = array();
-    $user_arr->count = $stmt->rowCount();
+    $result = (object) array();
+    $result->records = array();
+    $result->count = $stmt->rowCount();
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -45,12 +45,12 @@ try {
             "updated_by" => $updated_by,
         );
  
-        array_push($user_arr->records, $one_user);
+        array_push($result->records, $one_user);
     }
  
-    $user_arr->response = "OK";
+    $result->response = "OK";
 
-    echo json_encode($user_arr);
+    echo json_encode($result);
 
 } catch (Exception $e) {
 

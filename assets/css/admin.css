@@ -1,4 +1,6 @@
 .admin-container {
+    width: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,16 +8,26 @@
     padding: 0;
 }
 
+.admin-container > * {
+    width: 100%;
+}
+
+.wrap {
+    padding: 0;
+}
+
 .wrap > div {
-    padding: 5px;
+    padding: 10px 10px 10px 14px;
 }
 
 .admin-buttons {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
+}
 
+.admin-buttons .btn {
     width: 50vw;
 }
 
@@ -24,7 +36,7 @@
 }
 
 @media only screen and (max-width: 500px) {
-    .admin-buttons {
+    .admin-buttons .btn {
         width: 100%;
     }
 }
@@ -41,10 +53,10 @@
     border-bottom: 2px solid goldenrod;
 }
 
-.wrap {
-    width: 100%;
+.edit > div:first-child {
+    border-top: 1px solid rgba(0,0,0,0.2);    
 }
 
-.user {
-    border-bottom: 1px solid rgba(0,0,0,0.2);
+.hidden {
+    display: none;
 }

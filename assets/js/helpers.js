@@ -95,6 +95,13 @@ Handlebars.registerHelper('checkIfIdSelected', function (id, idList) {
     return '';
 });
 
+// add the binaryToBoolean helper
+Handlebars.registerHelper('binaryToBoolean', function (binary) {
+    if (binary == 1) return 'true';
+
+    return 'false';
+});
+
 // add the checkIfChecked helper
 Handlebars.registerHelper('checkIfSelected', function (id, assignmentId) {
     if (assignmentId == id) {

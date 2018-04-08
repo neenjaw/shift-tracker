@@ -12,6 +12,17 @@ $(function() {
     // Support functions
     //
 
+    function removeHiddenButtons() {
+        document.querySelectorAll('.admin-container .hidden').forEach(function (element) {
+            if (User.admin) {
+                element.classList.remove('hidden');
+            }
+            else {
+                element.parentNode.removeChild(element);
+            }
+        });
+    }
+
     function checkMatchingPws(newPw, rptPw) {
         return (newPw && rptPw && newPw === rptPw);
     }
@@ -53,12 +64,17 @@ $(function() {
             rptPw.classList.remove('valid');
             rptPw.classList.remove('indeterminate');
             rptPw.classList.add('invalid');
+
+            return false;
         }
+
+        return true;
     }
 
     function onCommandSuccess(target) {
         window.history.pushState(null, 'Shift Tracker', '/admin');
         target.innerHTML = ShiftTracker.templates.admin.default({});
+        removeHiddenButtons();
     }
 
     //
@@ -67,6 +83,7 @@ $(function() {
 
     if (!action) {
         container.innerHTML = ShiftTracker.templates.admin.default({});
+        removeHiddenButtons();
     } else {
         if (action === 'changepw') {
             changePasswordHandler(container);
@@ -79,13 +96,6 @@ $(function() {
         }
     }
 
-    document.querySelectorAll('.admin-container .hidden').forEach(function(element) {
-        if (User.admin) {
-            element.classList.remove('hidden');
-        } else {
-            element.parentNode.removeChild(element);
-        }
-    });
 
     //
     // Handlers for each command
@@ -145,7 +155,9 @@ $(function() {
             var rptPw = document.getElementById('rptPassword');
             var isAdmin = document.getElementById('isAdmin');
 
-            validateMatchingPassword(newPw, rptPw);
+            if (!validateMatchingPassword(newPw, rptPw)) {
+                return false;
+            }
 
             //axios call here
             axios
@@ -183,13 +195,131 @@ $(function() {
     }
 
     function modifyUserHandler(target) {
-        target.innerHTML = ShiftTracker.templates.admin.modify();
+        axios
+            .get('/api/user/read.php')
+            .then(function(response) {
+                var data = response.data;
 
-        setPasswordRepeatChecker();
+                if (data.response !== 'OK') {
+                    throw data.message;
+                }
 
-        target.addEventListener('submit', function (ev) {
-            ev.preventDefault();
-        });
+                var records = data.records.filter(function(record) {
+                    return (record.username !== User.name && record.username !== 'root');
+                });
+
+                target.innerHTML = ShiftTracker.templates.admin.modify({users: records});
+
+                setPasswordRepeatChecker();
+
+                target.addEventListener('change', function(ev) {
+                    if (ev.target.id === 'changePw') {
+                        var inputs = ev.target.parentNode.parentNode.querySelectorAll('input[type="password"]');
+    
+                        for (var index = 0; index < inputs.length; index++) {
+                            var input = inputs[index];
+
+                            input.disabled = !input.disabled;                            
+                        }
+                    }
+                });
+
+                target.addEventListener('submit', function (ev) {
+                    ev.preventDefault();
+
+                    if (ev.target.id === 'user-form') {
+                        var userSelect = document.querySelector('#user-select');
+                        var userOption = userSelect.querySelector('option[value="'+userSelect.value+'"]');
+                        var userSubmit = document.querySelector('#user-form button');
+
+                        userSelect.disabled = true;
+                        userSubmit.disabled = true;
+
+                        var userDiv = document.querySelector('div.user');
+                        var editDiv = document.querySelector('div.edit.hidden');
+
+                        editDiv.querySelector('#userId').value = userSelect.value;
+                        editDiv.querySelector('#username').value = userOption.innerText.trim();
+                        editDiv.querySelector('#username').dataset.originalName = userOption.innerText.trim();
+                        editDiv.querySelector('#isActive').checked = (userOption.dataset.userActive === 'true') ? true : false;
+                        editDiv.querySelector('#isActive').dataset.originalState = userOption.dataset.userActive;
+                        editDiv.querySelector('#isAdmin').checked = (userOption.dataset.userAdmin === 'true') ? true : false;
+                        editDiv.querySelector('#isAdmin').dataset.originalState = userOption.dataset.userAdmin;
+                        
+                        editDiv.classList.remove('hidden');
+                        userDiv.classList.add('hidden');
+                    } else if (ev.target.id === 'modify-form') {
+                        var edit = document.querySelector('div.edit');
+                        var newUsername = edit.querySelector('#username');
+                        var changePassword = edit.querySelector('#changePw');
+                        var newPassword = edit.querySelector('#newPassword');
+                        var newRptPassword = edit.querySelector('#rptPassword');
+                        var isActive = edit.querySelector('#isActive');
+                        var isAdmin = edit.querySelector('#isAdmin');
+
+                        var changed = false;
+
+                        var payload = {
+                            id: document.querySelector('#userId').value,
+                            updated_by: User.name
+                        };
+                        
+                        if (newUsername.value !== newUsername.dataset.originalName) {
+                            changed = true;
+                            payload.username = newUsername.value;
+                        }
+
+                        if (isActive.checked !== (isActive.dataset.originalState === 'true')) {
+                            changed = true;
+                            payload.active = (isActive.checked) ? 'true' : 'false';
+                        }
+
+                        if (isAdmin.checked !== (isAdmin.dataset.originalState === 'true')) {
+                            changed = true;
+                            payload.admin = (isAdmin.checked) ? 'true' : 'false';
+                        }
+
+                        if (changePassword.checked) {
+                            if (validateMatchingPassword(newPassword, newRptPassword)) {
+
+                                changed = true;
+                                payload.password = newPassword.value;
+                                payload.repeatpw = newRptPassword.value;
+                                
+                            } else {
+                                Flash.insertFlash('warning', 'Passwords don\'t match');
+                                return false;
+                            }
+                        }
+
+                        if (changed) {
+                            axios
+                                .post('/api/user/update.php', payload)
+                                .then(function(response) {
+                                    var data = response.data;
+
+                                    if (data.response !== 'OK') {
+                                        throw data.message;
+                                    }
+
+                                    Flash.insertFlash('success', 'User successfully updated.');
+                                    onCommandSuccess(target);
+                                })
+                                .catch(function(error) {
+                                    console.error(error);
+                                    Flash.insertFlash('danger', 'There was a problem updating the user.');
+                                });
+                        } else {
+                            Flash.insertFlash('warning', 'Nothing changed, no action taken.');
+                        }
+                    }
+                });
+            })
+            .catch(function(error) {
+                console.error(error);
+                
+                target.innerHTML = ShiftTracker.templates.admin.error();
+            });
     }
 });
 
