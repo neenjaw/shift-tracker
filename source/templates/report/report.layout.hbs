@@ -1,11 +1,11 @@
 <div class="title rounded-outline">
     <h2>Shift Reports</h2>
-    <h4 class="text-muted">{{subtitle}}</h4>
+    <h5 class="text-muted mt-1 mb-1">{{subtitle}}</h5>
+    <h6 class="text-muted">{{context}}</h6>
 </div>
-
-<div class="report-container rounded-container">
+<div class="report-container rounded-outline">
     {{#if whichReportPartial}}
-        {{> (lookup . whichReportPartial)}}
+        {{> (lookup . 'whichReportPartial')}}
     {{else}}
         <div class="main-loader mb-2">
             <span class="main-spinner">
@@ -14,3 +14,9 @@
         </div>
     {{/if}}
 </div>
+
+<div class="control-container rounded-outline">
+    <button id="prevBtn" class="btn btn-lg btn-primary" {{#iffalse prev}}disabled{{/iffalse}}>Previous</button>
+    <button id="nextBtn" class="btn btn-lg btn-primary" {{#iffalse next}}disabled{{/iffalse}}>Next</button>
+</div>
+{{debug}}

@@ -57,7 +57,7 @@ Handlebars.registerHelper('ifgtZero', function (v1, options) {
     return options.inverse(this);
 });
 
-// add the ifgtZero helper
+// add the iftrue helper
 Handlebars.registerHelper('iftrue', function (v1, options) {
     if (v1 === true) {
         return options.fn(this);
@@ -65,7 +65,15 @@ Handlebars.registerHelper('iftrue', function (v1, options) {
     return options.inverse(this);
 });
 
-// add the ifgtZero helper
+// add the iffalse helper
+Handlebars.registerHelper('iffalse', function (v1, options) {
+    if (v1 === false) {
+        return options.fn(this);
+    }
+    return options.inverse(this);
+});
+
+// add the ifMatch helper
 Handlebars.registerHelper('ifMatch', function (v1, v2, options) {
     if (v1 === v2) {
         return options.fn(this);
@@ -119,15 +127,15 @@ Handlebars.registerHelper('checkIfSelected', function (id, assignmentId) {
 
 //add debug helper
 Handlebars.registerHelper('debug', function (optionalValue) {
-    console.log('Current Context');
+    console.log('👏Current Context');
     console.log('====================');
     console.log(this);
 
-    if (optionalValue) {
-        console.log('Value');
-        console.log('====================');
-        console.log(optionalValue);
-    }
+    // if (optionalValue) {
+    //     console.log('Value');
+    //     console.log('====================');
+    //     console.log(optionalValue);
+    // }
 });
 
 // add the checkIfChecked helper
