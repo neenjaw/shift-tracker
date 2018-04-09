@@ -13,16 +13,16 @@
     </thead>
     <tbody>
 
-        {{#each groups}}
+        {{#each groups as |group groupIndex|}}
             <tr>
-                <th scope="row" colspan="3">{{name}}</td>
+                <th scope="row" colspan="3">{{group.name}}</td>
             </tr>
 
-            {{#each staff}}
+            {{#each staff as |s sIndex|}}
                 <tr>
                     <th scope="row">&nbsp;</th>
-                    <td>{{last_name}}, {{first_name}}</td>
-                    <td class="text-center"><a href="/staff?staff_id={{id}}"><i class="fas fa-info-circle"></i></a></td>
+                    <td><a href="/staff?staff_id={{s.id}}"></a>{{s.last_name}}, {{s.first_name}}</a></td>
+                    <td class="text-center"><a href="/staff?staff_id={{s.id}}"><i class="fas fa-info-circle"></i></a></td>
                 </tr>
             {{/each}}
         {{/each}}

@@ -5,15 +5,9 @@
 <?php require('../partials/04-nav.php'); ?>
 <?php require('../partials/05-flash.php'); ?>
 
-<div class="title rounded-outline">
-    <h2>Shift Reports</h2>
-    <h4 class="text-muted">Pick a report to view:</h4>
-</div>
 
-<div class="button-container rounded-outline">
-    <a href="/shift/assignment-report.php" class="btn btn-lg btn-primary">Make Assignment Report</a>
-</div>
 
 <?php require('../partials/06-prescript.php'); ?>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/assignment-report.js"></script>
 <?php require('../partials/07-footer.php'); ?>

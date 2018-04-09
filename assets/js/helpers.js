@@ -17,6 +17,12 @@ Handlebars.registerHelper('printInlineDate', function (dateString) {
     return new Handlebars.SafeString(str);
 });
 
+Handlebars.registerHelper('printFullInlineDate', function () {
+    var str = moment().format('YYYY-MM-DD');
+
+    return new Handlebars.SafeString(str);
+});
+
 // add the stringToProperCase helper
 Handlebars.registerHelper('stringToProperCase', function (str) {
     var splits = str.split(' ');

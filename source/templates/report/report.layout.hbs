@@ -1,0 +1,16 @@
+<div class="title rounded-outline">
+    <h2>Shift Reports</h2>
+    <h4 class="text-muted">{{subtitle}}</h4>
+</div>
+
+<div class="report-container rounded-container">
+    {{#if whichReportPartial}}
+        {{> (lookup . whichReportPartial)}}
+    {{else}}
+        <div class="main-loader mb-2">
+            <span class="main-spinner">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </span>
+        </div>
+    {{/if}}
+</div>
