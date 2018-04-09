@@ -1,3 +1,5 @@
+/* global axios */
+/* global Flash */
 /* global ShiftTracker */
 
 var ReportGenerator = (function() {
@@ -16,7 +18,7 @@ var ReportGenerator = (function() {
 
     function submitData() {
         if (state.steps[state.step].submitData) {
-            return state.steps[state.step].submitData(state.data);
+            return state.steps[state.step].submitData(state.container, state.data);
         }
 
         return false;
@@ -49,6 +51,8 @@ var ReportGenerator = (function() {
                 return;
             }
 
+            Object.assign(state.data, data);
+
             var x = Object.assign({
                 subtitle: state.steps[state.step].subtitle,
                 context: state.steps[state.step].context,
@@ -58,7 +62,6 @@ var ReportGenerator = (function() {
             }, state.data);
 
             console.log({x});
-            
 
             state.container.innerHTML = state.template(x);
         });
@@ -84,40 +87,86 @@ $(function(){
             container: container,
             steps: [
                 {
-                    subtitle: 'Assignment Report:',
+                    subtitle: 'Assignment Report',
                     context: '1) Choose the date for the report',
                     template: 'report_date',
                     prepareData: function(data, callback) {
-                        console.info('preparing data');
-                        return callback(null, true);
+                        return callback(null, {prepared: true});
                     },
-                    submitData: function(data) {
-                        console.info('submitting data');
-                        return true;
+                    submitData: function(container, data) {
+                        var dateStr = container.querySelector('#date').value;
+
+                        if (dateStr.match(/[0-9]{4}-[0-9]{2}-[0-9]{2}/)) {
+                            data.date = dateStr;
+                            
+                            delete data.selectedStaffIds;
+
+                            return true;
+                        }
+
+                        return false;
                     }  
                 },
                 {
-                    subtitle: 'Assignment Report:',
-                    context: '1) Choose the staff for the report',
+                    subtitle: 'Assignment Report',
+                    context: '2) Choose the staff for the report',
                     template: 'report_staff',
                     prepareData: function(data, callback) {
                         console.info('preparing data');
-                        return callback(null, true);
+
+                        axios
+                            .get('/api/staff_member/read_active.php', {
+                                params: {
+                                    date: data.date
+                                }
+                            })
+                            .then(function(result) {
+                                var data = result.data;
+
+                                if (data.response !== 'OK') {
+                                    throw data.message;
+                                } 
+
+                                return callback(null, {
+                                    prepared: true,
+                                    staffMembers: data.records
+                                });
+                            })
+                            .catch(function(error) {
+                                return callback(error);
+                            });
                     },
-                    submitData: function(data) {
+                    submitData: function(container, data) {
                         console.info('submitting data');
+
+                        var selectedOptions = container.querySelectorAll('option:checked');
+                        var selectedStaffIds = [];
+
+                        if (selectedOptions.length === 0) {
+                            Flash.insertFlash('warning', 'You must select at least one staff member for the report to be generated.');
+                            return false;
+                        }
+
+                        for (var index = 0; index < selectedOptions.length; index++) {
+                            var option = selectedOptions[index];
+                            
+                            selectedStaffIds.push(option.value);
+                        }
+
+                        data.selectedStaffIds = selectedStaffIds;
+
                         return true;
                     }  
                 },
                 {
-                    subtitle: 'Assignment Report:',
+                    subtitle: 'Assignment Report',
                     context: '3) View Report',
                     template: 'report_display_shift',
                     prepareData: function(data, callback) {
                         console.info('preparing data');
-                        return callback(null, true);
+                        return callback(null, {prepared: true});
                     },
-                    submitData: function(data) {
+                    submitData: function(container, data) {
                         return false;
                     }  
                 }
@@ -133,5 +182,24 @@ $(function(){
         } else if (ev.target.id === 'nextBtn') {
             ReportGenerator.next();
         }
+    });
+
+    container.addEventListener('mousedown', function(ev) {
+        if (ev.target.localName === 'option' && ev.target.parentNode.multiple) {
+            ev.preventDefault();
+                    
+            var originalScrollTop = ev.target.parentNode.scrollTop;
+            // console.log(originalScrollTop);
+
+            ev.target.selected = ev.target.selected ? false : true;
+
+            var self = this;
+            ev.target.parentNode.focus();
+            setTimeout(function () {
+                ev.target.parentNode.scrollTop = originalScrollTop;
+            }, 0);
+        }
+
+        return false;
     });
 });

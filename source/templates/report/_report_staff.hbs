@@ -5,10 +5,10 @@
     </div>
     <div class="staff-list mt-2">
         <label for="bedside-list-select">Select Staff for Shift Report</label>
-        <select class="shift__bedside form-control" id="bedside-list-select" size="{{chooseMaxUpTo staffForBedsidePick.length 5 9}}"
+        <select class="shift__bedside form-control" id="bedside-list-select" size="{{chooseMaxUpTo staffMembers.length 5 9}}"
             multiple>
             {{#each staffMembers as |staff staffIndex|}}
-            <option value="{{staff.id}}" {{checkIfIdSelected staff.id @root.selectedStaffIds}}>{{staff.lastName}}, {{staff.firstName}} ({{staff.categoryName}})</option>
+            <option value="{{staff.id}}" {{checkIfIdSelected staff.id @root.selectedStaffIds}}>{{staff.last_name}}, {{staff.first_name}} ({{staff.category_name}})</option>
             {{/each}}
         </select>
     </div>
