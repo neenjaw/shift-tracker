@@ -1,5 +1,6 @@
 /* global axios */
 /* global Flash */
+/* global moment */
 /* global ShiftTracker */
 
 var ReportGenerator = (function() {
@@ -164,7 +165,29 @@ $(function(){
                     template: 'report_display_shift',
                     prepareData: function(data, callback) {
                         console.info('preparing data');
-                        return callback(null, {prepared: true});
+
+                        axios
+                            .get('/api/shift/read_shifts_for_staff_members.php', {
+                                params: {
+                                    date_to: data.date,
+                                    date_from: moment(data.date, 'YYYY-MM-DD').subtract(8, 'weeks').format('YYYY-MM-DD'),
+                                    staff_ids: data.selectedStaffIds
+                                }
+                            })
+                            .then(function(result) {
+                                var data = result.data;
+
+                                if (data.response !== 'OK') {
+                                    throw data.message;
+                                } 
+
+                                return callback(null, {
+                                    prepared: true
+                                });
+                            })
+                            .catch(function(error) {
+                                return callback(error);
+                            });
                     },
                     submitData: function(container, data) {
                         return false;
