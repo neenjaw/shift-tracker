@@ -205,11 +205,13 @@ $(function(){
                         function processRecord(staff, record) {
                             staff.shifts.push(record);
 
-                            staff.assignments[record.assignment_id] = staff.assignments[record.assignment_id] || makeAssignmentEntry(record);
-                            staff.assignments[record.assignment_id].count += 1;
-
                             staff.roles[record.role_id] = staff.roles[record.role_id] || makeRoleEntry(record);
                             staff.roles[record.role_id].count += 1;
+
+                            if (['bedside', 'nursing attendant', 'unit clerk'].includes(record.role_name)) {
+                                staff.assignments[record.assignment_id] = staff.assignments[record.assignment_id] || makeAssignmentEntry(record);
+                                staff.assignments[record.assignment_id].count += 1; 
+                            }
 
                             if (record.shift_mods) {
                                 for (var index = 0; index < record.shift_mods.length; index++) {
@@ -223,6 +225,25 @@ $(function(){
                             if (record.shift_d_or_n === 'D') staff.dayCount += 1;
                         }
 
+                        function getModAndPodCounts(assignmentDictionary, modDictionary, rn) {
+                            var apodNameIds = [];
+                            apodNameIds.push(assignmentDictionary['A']); // jshint ignore:line
+
+                            var bpodNameIds = [];
+                            bpodNameIds.push(assignmentDictionary['B']); // jshint ignore:line
+
+                            var cpodNameIds = [];
+                            cpodNameIds.push(assignmentDictionary['C']); // jshint ignore:line
+
+                            // rn.forEach(function (staff) {
+                            // staff.aCount = 
+                            // staff.bCount = 
+                            // staff.cCount = 
+                            // staff.bedsideCount = 
+                            // staff.doubleCount =                                
+                            // });
+                        }
+
                         console.info('preparing data');
 
                         axios
@@ -234,11 +255,13 @@ $(function(){
                                         staff_ids: data.selectedStaffIds
                                     }
                                 }),
-                                axios.get('/api/assignment/read.php')
+                                axios.get('/api/assignment/read.php'),
+                                axios.get('/api/mod/read.php')
                             ])
-                            .then(axios.spread(function(shiftResult, assignmentResult) {
+                            .then(axios.spread(function(shiftResult, assignmentResult, modResult) {
                                 var shift = shiftResult.data;
                                 var assignment = assignmentResult.data;
+                                var mod = modResult.data;
 
                                 // console.info({data});
 
@@ -250,18 +273,24 @@ $(function(){
                                     throw assignment.message;
                                 }
 
+                                if (mod.response !== 'OK') {
+                                    throw mod.message;
+                                }
+
                                 var staff = [];
                                 var groups = {};
-                                var stats = {
-                                    smallestBpod: -1,
-                                    smallestDoubled: -1
-                                };
 
                                 var assignmentDictionary = {};
                                 assignment.records.forEach(function(record) {
                                     assignmentDictionary[record.name] = record.id;
                                 });
 
+                                var modDictionary = {};
+                                mod.records.forEach(function (record) {
+                                    modDictionary[record.name] = record.id;
+                                });
+
+                                // process all of the shift records to be organized by group -> staff -> shift
                                 shift.records.forEach(function(record) { 
                                     if (staff[record.staff_id] === undefined) {
                                         staff[record.staff_id] = makeStaffEntry(record); 
@@ -274,38 +303,16 @@ $(function(){
                                     processRecord(staff[record.staff_id], record);
                                 });
 
-
+                                // get the pod counts for each of the RN's
                                 if (groups.rn) {
-
-                                    var apodNameIds = [];
-                                    apodNameIds.push(assignmentDictionary['A']); // jshint ignore:line
-
-                                    var bpodNameIds = [];
-                                    bpodNameIds.push(assignmentDictionary['B']); // jshint ignore:line
-                                    bpodNameIds.push(assignmentDictionary['A/B']);
-                                    bpodNameIds.push(assignmentDictionary['B/C']);
-                                
-                                    var cpodNameIds = [];
-                                    cpodNameIds.push(assignmentDictionary['C']); // jshint ignore:line
-
-                                    groups.rn.forEach(function(staff) {
-                                        staff.aCount = staff.aCount || 0;
-                                        staff.bCount = staff.bCount || 0;
-                                        staff.cCount = staff.cCount || 0;
-
-                                        staff.shifts.forEach(function(shift) {
-                                            if (apodNameIds.includes(shift.assignment_id)) staff.aCount += 1;
-                                            if (bpodNameIds.includes(shift.assignment_id)) staff.bCount += 1;
-                                            if (cpodNameIds.includes(shift.assignment_id)) staff.cCount += 1;
-                                        });
-                                    });
+                                    getModAndPodCounts(assignmentDictionary, modDictionary, groups.rn);
                                 }
 
                                 return callback(null, {
                                     prepared: true,
                                     groups: groups,
-                                    stats: stats,
-                                    assignmentDictionary: assignmentDictionary
+                                    assignmentDictionary: assignmentDictionary,
+                                    modDictionary: modDictionary
                                 });
                             }))
                             .catch(function(error) {
@@ -349,3 +356,4 @@ $(function(){
         return false;
     });
 });
+

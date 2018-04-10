@@ -148,3 +148,14 @@ Handlebars.registerHelper('chooseMaxUpTo', function (v1, v2, v3) {
 
     return max;
 });
+
+// add the printAssignmentReportRow helper
+Handlebars.registerHelper('printAssignmentReportRow', function (staff, assignmentDictionary, modDictionary) {
+    return new Handlebars.SafeString(
+        '<td>'+staff.last_name+', '+staff.first_name+'</td>' +
+        '<td></td>' +
+        '<td></td>' +
+        '<td></td>' +
+        '<td></td>'
+    );
+});
