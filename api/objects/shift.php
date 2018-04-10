@@ -1,4 +1,8 @@
 <?php
+
+// MariaDB 10.2 --> JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+// MariaDB 10.1 --> CONCAT('{\"shiftmod_id\":',sm.id,', \"mod_id\":',sm.mod_id,',\"mod_name\":\"',m.name,'\"}')
+
 require_once '../config/auth.php';
 
 include_once '../config/auxiliary.php';
@@ -141,7 +145,7 @@ class Shift {
                             CONCAT(
                                 '[',
                                 GROUP_CONCAT(
-                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                    CONCAT('{\"shiftmod_id\":',sm.id,', \"mod_id\":',sm.mod_id,',\"mod_name\":\"',m.name,'\"}')
                                 ),
                                 ']'
                             ) as shift_mods
@@ -209,7 +213,7 @@ class Shift {
                             CONCAT(
                                 '[',
                                 GROUP_CONCAT(
-                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                    CONCAT('{\"shiftmod_id\":',sm.id,', \"mod_id\":',sm.mod_id,',\"mod_name\":\"',m.name,'\"}')
                                 ),
                                 ']'
                             ) as shift_mods
@@ -305,7 +309,7 @@ class Shift {
                             CONCAT(
                                 '[',
                                 GROUP_CONCAT(
-                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                    CONCAT('{\"shiftmod_id\":',sm.id,', \"mod_id\":',sm.mod_id,',\"mod_name\":\"',m.name,'\"}')
                                 ),
                                 ']'
                             ) as shift_mods
@@ -324,6 +328,8 @@ class Shift {
                     s.shift_date {$date_condition}
                 ORDER BY
                     f.last_name ASC, f.first_name ASC, s.shift_date ASC";
+
+// JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
 
         // prepare query statement
         $stmt = $this->conn->prepare($sql);
@@ -391,7 +397,7 @@ class Shift {
                             CONCAT(
                                 '[',
                                 GROUP_CONCAT(
-                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                    CONCAT('{\"shiftmod_id\":',sm.id,', \"mod_id\":',sm.mod_id,',\"mod_name\":\"',m.name,'\"}')
                                 ),
                                 ']'
                             ) as shift_mods
@@ -482,7 +488,7 @@ class Shift {
                             CONCAT(
                                 '[',
                                 GROUP_CONCAT(
-                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                    CONCAT('{\"shiftmod_id\":',sm.id,', \"mod_id\":',sm.mod_id,',\"mod_name\":\"',m.name,'\"}')
                                 ),
                                 ']'
                             ) as shift_mods

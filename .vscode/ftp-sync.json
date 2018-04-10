@@ -1,0 +1,37 @@
+{
+    "remotePath": "./",
+    "host": "files.000webhost.com",
+    "username": "neenjaw-testbed",
+    "password": "testedninja4neenjaw",
+    "port": 21,
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": false,
+    "passive": false,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store",
+        "\\source",
+        "\\node_modules",
+        ".eslintrc.json",
+        ".gitattributes",
+        ".gitignore",
+        ".htaccess",
+        ".jshintrc",
+        "dbdump.sql",
+        "gulpfile.js",
+        "package-lock.json",
+        "package.json",
+        "test.php",
+        "README.md"
+    ],
+    "generatedFiles": {
+        "uploadOnSave": false,
+        "extensionsToInclude": [],
+        "path": ""
+    }
+}

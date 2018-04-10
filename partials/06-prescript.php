@@ -10,10 +10,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.min.js" integrity="sha256-UoS1yAHj9HqfbFL+oYoF0gkPrJiMK9t4zeciRCafl8I=" crossorigin="anonymous"></script>
     <!-- JS - Compiled HBS Template, Custom JS -->
     <script>
+    <?php if (isset($_SESSION['user'])) { ?>
     var User = {
         name: '<?= $_SESSION['user']->login ?>',
         admin: <?= ($_SESSION['user']->admin) ? 'true' : 'false' ?>
     };
+    <?php } else { ?>
+    var User = null;
+    <?php } ?>
     </script>
-    <script src="/assets/templates/templates.js"></script>
+    <script src="/assets/templates/templates.js?<?= date('l jS \of F Y h:i:s A'); ?>"></script>
     <script src="/assets/js/helpers.js"></script>
