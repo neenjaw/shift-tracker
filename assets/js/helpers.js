@@ -151,11 +151,29 @@ Handlebars.registerHelper('chooseMaxUpTo', function (v1, v2, v3) {
 
 // add the printAssignmentReportRow helper
 Handlebars.registerHelper('printAssignmentReportRow', function (staff, assignmentDictionary, modDictionary) {
+    console.log({staff, assignmentDictionary, modDictionary});
+    
+
+    var aPod = 0, bPod = 0, cPod = 0, lastPod = 'N/A', lastRole = 'N/A', doubleCount = 0;
+
+    if (staff.assignments && staff.assignments[assignmentDictionary.A]) aPod = staff.assignments[assignmentDictionary.A].count;
+    if (staff.assignments && staff.assignments[assignmentDictionary.B]) bPod = staff.assignments[assignmentDictionary.B].count;
+    if (staff.assignments && staff.assignments[assignmentDictionary.C]) cPod = staff.assignments[assignmentDictionary.C].count;
+
+    if (staff.shifts && staff.shifts.length > 1) {
+        lastPod = staff.shifts[0].assignment_name;
+        lastRole = staff.shifts[0].role_name;
+    }
+
+    if (staff.mods && staff.mods[modDictionary.double]) doubleCount = staff.mods[modDictionary.double].count;
+
     return new Handlebars.SafeString(
         '<td>'+staff.last_name+', '+staff.first_name+'</td>' +
-        '<td></td>' +
-        '<td></td>' +
-        '<td></td>' +
-        '<td></td>'
+        '<td>'+aPod+'</td>' +
+        '<td>'+bPod+'</td>' +
+        '<td>'+cPod+'</td>' +
+        '<td>'+lastRole+'</td>' +
+        '<td>'+lastPod+'</td>' +
+        '<td>'+doubleCount+'</td>'
     );
 });

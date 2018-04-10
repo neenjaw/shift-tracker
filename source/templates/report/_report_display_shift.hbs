@@ -1,22 +1,25 @@
-
+{{debug}}
+<p>In the last 8 weeks, here is what staff have done:</p>
 <table class="table">
     <thead>
         <tr>
             <th scope="col">Name</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col">A</th>
+            <th scope="col">B</th>
+            <th scope="col">C</th>
+            <th scope="col">Last Role</th>
+            <th scope="col">Last Pod</th>
+            <th scope="col">Doubles</th>
         </tr>
     </thead>
     <tbody>
         {{#if groups.rn}}
             <tr>
-                <th scope="row" colspan="5">RN</th>
+                <th scope="row" colspan="7">RN</th>
             </tr>
             {{#each groups.rn as |staff staffIndex|}}
             <tr>
-                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+                {{printAssignmentReportRow staff @root.assignmentDictionary @root.modDictionary}}
             </tr>
             {{/each}}
         {{/if}}
@@ -27,7 +30,7 @@
             </tr>
             {{#each groups.lpn as |staff staffIndex|}}
             <tr>
-                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+                {{printAssignmentReportRow staff @root.assignmentDictionary @root.modDictionary}}
             </tr>
             {{/each}}
         {{/if}}
@@ -38,7 +41,7 @@
             </tr>
             {{#each groups.na as |staff staffIndex|}}
             <tr>
-                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+                {{printAssignmentReportRow staff @root.assignmentDictionary @root.modDictionary}}
             </tr>
             {{/each}}
         {{/if}}
@@ -49,7 +52,7 @@
             </tr>
             {{#each groups.uc as |staff staffIndex|}}
             <tr>
-                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+                {{printAssignmentReportRow staff @root.assignmentDictionary @root.modDictionary}}
             </tr>
             {{/each}}
         {{/if}}
