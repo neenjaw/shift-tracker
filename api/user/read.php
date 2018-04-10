@@ -35,10 +35,10 @@ try {
         extract($row);
  
         $one_user = array(
-            "id" => $id,
+            "id" => intval($id),
             "username" => $username,
-            "active" => $active,
-            "admin" => $admin,
+            "active" => intval($active),
+            "admin" => intval($admin),
             "date_created" => $date_created,
             "date_updated" => $date_updated,
             "created_by" => $created_by,

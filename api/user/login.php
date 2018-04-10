@@ -26,13 +26,13 @@ try {
     if (isset($data->username)) {
         $user->username = trim($data->username);
     } else {
-        throw new Exception("user username not provided for delete");
+        throw new Exception("user username not provided for login");
     }
 
     if (isset($data->password)) {
         $user->password = trim($data->password);
     } else {
-        throw new Exception("user password not provided for delete");
+        throw new Exception("user password not provided for login");
     }
     
     // query products
@@ -52,10 +52,10 @@ try {
         //PHP Session Setup
         $_SESSION['authenticated'] = true;
         $_SESSION['user'] = (object) array();
-        $_SESSION['user']->id = $row['id'];
+        $_SESSION['user']->id = intval($row['id']);
         $_SESSION['user']->login = $row['username'];
-        $_SESSION['user']->active = $row['active'];
-        $_SESSION['user']->admin = $row['admin'];
+        $_SESSION['user']->active = intval($row['active']);
+        $_SESSION['user']->admin = intval($row['admin']);
 
         $flash->add_message('Successful log in.', 'success');
         //END PHP Session Setup
@@ -65,8 +65,8 @@ try {
         
         $result->user = (object) array();
         $result->user->name = $row['username'];
-        $result->user->active = $row['active'];
-        $result->user->admin = $row['admin'];
+        $result->user->active = intval($row['active']);
+        $result->user->admin = intval($row['admin']);
         $result->user->created = $row['date_created'];
         $result->user->updated = $row['date_updated'];
         $result->user->createdBy = $row['created_by'];

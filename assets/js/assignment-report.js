@@ -226,40 +226,88 @@ $(function(){
                         console.info('preparing data');
 
                         axios
-                            .get('/api/shift/read_shifts_for_staff_members.php', {
-                                params: {
-                                    date_to: data.date,
-                                    date_from: moment(data.date, 'YYYY-MM-DD').subtract(8, 'weeks').format('YYYY-MM-DD'),
-                                    staff_ids: data.selectedStaffIds
-                                }
-                            })
-                            .then(function(result) {
-                                var data = result.data;
+                            .all([
+                                axios.get('/api/shift/read_shifts_for_staff_members.php', {
+                                    params: {
+                                        date_to: data.date,
+                                        date_from: moment(data.date, 'YYYY-MM-DD').subtract(8, 'weeks').format('YYYY-MM-DD'),
+                                        staff_ids: data.selectedStaffIds
+                                    }
+                                }),
+                                axios.get('/api/assignment/read.php')
+                            ])
+                            .then(axios.spread(function(shiftResult, assignmentResult) {
+                                var shift = shiftResult.data;
+                                var assignment = assignmentResult.data;
 
                                 // console.info({data});
 
-                                if (data.response !== 'OK') {
-                                    throw data.message;
+                                if (shift.response !== 'OK') {
+                                    throw shift.message;
                                 } 
+
+                                if (assignment.response !== 'OK') {
+                                    throw assignment.message;
+                                }
 
                                 var staff = [];
                                 var groups = {};
+                                var stats = {
+                                    smallestBpod: -1,
+                                    smallestDoubled: -1
+                                };
 
-                                data.records.forEach(function(record) { 
+                                var assignmentDictionary = {};
+                                assignment.records.forEach(function(record) {
+                                    assignmentDictionary[record.name] = record.id;
+                                });
+
+                                shift.records.forEach(function(record) { 
                                     if (staff[record.staff_id] === undefined) {
                                         staff[record.staff_id] = makeStaffEntry(record); 
                                         
-                                        groups[record.staff_category_name] = groups[record.staff_category_name] || [];
-                                        groups[record.staff_category_name].push(staff[record.staff_id]);
+                                        var groupName = record.staff_category_name.toLowerCase();
+
+                                        groups[groupName] = groups[groupName] || [];
+                                        groups[groupName].push(staff[record.staff_id]);
                                     } 
                                     processRecord(staff[record.staff_id], record);
                                 });
 
+
+                                if (groups.rn) {
+
+                                    var apodNameIds = [];
+                                    apodNameIds.push(assignmentDictionary['A']); // jshint ignore:line
+
+                                    var bpodNameIds = [];
+                                    bpodNameIds.push(assignmentDictionary['B']); // jshint ignore:line
+                                    bpodNameIds.push(assignmentDictionary['A/B']);
+                                    bpodNameIds.push(assignmentDictionary['B/C']);
+                                
+                                    var cpodNameIds = [];
+                                    cpodNameIds.push(assignmentDictionary['C']); // jshint ignore:line
+
+                                    groups.rn.forEach(function(staff) {
+                                        staff.aCount = staff.aCount || 0;
+                                        staff.bCount = staff.bCount || 0;
+                                        staff.cCount = staff.cCount || 0;
+
+                                        staff.shifts.forEach(function(shift) {
+                                            if (apodNameIds.includes(shift.assignment_id)) staff.aCount += 1;
+                                            if (bpodNameIds.includes(shift.assignment_id)) staff.bCount += 1;
+                                            if (cpodNameIds.includes(shift.assignment_id)) staff.cCount += 1;
+                                        });
+                                    });
+                                }
+
                                 return callback(null, {
                                     prepared: true,
-                                    groups: groups
+                                    groups: groups,
+                                    stats: stats,
+                                    assignmentDictionary: assignmentDictionary
                                 });
-                            })
+                            }))
                             .catch(function(error) {
                                 console.error(error);
                                 

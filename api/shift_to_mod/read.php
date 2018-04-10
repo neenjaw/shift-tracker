@@ -36,8 +36,8 @@ try {
  
         $one_shift_to_mod = array(
             "id" => $id,
-            "shift_id" => $shift_id,
-            "mod_id" => $mod_id,
+            "shift_id" => intval($shift_id),
+            "mod_id" => intval($mod_id),
             "date_created" => $date_created,
             "date_updated" => $date_updated
         );

@@ -35,7 +35,7 @@ try {
         extract($row);
  
         $one_role = array(
-            "id" => $id,
+            "id" => intval($id),
             "name" => $name,
             "date_created" => $date_created,
             "date_updated" => $date_updated

@@ -49,11 +49,11 @@ try {
         extract($row);
  
         $one_staff_member = array(
-            "id" => $id,
+            "id" => intval($id),
             "first_name" => $first_name,
             "last_name" => $last_name,
             "category_name" => $category_name,
-            "category_id" => $category_id,
+            "category_id" => intval($category_id),
             "active" => $active,
             "date_created" => $date_created,
             "date_updated" => $date_updated,

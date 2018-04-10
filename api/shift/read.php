@@ -39,15 +39,15 @@ try {
         extract($row);
  
         $one_shift = array(
-            "id"               => $id,
+            "id"               => intval($id),
             "shift_date"       => $shift_date,
             "shift_d_or_n"     => $shift_d_or_n,
-            "staff_id"         => $staff_id,
+            "staff_id"         => intval($staff_id),
             "staff_first_name" => $staff_first_name,
             "staff_last_name"  => $staff_last_name,
-            "role_id"          => $role_id,
+            "role_id"          => intval($role_id),
             "role_name"        => $role_name,
-            "assignment_id"    => $assignment_id,
+            "assignment_id"    => intval($assignment_id),
             "assignment_name"  => $assignment_name,
             "shift_mods"       => json_decode($shift_mods),
             "date_created"     => $date_created,
