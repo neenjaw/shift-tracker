@@ -62,7 +62,7 @@ var ReportGenerator = (function() {
                 prev: (state.step - 1 >= 0)
             }, state.data);
 
-            console.log({x});
+            // console.log({x});
 
             state.container.innerHTML = state.template(x);
         });
@@ -164,6 +164,65 @@ $(function(){
                     context: '3) View Report',
                     template: 'report_display_shift',
                     prepareData: function(data, callback) {
+                        function makeStaffEntry(record) {
+                            return {
+                                first_name: record.staff_first_name,
+                                last_name: record.staff_last_name,
+                                id: record.staff_id,
+                                category: record.staff_category_name,
+                                shifts: [],
+                                assignments: [],
+                                roles: [],
+                                mods: [],
+                                dayCount: 0
+                            };
+                        }
+
+                        function makeAssignmentEntry(record) {
+                            return {
+                                id: record.assignment_id,
+                                name: record.assignment_name,
+                                count: 0
+                            };
+                        }
+
+                        function makeRoleEntry(record) {
+                            return {
+                                id: record.role_id,
+                                name: record.role_name,
+                                count: 0
+                            };
+                        }
+
+                        function makeModEntry(mod) {
+                            return {
+                                id: mod.mod_id,
+                                name: mod.mod_name,
+                                count: 0
+                            };
+                        }
+
+                        function processRecord(staff, record) {
+                            staff.shifts.push(record);
+
+                            staff.assignments[record.assignment_id] = staff.assignments[record.assignment_id] || makeAssignmentEntry(record);
+                            staff.assignments[record.assignment_id].count += 1;
+
+                            staff.roles[record.role_id] = staff.roles[record.role_id] || makeRoleEntry(record);
+                            staff.roles[record.role_id].count += 1;
+
+                            if (record.shift_mods) {
+                                for (var index = 0; index < record.shift_mods.length; index++) {
+                                    var mod = record.shift_mods[index];
+                                    
+                                    staff.mods[mod.mod_id] = staff.mods[mod.mod_id] || makeModEntry(mod);
+                                    staff.mods[mod.mod_id].count += 1;
+                                }
+                            }
+
+                            if (record.shift_d_or_n === 'D') staff.dayCount += 1;
+                        }
+
                         console.info('preparing data');
 
                         axios
@@ -177,15 +236,33 @@ $(function(){
                             .then(function(result) {
                                 var data = result.data;
 
+                                // console.info({data});
+
                                 if (data.response !== 'OK') {
                                     throw data.message;
                                 } 
 
+                                var staff = [];
+                                var groups = {};
+
+                                data.records.forEach(function(record) { 
+                                    if (staff[record.staff_id] === undefined) {
+                                        staff[record.staff_id] = makeStaffEntry(record); 
+                                        
+                                        groups[record.staff_category_name] = groups[record.staff_category_name] || [];
+                                        groups[record.staff_category_name].push(staff[record.staff_id]);
+                                    } 
+                                    processRecord(staff[record.staff_id], record);
+                                });
+
                                 return callback(null, {
-                                    prepared: true
+                                    prepared: true,
+                                    groups: groups
                                 });
                             })
                             .catch(function(error) {
+                                console.error(error);
+                                
                                 return callback(error);
                             });
                     },
@@ -212,12 +289,10 @@ $(function(){
             ev.preventDefault();
                     
             var originalScrollTop = ev.target.parentNode.scrollTop;
-            // console.log(originalScrollTop);
 
             ev.target.selected = ev.target.selected ? false : true;
-
-            var self = this;
             ev.target.parentNode.focus();
+
             setTimeout(function () {
                 ev.target.parentNode.scrollTop = originalScrollTop;
             }, 0);

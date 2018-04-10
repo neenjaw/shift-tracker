@@ -334,6 +334,102 @@ class Shift {
         return $stmt;
     }
 
+    function read_date_range_for_staff_members($date_from, $date_to, $staff_ids) {
+
+        if (preg_match('/^[12][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $date_from) !== 1) {
+            throw new Exception('date from does not conform');
+        }
+
+        if (preg_match('/^[12][0-9]{3}-[0-1][0-9]-[0-3][0-9]$/', $date_to) !== 1) {
+            throw new Exception('date to does not conform');
+        }
+
+        if (count($staff_ids) <= 0) {
+            throw new Exception('no staff to select shifts from');
+        }
+
+
+        $in = join(',', array_fill(0, count($staff_ids), '?'));
+
+        // select all query
+        $sql = "SELECT
+                    s.id, s.shift_date, s.shift_d_or_n, 
+
+                    s.staff_id, f.first_name as staff_first_name, f.last_name as staff_last_name,
+                    
+                    f.category_id as staff_category_id, c.name as staff_category_name,
+
+                    s.role_id, r.name as role_name,
+
+                    s.assignment_id, a.name as assignment_name,
+
+                    sm.shift_mods,
+
+                    s.date_created, s.date_updated, s.created_by, s.updated_by
+                FROM
+                    {$this->table_name} s
+                LEFT JOIN
+                    staff_members f
+                ON 
+                    s.staff_id = f.id
+                LEFT JOIN
+                    roles r
+                ON
+                    s.role_id = r.id
+                LEFT JOIN
+                    assignments a
+                ON
+                    s.assignment_id = a.id 
+                LEFT JOIN
+                    categories c
+                ON
+                    f.category_id = c.id
+                LEFT JOIN
+                    (
+                        SELECT
+                            sm.shift_id as id,
+                            CONCAT(
+                                '[',
+                                GROUP_CONCAT(
+                                        JSON_OBJECT('shiftmod_id',sm.id,'mod_id',sm.mod_id,'mod_name',m.name)
+                                ),
+                                ']'
+                            ) as shift_mods
+                        FROM
+                            shift_to_mod sm
+                        LEFT JOIN
+                            mods m
+                        ON
+                            sm.mod_id = m.id
+                        GROUP BY
+                            sm.shift_id
+                    ) sm
+                ON
+                    s.id = sm.id
+                WHERE
+                    (s.shift_date BETWEEN ? AND ?) AND
+                    (s.staff_id IN ({$in}))
+                ORDER BY
+                    f.last_name ASC, f.first_name ASC, s.shift_date DESC";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(1, $date_from);
+        $stmt->bindParam(2, $date_to);
+        
+        for ($i=0; $i < count($staff_ids); $i++) { 
+            $id = $staff_ids[$i];
+
+            $stmt->bindParam(($i + 3), intval($id)); 
+        }
+    
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
+
     function read_one_staff($limit = NULL, $offset = NULL) {
 
         if (!isset($this->staff_id))      throw new Exception('staff_id must be provided');

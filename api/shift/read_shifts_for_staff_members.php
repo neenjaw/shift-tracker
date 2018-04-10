@@ -21,6 +21,7 @@ try {
     // initialize object
     $shift = new Shift($db);
 
+    $staff_ids = NULL;
     $date_from = NULL;
     $date_to = NULL;
 
@@ -42,17 +43,28 @@ try {
         if (! isDateFormatted($date_to)) {
             throw new Exception('date does not conform');
         }
+    } else {
+        throw new Exception('date not provided for the end of the read range');
+    }
+ 
+    //set the shift date to
+    if (isset($_GET['staff_ids'])) {
+        $staff_ids = $_GET['staff_ids'];
+    } else {
+        throw new Exception('staff ids not provided');
     }
     
     // query products
-    $stmt = $shift->read_date_range($date_from, $date_to);
+    $stmt = $shift->read_date_range_for_staff_members($date_from, $date_to, $staff_ids);
     $num = $stmt->rowCount();
  
     // products array
     $result = (object) array();
+    $result->query = $stmt->queryString;
     $result->count = $num;
-    $result->date_from = $date_from;
-    $result->date_to = $date_to;
+    // $result->Qdate_from = $date_from;
+    // $result->Qdate_to = $date_to;
+    // $result->Qstaff_ids = $staff_ids;
     $result->records = array();
  
     // retrieve our table contents
@@ -65,17 +77,17 @@ try {
         extract($row);
  
         $one_shift = array(
-            "id"                  => $id,
+            "id"                  => intval($id),
             "shift_date"          => $shift_date,
             "shift_d_or_n"        => $shift_d_or_n,
-            "staff_id"            => $staff_id,
+            "staff_id"            => intval($staff_id),
             "staff_first_name"    => $staff_first_name,
             "staff_last_name"     => $staff_last_name,
-            "staff_category_id"   => $staff_category_id,
+            "staff_category_id"   => intval($staff_category_id),
             "staff_category_name" => $staff_category_name,
-            "role_id"             => $role_id,
+            "role_id"             => intval($role_id),
             "role_name"           => $role_name,
-            "assignment_id"       => $assignment_id,
+            "assignment_id"       => intval($assignment_id),
             "assignment_name"     => $assignment_name,
             "shift_mods"          => json_decode($shift_mods),
             "date_created"        => $date_created,
