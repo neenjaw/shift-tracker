@@ -1,0 +1,58 @@
+{{!-- {{@root.groups.rn.0.assignments.28.name}} --}}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#if groups.rn}}
+            <tr>
+                <th scope="row" colspan="5">RN</th>
+            </tr>
+            {{#each groups.rn as |staff staffIndex|}}
+            <tr>
+                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+            </tr>
+            {{/each}}
+        {{/if}}
+
+        {{#if groups.lpn}}
+            <tr>
+                <th scope="row" colspan="5">LPN</th>
+            </tr>
+            {{#each groups.lpn as |staff staffIndex|}}
+            <tr>
+                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+            </tr>
+            {{/each}}
+        {{/if}}
+
+        {{#if groups.na}}
+            <tr>
+                <th scope="row" colspan="5">NA</th>
+            </tr>
+            {{#each groups.na as |staff staffIndex|}}
+            <tr>
+                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+            </tr>
+            {{/each}}
+        {{/if}}
+
+        {{#if groups.uc}}
+            <tr>
+                <th scope="row" colspan="5">UC</th>
+            </tr>
+            {{#each groups.uc as |staff staffIndex|}}
+            <tr>
+                {{printAssignmentReportRow staff assignmentDictionary modDictionary}}
+            </tr>
+            {{/each}}
+        {{/if}}
+    </tbody>
+</table>
