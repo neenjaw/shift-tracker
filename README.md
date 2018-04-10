@@ -2,12 +2,13 @@
 
 ## frontend
 
-The skeleton is up for the front end.  Basic design decisions being:
+The front end is designed to be an interface to the shift tracker REST**ish**-API.  Basic design decisions being:
 
-- Font Awesome 5 for glyph support
-- Bootstrap 4 for rapid css styling
-- Axios for rest-api interaction
-- Handlebars and Gulp to precompile templates for use
+- HTML5 / CSS / Bootstrap 4 / Font Awesome 5
+- ES5 JS for IE compatibility
+- Handlebars Templates using the JS library, precompiled then uploaded as compiled templates.js using gulp
+- Axios for interaction with the REST**ish**-API
+- JQuery used minimally for document.onready and for bootstrap support
 
 Making sure to:
 
@@ -16,7 +17,7 @@ Making sure to:
 
 Plan for now, keep it simple, get a working version done, don't get side-tracked by details.
 
-## backend -- rest-ish api
+## backend -- rest-*ish* api
 
 Modelled after [code of a ninja's tutorial](https://www.codeofaninja.com/2017/02/create-simple-rest-api-in-php.html).  Basically divided into a frontend and backend php project.  The backend is 'separate' for semantics and maintainability but dependent on the session initiated by the front-end for authentication and authorization.
 
@@ -36,13 +37,14 @@ jsonResponse = {
 
 ## Ideas
 
-1. convert all read to return ___ object and not the PDOstatement object
-2. make use of `$_SERVER['REQUEST_METHOD']` to differentiate GET, PUT, POST, DELETE methods, create unified endpoint
+1. **nah** convert all read to return ___ object and not the PDOstatement object
+2. **later** make use of `$_SERVER['REQUEST_METHOD']` to differentiate GET, PUT, POST, DELETE methods, create unified endpoint
 
 ## Hangups
 
-- I don't have a solution for shift tags yet... (eg. evd, crrt)
+- **fixed** I don't have a solution for shift tags yet... (eg. evd, crrt)
   - *SOLUTION* decided to create a JSON object in the query for the tags, so that they can be displayed well later with relevant meta-data
+  - *caveat* I am using MariaDB 10.2 and 000webhost uses MariaDB 10.1, so while on 10.2 this is done elegantly on the database side with GROUP_CONCAT and JSON_OBJECT, it has to be done manually with CONCAT formatting the string object.
 
 ## Progress - key
 
@@ -52,8 +54,8 @@ jsonResponse = {
 
 ## Progress - backend
 
-- ➖ config
-  - ➖ authorization
+- ✅ config
+  - ✅ authorization
   - ✅ database
 - ✅ objects
   - ✅ shift
@@ -62,12 +64,11 @@ jsonResponse = {
   - ✅ assignment
   - ✅ role
   - ✅ mod
-- ➖ shift
+- ✅ shift
   - ✅ MariaDB Table
   - ✅ foreign keys
   - ✅ unique index
   - ✅ create
-  - ❌ create_many
   - ✅ read
   - ✅ read_one
   - ✅ read_date_range
@@ -79,14 +80,14 @@ jsonResponse = {
   - ✅ foreign keys
   - ✅ unique index
   - ✅ create
-  - ✅ read 
+  - ✅ read
   - ✅ update
   - ✅ delete
 - ✅ user
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read 
+  - ✅ read
   - ✅ check_password
   - ✅ update
   - ✅ delete
@@ -96,14 +97,14 @@ jsonResponse = {
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read 
+  - ✅ read
   - ✅ update
   - ✅ delete
 - ✅ role
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read 
+  - ✅ read
   - ✅ update
   - ✅ delete
 - ✅ assignment
@@ -117,7 +118,7 @@ jsonResponse = {
   - ✅ MariaDB Table
   - ✅ unique index
   - ✅ create
-  - ✅ read 
+  - ✅ read
   - ✅ update
   - ✅ delete
 - ✅ shift_to_mod
@@ -125,7 +126,7 @@ jsonResponse = {
   - ✅ foreign keys
   - ✅ unique index
   - ✅ create
-  - ✅ read 
+  - ✅ read
   - ✅ update
   - ✅ delete
 
@@ -135,19 +136,19 @@ jsonResponse = {
   - ✅ auth state
   - ✅ axios
   - ✅ handlebars / gulp
-- ➖ pages
-  - ➖ landing
-  - ➖ home
-    - ❌ date range table
+- ✅ pages
+  - ✅ landing
+  - ✅ home
+    - ✅ date range table
     - ✅ dynamic shift edit
-  - ➖ shifts
-    - ❌ add unit shift
-    - ❌ add single shift
-    - ❌ shift report
-  - ➖ staff member
+  - ✅ shifts
+    - ✅ add unit shift
+    - ✅ add single shift
+    - ✅ shift report
+  - ✅ staff member
     - ✅ review
-  - ➖ admin panel
-    - ❌ add user
-    - ❌ change password
-    - ❌ remove user
-    - ❌ change auth
+  - ✅ admin panel
+    - ✅ add user
+    - ✅ change password
+    - ✅ remove user
+    - ✅ change auth
