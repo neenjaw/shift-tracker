@@ -565,12 +565,11 @@ function setupShowPage() {
                         // formElem.previousElementSibling.querySelectorAll('*').forEach(function (e) {
                         //     e.classList.add('deleted');
                         // });
-
-                        formElem.previousElementSibling.parentNode.removeChild(formElem.previousElementSibling);
-
+                        
                         reloadStaffStats();
 
                         StaffPage.hideForm(formElem, icons);   
+                        formElem.previousElementSibling.parentNode.removeChild(formElem.previousElementSibling);
                     }                 
                 })
                 .catch(function(error) {
