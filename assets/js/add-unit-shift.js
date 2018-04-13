@@ -146,7 +146,7 @@ $(function() {
                 var staff = container.querySelector('.shift__clinician option:checked');
 
                 validatedData = Object.assign(validatedData, {
-                    clinicianId: staff.value
+                    clinicianId: parseInt(staff.value)
                 });
             }
         },
@@ -189,7 +189,7 @@ $(function() {
                 var staff = container.querySelector('.shift__charge option:checked');
 
                 validatedData = Object.assign(validatedData, {
-                    chargeId: staff.value
+                    chargeId: parseInt(staff.value)
                 });
             }
         },
@@ -261,8 +261,8 @@ $(function() {
                 var chargePod = document.querySelector('.shift__charge-pod');
 
                 validatedData = Object.assign(validatedData, { 
-                    clinicianAssignmentId: clinicianPod.value,
-                    chargeAssignmentId: chargePod.value
+                    clinicianAssignmentId: parseInt(clinicianPod.value),
+                    chargeAssignmentId: parseInt(chargePod.value)
                 });
             }
         },
@@ -314,7 +314,7 @@ $(function() {
                 var staff = container.querySelectorAll('.shift__bedside option:checked');
 
                 var bedsides = Array.prototype.slice.call(staff).map(function(s) {
-                    return s.value;
+                    return parseInt(s.value);
                 });
 
                 validatedData = Object.assign(validatedData, {
@@ -393,8 +393,8 @@ $(function() {
                     var checkedPod = s.querySelector('input:checked').value;
 
                     bedsideAssignments.push({
-                        staffId: s.dataset.staffId,
-                        assignmentId: checkedPod
+                        staffId: parseInt(s.dataset.staffId),
+                        assignmentId: parseInt(checkedPod)
                     });
                 }
 
@@ -438,7 +438,7 @@ $(function() {
                 var staff = container.querySelector('.shift__outreach option:checked');
 
                 validatedData = Object.assign(validatedData, {
-                    outreachId: staff.value
+                    outreachId: parseInt(staff.value)
                 });
             }
         },
@@ -466,7 +466,7 @@ $(function() {
                 staff = Array.prototype.slice.call(staff);
 
                 var attendants = staff.map(function (s) {
-                    return s.value;
+                    return parseInt(s.value);
                 });
 
                 validatedData = Object.assign(validatedData, {
@@ -547,8 +547,8 @@ $(function() {
                     var checkedPod = s.querySelector('input:checked').value;
 
                     attendantAssignments.push({
-                        staffId: s.dataset.staffId,
-                        assignmentId: checkedPod
+                        staffId: parseInt(s.dataset.staffId),
+                        assignmentId: parseInt(checkedPod)
                     });
                 }
 
@@ -580,7 +580,7 @@ $(function() {
                 staff = Array.prototype.slice.call(staff);
 
                 var clerks = staff.map(function (s) {
-                    return s.value;
+                    return parseInt(s.value);
                 });
 
                 validatedData = Object.assign(validatedData, {
@@ -661,8 +661,8 @@ $(function() {
                     var checkedPod = s.querySelector('input:checked').value;
 
                     clerkAssignments.push({
-                        staffId: s.dataset.staffId,
-                        assignmentId: checkedPod
+                        staffId: parseInt(s.dataset.staffId),
+                        assignmentId: parseInt(checkedPod)
                     });
                 }
 
@@ -786,8 +786,8 @@ $(function() {
                     
                     if (!input.checked) {
                         staffWithMod.push({
-                            staffId: s.dataset.staffId,
-                            modId: input.value
+                            staffId: parseInt(s.dataset.staffId),
+                            modId: parseInt(input.value)
                         });
                     }
                 }
@@ -848,8 +848,8 @@ $(function() {
             
             if (checked) {
                 staffWithMod.push({
-                    staffId: s.dataset.staffId,
-                    modId: checked.value
+                    staffId: parseInt(s.dataset.staffId),
+                    modId: parseInt(checked.value)
                 });
             }
         }
