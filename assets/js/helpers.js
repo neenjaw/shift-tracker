@@ -151,9 +151,6 @@ Handlebars.registerHelper('chooseMaxUpTo', function (v1, v2, v3) {
 
 // add the printAssignmentReportRow helper
 Handlebars.registerHelper('printAssignmentReportRow', function (staff, assignmentDictionary, modDictionary) {
-    console.log({staff, assignmentDictionary, modDictionary});
-    
-
     var aPod = 0, bPod = 0, cPod = 0, lastPod = 'N/A', lastRole = 'N/A', doubleCount = 0;
 
     if (staff.assignments && staff.assignments[assignmentDictionary.A]) aPod = staff.assignments[assignmentDictionary.A].count;
