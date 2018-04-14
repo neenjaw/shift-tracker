@@ -1,3 +1,4 @@
+<?php include_once(dirname(__FILE__).'/../assets/lib/util.php'); ?>
         <div class="modal-container hidden"></div>
     </div>
     

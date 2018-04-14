@@ -1,3 +1,4 @@
+<?php include_once(dirname(__FILE__).'/../assets/lib/util.php'); ?>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
