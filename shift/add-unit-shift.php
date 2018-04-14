@@ -1,6 +1,6 @@
 <?php require('../partials/01-prehead.php'); ?>
 <?php require('../partials/02-head-prestyle.php'); ?>
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/add-unit-shift.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/add-unit-shift.css<? echoGetQueryWithDate(); ?>" />
 <?php require('../partials/03-head-poststyle.php'); ?>
 <?php require('../partials/04-nav.php'); ?>
 <?php require('../partials/05-flash.php'); ?>
@@ -15,7 +15,7 @@
 </div>
     
 <?php require('../partials/06-prescript.php'); ?>
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/add-shift.js"></script>
-    <script src="/assets/js/add-unit-shift.js"></script>
+    <script src="/assets/js/main.js<? echoGetQueryWithDate(); ?>"></script>
+    <script src="/assets/js/add-shift.js<? echoGetQueryWithDate(); ?>"></script>
+    <script src="/assets/js/add-unit-shift.js<? echoGetQueryWithDate(); ?>"></script>
 <?php require('../partials/07-footer.php'); ?>

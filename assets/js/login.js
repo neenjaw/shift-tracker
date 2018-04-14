@@ -9,7 +9,7 @@ $(function() {
     loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        loginFormSubmitButton.innerHTML = '<i class="fas fa-transfer"></i> Sending...';     
+        loginFormSubmitButton.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Sending...';     
 
 
         axios
