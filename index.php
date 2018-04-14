@@ -35,7 +35,7 @@ if (isset($_SESSION['user'])) {
     
 <?php require('partials/06-prescript.php'); ?>
 
-    <script src="/assets/js/main.js<? echoGetQueryWithDate(); ?>"></script>
-    <script src="/assets/js/login.js<? echoGetQueryWithDate(); ?>"></script>
+    <script src="/assets/js/main.js<?php echoGetQueryWithDate(); ?>"></script>
+    <script src="/assets/js/login.js<?php echoGetQueryWithDate(); ?>"></script>
 
 <?php require('partials/07-footer.php'); ?>

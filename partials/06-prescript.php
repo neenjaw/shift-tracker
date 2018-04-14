@@ -19,5 +19,5 @@
     var User = null;
     <?php } ?>
     </script>
-    <script src="/assets/templates/templates.js<? echoGetQueryWithDate(); ?>"></script>
-    <script src="/assets/js/helpers.js<? echoGetQueryWithDate(); ?>"></script>
+    <script src="/assets/templates/templates.js<?php echoGetQueryWithDate(); ?>"></script>
+    <script src="/assets/js/helpers.js<?php echoGetQueryWithDate(); ?>"></script>
