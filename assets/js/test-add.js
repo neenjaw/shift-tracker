@@ -5,95 +5,308 @@
 /* global AddShift */
 /* global User */
 
+// START COMMENTED STEPS
+// {
+//     contentPartial: 'date',
+//     skippable: false,
+//     checkIfShouldSkip: null,
+//     prepare: function (data, callback) {
+//         axios
+//             .all([
+//                 axios.get('/api/assignment/read.php'),
+//                 axios.get('/api/role/read.php'),
+//                 axios.get('/api/mod/read.php')
+//             ])
+//             .then(axios.spread(function(assignments, roles, mods) {
+//
+//                 if (
+//                     assignments.data.response === 'ERROR' ||
+//                     roles.data.response === 'ERROR' ||
+//                     mods.data.response === 'ERROR'
+//                 ) {
+//                     var messages = [];
+//
+//                     if (assignments.data.response === 'ERROR') messages.push(assignments.data.message);
+//                     if (roles.data.response       === 'ERROR') messages.push(roles.data.message);
+//                     if (mods.data.response        === 'ERROR') messages.push(mods.data.message);
+//
+//                     throw messages;
+//                 }
+//
+//                 if (
+//                     assignments.data.response === 'OK' &&
+//                     roles.data.response === 'OK' &&
+//                     mods.data.response === 'OK'
+//                 ) {
+//                     return callback(null, {
+//                         today: moment().format('YYYY-MM-DD'),
+//                         assignments: assignments.data.records,
+//                         roles: roles.data.records,
+//                         mods: mods.data.records
+//                     });
+//                 }
+//             }))
+//             .catch(function(error) {
+//                 return callback(error);
+//             });
+//     },
+//     validate: function () {
+//         var date = container.querySelector('.shift__date');
+//         var dayOrNight = container.querySelector('.shift__day-or-night');
+//
+//         if (!date.value.match(/^[12][0-9]{3}-[01][0-9]-[0-3][0-9]$/)) { // check if in YYYY-MM-DD format
+//             date.focus();
+//             Flash.insertFlash('warning', 'Date should be YYYY-MM-DD');
+//
+//             return false;
+//         }
+//
+//         if (!(dayOrNight.value === 'D' || dayOrNight.value === 'N')) {
+//             dayOrNight.focus();
+//             Flash.insertFlash('warning', 'Must select day or night for the shift.');
+//
+//             return false;
+//         }
+//
+//         return true;
+//     },
+//     onvalid: function (validatedData) {
+//         var date = container.querySelector('.shift__date');
+//         var dayOrNight = container.querySelector('.active .shift__day-or-night');
+//
+//         validatedData = Object.assign(validatedData, {
+//             date: date.value,
+//             dayOrNight: dayOrNight.value
+//         });
+//     }
+// },
+
+// {
+//     contentPartial: 'clinician',
+//     skippable: false,
+//     checkIfShouldSkip: function (data) {
+//         return false;
+//     },
+//     prepare: function (data, callback) {
+//         axios
+//             .get('/api/staff_member/read_active.php', { params: { date: data.validated.date } })
+//             .then(function(response) {
+//                 if (response.data.response === 'ERROR') {
+//                     throw response.data.message;
+//                 }
+//
+//                 if (response.data.response === 'OK') {
+//                     var groups = {};
+//
+//                     response.data.records = response.data.records
+//                         .map(function (record) {
+//                             return {
+//                                 firstName: record.first_name,
+//                                 lastName: record.last_name,
+//                                 id: record.id,
+//                                 categoryId: record.category_id,
+//                                 categoryName: record.category_name
+//                             };
+//                         });
+//
+//                     response.data.records.forEach(function(record) {
+//                         groups[record.categoryName.toLowerCase()] = groups[record.categoryName.toLowerCase()] || [];
+//                         groups[record.categoryName.toLowerCase()].push(record);
+//                     });
+//
+//                     return callback(null, {
+//                         staff: response.data.records,
+//                         staffGroups: groups,
+//                         staffForClinicianPick : groups.rn
+//                     });
+//                 }
+//             })
+//             .catch(function (error) {
+//                 return callback(error);
+//             });
+//     },
+//     validate: function () {
+//         var staff = container.querySelector('.shift__clinician');
+//         var pick = staff.querySelector('option:checked');
+//
+//         if (!pick) {
+//             staff.focus();
+//             Flash.insertFlash('warning', 'Choose a clinician person for the shift.');
+//
+//             return false;
+//         }
+//
+//         return true;
+//     },
+//     onvalid: function (validatedData) {
+//         var staff = container.querySelector('.shift__clinician option:checked');
+//
+//         validatedData = Object.assign(validatedData, {
+//             clinicianId: parseInt(staff.value)
+//         });
+//     }
+// },
+
+// {
+//     contentPartial: 'charge',
+//     skippable: true,
+//     checkIfShouldSkip: function (data) {
+//         if (data.validated.dayOrNight === 'N') {
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     },
+//     prepare: function (data, callback) {
+//         return callback(null, {
+//             staffForChargePick: data.prepared.staffForClinicianPick
+//                 .filter(function(s) {
+//                     if (s.id === data.validated.clinicianId) {
+//                         return false;
+//                     }
+//
+//                     return true;
+//                 })
+//         });
+//     },
+//     validate: function () {
+//         var staff = container.querySelector('.shift__charge');
+//         var pick = staff.querySelector('option:checked');
+//
+//         if (!pick) {
+//             staff.focus();
+//             Flash.insertFlash('warning', 'Choose a charge person for the shift.');
+//
+//             return false;
+//         }
+//
+//         return true;
+//     },
+//     onvalid: function (validatedData) {
+//         var staff = container.querySelector('.shift__charge option:checked');
+//
+//         validatedData = Object.assign(validatedData, {
+//             chargeId: parseInt(staff.value)
+//         });
+//     }
+// },
+
+// {
+//     contentPartial: 'charge_pod',
+//     skippable: true,
+//     checkIfShouldSkip: function (data) {
+//         if (data.validated.dayOrNight === 'N') {
+//             data.validated.clinicianAssignmentId = data.prepared.assignments
+//                 .find(function (element) {
+//                     return (element.name === 'A/B/C');
+//                 }).id;
+//
+//             return true;
+//         } else {
+//             return false;
+//         }
+//     },
+//     prepare: function (data, callback) {
+//         if (!data.prepared.mods) {
+//             return callback('no mods, an error has occured.');
+//         }
+//
+//         return callback(null, {
+//             assignmentForClinicianPodPick: data.prepared.assignments
+//                 .filter(function(a) {
+//                     if (
+//                         a.name === 'A/B' ||
+//                         a.name === 'B/C'
+//                     ) {
+//                         return true;
+//                     }
+//
+//                     return false;
+//                 }),
+//             assignmentForChargePodPick: data.prepared.assignments
+//                 .filter(function (a) {
+//                     if (
+//                         a.name === 'A' ||
+//                         a.name === 'C'
+//                     ) {
+//                         return true;
+//                     }
+//
+//                     return false;
+//                 })
+//         });
+//     },
+//     validate: function () {
+//         var clinicianPod = document.querySelector('.shift__clinician-pod');
+//         var chargePod = document.querySelector('.shift__charge-pod');
+//
+//         if (!clinicianPod.value || !chargePod.value) {
+//             if (!clinicianPod.value) {
+//                 clinicianPod.focus();
+//             } else {
+//                 chargePod.focus();
+//             }
+//
+//             Flash.insertFlash('warning', 'Choose assignments for both the clinician and the charge nurse.');
+//
+//             return false;
+//         }
+//
+//         return true;
+//     },
+//     onvalid: function (validatedData) {
+//         var clinicianPod = document.querySelector('.shift__clinician-pod');
+//         var chargePod = document.querySelector('.shift__charge-pod');
+//
+//         validatedData = Object.assign(validatedData, {
+//             clinicianAssignmentId: parseInt(clinicianPod.value),
+//             chargeAssignmentId: parseInt(chargePod.value)
+//         });
+//     }
+// },
+//STOP COMMENTED STEPS
+
 $(function() {
     var container = document.querySelector('.add-container');
 
     container.innerHTML = ShiftTracker.templates.loader();
 
     var manyShiftSteps = [
+
+
         {
-            contentPartial: 'date',
-            skippable: false,
-            checkIfShouldSkip: null,
-            prepare: function (data, callback) {
-                axios
-                    .all([
-                        axios.get('/api/assignment/read.php'),
-                        axios.get('/api/role/read.php'),
-                        axios.get('/api/mod/read.php')
-                    ])
-                    .then(axios.spread(function(assignments, roles, mods) {
-
-                        if (
-                            assignments.data.response === 'ERROR' ||
-                            roles.data.response === 'ERROR' ||
-                            mods.data.response === 'ERROR'
-                        ) {
-                            var messages = [];
-
-                            if (assignments.data.response === 'ERROR') messages.push(assignments.data.message);
-                            if (roles.data.response       === 'ERROR') messages.push(roles.data.message);
-                            if (mods.data.response        === 'ERROR') messages.push(mods.data.message);
-
-                            throw messages;
-                        }
-
-                        if (
-                            assignments.data.response === 'OK' &&
-                            roles.data.response === 'OK' &&
-                            mods.data.response === 'OK'
-                        ) {
-                            return callback(null, {
-                                today: moment().format('YYYY-MM-DD'),
-                                assignments: assignments.data.records,
-                                roles: roles.data.records,
-                                mods: mods.data.records
-                            });
-                        }
-                    }))
-                    .catch(function(error) {
-                        return callback(error);
-                    });
-            },
-            validate: function () {
-                var date = container.querySelector('.shift__date');
-                var dayOrNight = container.querySelector('.shift__day-or-night');
-
-                if (!date.value.match(/^[12][0-9]{3}-[01][0-9]-[0-3][0-9]$/)) { // check if in YYYY-MM-DD format
-                    date.focus();
-                    Flash.insertFlash('warning', 'Date should be YYYY-MM-DD');
-
-                    return false;
-                }
-
-                if (!(dayOrNight.value === 'D' || dayOrNight.value === 'N')) {
-                    dayOrNight.focus();
-                    Flash.insertFlash('warning', 'Must select day or night for the shift.');
-
-                    return false;
-                }
-
-                return true;
-            },
-            onvalid: function (validatedData) {
-                var date = container.querySelector('.shift__date');
-                var dayOrNight = container.querySelector('.active .shift__day-or-night');
-
-                validatedData = Object.assign(validatedData, {
-                    date: date.value,
-                    dayOrNight: dayOrNight.value
-                });
-            }
-        },
-        {
-            contentPartial: 'clinician',
+            contentPartial: 'bedside_test',
             skippable: false,
             checkIfShouldSkip: function (data) {
                 return false;
             },
             prepare: function (data, callback) {
+                // var staffPicks;
+                //
+                // // if (data.validated.dayOrNight === 'D') {
+                // //     staffPicks = data.prepared.staffForChargePick.filter(function (s) {
+                // //         if (s.id === data.validated.chargeId) {
+                // //             return false;
+                // //         }
+                // //
+                // //         return true;
+                // //     });
+                // // } else if (data.validated.dayOrNight === 'N') {
+                // //     staffPicks = data.prepared.staffForClinicianPick.filter(function (s) {
+                // //         if (s.id === data.validated.clinicianId) {
+                // //             return false;
+                // //         }
+                // //
+                // //         return true;
+                // //     });
+                // // }
+                //
+                // return callback(null, {
+                //     staffForBedsidePick: staffPicks
+                // });
+
                 axios
-                    .get('/api/staff_member/read_active.php', { params: { date: data.validated.date } })
+                    .get('/api/staff_member/read_active.php', { params: { date: moment().format('YYYY-MM-DD') } })
                     .then(function(response) {
                         if (response.data.response === 'ERROR') {
                             throw response.data.message;
@@ -121,181 +334,13 @@ $(function() {
                             return callback(null, {
                                 staff: response.data.records,
                                 staffGroups: groups,
-                                staffForClinicianPick : groups.rn
+                                staffForBedsidePick : groups.rn
                             });
                         }
                     })
                     .catch(function (error) {
                         return callback(error);
                     });
-            },
-            validate: function () {
-                var staff = container.querySelector('.shift__clinician');
-                var pick = staff.querySelector('option:checked');
-
-                if (!pick) {
-                    staff.focus();
-                    Flash.insertFlash('warning', 'Choose a clinician person for the shift.');
-
-                    return false;
-                }
-
-                return true;
-            },
-            onvalid: function (validatedData) {
-                var staff = container.querySelector('.shift__clinician option:checked');
-
-                validatedData = Object.assign(validatedData, {
-                    clinicianId: parseInt(staff.value)
-                });
-            }
-        },
-        {
-            contentPartial: 'charge',
-            skippable: true,
-            checkIfShouldSkip: function (data) {
-                if (data.validated.dayOrNight === 'N') {
-                    return true;
-                } else {
-                    return false;
-                }
-            },
-            prepare: function (data, callback) {
-                return callback(null, {
-                    staffForChargePick: data.prepared.staffForClinicianPick
-                        .filter(function(s) {
-                            if (s.id === data.validated.clinicianId) { 
-                                return false;
-                            }
-
-                            return true;
-                        })
-                });
-            },
-            validate: function () {
-                var staff = container.querySelector('.shift__charge');
-                var pick = staff.querySelector('option:checked');
-
-                if (!pick) {
-                    staff.focus();
-                    Flash.insertFlash('warning', 'Choose a charge person for the shift.');
-
-                    return false;
-                }
-
-                return true;
-            },
-            onvalid: function (validatedData) {
-                var staff = container.querySelector('.shift__charge option:checked');
-
-                validatedData = Object.assign(validatedData, {
-                    chargeId: parseInt(staff.value)
-                });
-            }
-        },
-        {
-            contentPartial: 'charge_pod',
-            skippable: true,
-            checkIfShouldSkip: function (data) {
-                if (data.validated.dayOrNight === 'N') {
-                    data.validated.clinicianAssignmentId = data.prepared.assignments
-                        .find(function (element) {
-                            return (element.name === 'A/B/C');
-                        }).id;
-
-                    return true;
-                } else {
-                    return false;
-                }                
-            },
-            prepare: function (data, callback) {
-                if (!data.prepared.mods) {
-                    return callback('no mods, an error has occured.');
-                }
-
-                return callback(null, { 
-                    assignmentForClinicianPodPick: data.prepared.assignments
-                        .filter(function(a) {
-                            if (
-                                a.name === 'A/B' ||
-                                a.name === 'B/C'
-                            ) {
-                                return true;
-                            }
-
-                            return false;
-                        }),
-                    assignmentForChargePodPick: data.prepared.assignments
-                        .filter(function (a) {
-                            if (
-                                a.name === 'A' ||
-                                a.name === 'C'
-                            ) {
-                                return true;
-                            }
-
-                            return false;
-                        })
-                });
-            },
-            validate: function () {
-                var clinicianPod = document.querySelector('.shift__clinician-pod');
-                var chargePod = document.querySelector('.shift__charge-pod');
-
-                if (!clinicianPod.value || !chargePod.value) {
-                    if (!clinicianPod.value) {
-                        clinicianPod.focus();
-                    } else {
-                        chargePod.focus();
-                    }
-
-                    Flash.insertFlash('warning', 'Choose assignments for both the clinician and the charge nurse.');
-
-                    return false;
-                }
-
-                return true;
-            },
-            onvalid: function (validatedData) {
-                var clinicianPod = document.querySelector('.shift__clinician-pod');
-                var chargePod = document.querySelector('.shift__charge-pod');
-
-                validatedData = Object.assign(validatedData, { 
-                    clinicianAssignmentId: parseInt(clinicianPod.value),
-                    chargeAssignmentId: parseInt(chargePod.value)
-                });
-            }
-        },
-        {
-            contentPartial: 'bedside',
-            skippable: false,
-            checkIfShouldSkip: function (data) {
-                return false;
-            },
-            prepare: function (data, callback) {
-                var staffPicks;
-
-                if (data.validated.dayOrNight === 'D') {
-                    staffPicks = data.prepared.staffForChargePick.filter(function (s) {
-                        if (s.id === data.validated.chargeId) {
-                            return false;
-                        }
-
-                        return true;
-                    });
-                } else if (data.validated.dayOrNight === 'N') {
-                    staffPicks = data.prepared.staffForClinicianPick.filter(function (s) {
-                        if (s.id === data.validated.clinicianId) {
-                            return false;
-                        }
-
-                        return true;
-                    });
-                }
-
-                return callback(null, {
-                    staffForBedsidePick: staffPicks
-                });
             },
             validate: function () {
                 var staff = container.querySelector('.shift__bedside');
@@ -356,7 +401,7 @@ $(function() {
 
                         return false;
                     })
-                    
+
                 });
             },
             validate: function () {
@@ -364,7 +409,7 @@ $(function() {
 
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
-                    
+
                     var checkedPod = s.querySelector('input:checked');
 
                     if (!checkedPod) {
@@ -373,7 +418,7 @@ $(function() {
 
                         for (var j = 0; j < pods.length; j++) {
                             var pod = pods[j];
-                            
+
                             pod.classList.add('attention');
                         }
 
@@ -386,7 +431,7 @@ $(function() {
             onvalid: function (validatedData) {
                 var staff = container.querySelectorAll('.staff-member');
                 var bedsideAssignments = [];
-                
+
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
 
@@ -417,7 +462,7 @@ $(function() {
                         }
 
                         return true;
-                    })            
+                    })
                 });
             },
             validate: function () {
@@ -510,7 +555,7 @@ $(function() {
 
                         return false;
                     })
-                    
+
                 });
             },
             validate: function () {
@@ -518,7 +563,7 @@ $(function() {
 
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
-                    
+
                     var checkedPod = s.querySelector('input:checked');
 
                     if (!checkedPod) {
@@ -527,7 +572,7 @@ $(function() {
 
                         for (var j = 0; j < pods.length; j++) {
                             var pod = pods[j];
-                            
+
                             pod.classList.add('attention');
                         }
 
@@ -540,7 +585,7 @@ $(function() {
             onvalid: function (validatedData) {
                 var staff = container.querySelectorAll('.staff-member');
                 var attendantAssignments = [];
-                
+
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
 
@@ -624,7 +669,7 @@ $(function() {
 
                         return false;
                     })
-                    
+
                 });
             },
             validate: function () {
@@ -632,7 +677,7 @@ $(function() {
 
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
-                    
+
                     var checkedPod = s.querySelector('input:checked');
 
                     if (!checkedPod) {
@@ -641,7 +686,7 @@ $(function() {
 
                         for (var j = 0; j < pods.length; j++) {
                             var pod = pods[j];
-                            
+
                             pod.classList.add('attention');
                         }
 
@@ -654,7 +699,7 @@ $(function() {
             onvalid: function (validatedData) {
                 var staff = container.querySelectorAll('.staff-member');
                 var clerkAssignments = [];
-                
+
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
 
@@ -778,12 +823,12 @@ $(function() {
             onvalid: function (validatedData) {
                 var staff = container.querySelectorAll('.staff-member');
                 var staffWithMod = [];
-        
+
                 for (var i = 0; i < staff.length; i++) {
                     var s = staff[i];
-        
+
                     var input = s.querySelector('input');
-                    
+
                     if (!input.checked) {
                         staffWithMod.push({
                             staffId: parseInt(s.dataset.staffId),
@@ -791,9 +836,9 @@ $(function() {
                         });
                     }
                 }
-        
+
                 validatedData = Object.assign(validatedData, {
-                    mod_vent: staffWithMod                    
+                    mod_vent: staffWithMod
                 });
             }
         },
@@ -817,7 +862,7 @@ $(function() {
             contentPartial: '',
             skippable: true,
             checkIfShouldSkip: function (data) {
-                
+
             },
             prepare: function (data, callback) {
 
@@ -860,7 +905,7 @@ $(function() {
             var s = staff[i];
 
             var checked = s.querySelector('input:checked');
-            
+
             if (checked) {
                 staffWithMod.push({
                     staffId: parseInt(s.dataset.staffId),
@@ -947,11 +992,11 @@ $(function() {
                     [],
                     author
                 ));
-            } 
+            }
 
-            // make the attendant entries           
+            // make the attendant entries
             if (
-                validated.attendantIds && 
+                validated.attendantIds &&
                 validated.attendantIds.length > 0
             ) {
                 var attendantRoleId = prepared.roles.find(function(role) {
@@ -960,7 +1005,7 @@ $(function() {
 
                 for (var i = 0; i < validated.attendantIds.length; i++) {
                     var attendantId = validated.attendantIds[i];
-    
+
                     entries.push(makeEntry(
                         validated.date,
                         validated.dayOrNight,
@@ -975,7 +1020,7 @@ $(function() {
 
             // make the clerk entries
             if (
-                validated.clerkIds && 
+                validated.clerkIds &&
                 validated.clerkIds.length > 0
             ) {
                 var clerkRoleId = prepared.roles.find(function(role) {
@@ -984,7 +1029,7 @@ $(function() {
 
                 for (var j = 0; j < validated.clerkIds.length; j++) {
                     var clerkId = validated.clerkIds[j];
-    
+
                     entries.push(makeEntry(
                         validated.date,
                         validated.dayOrNight,
@@ -999,7 +1044,7 @@ $(function() {
 
             // make the bedside entries
             if (
-                validated.bedsideIds && 
+                validated.bedsideIds &&
                 validated.bedsideIds.length > 0
             ) {
                 var bedsideRoleId = prepared.roles.find(function(role) {
@@ -1010,7 +1055,7 @@ $(function() {
 
                 for (var k = 0; k < validated.bedsideIds.length; k++) {
                     var bedsideId = validated.bedsideIds[k];
-    
+
                     bedsideEntriesByStaffId[bedsideId] = makeEntry(
                         validated.date,
                         validated.dayOrNight,
@@ -1073,7 +1118,7 @@ $(function() {
                 })
                 .catch(function(error) {
                     console.error('❌',error);
-                    
+
                     container.innerHTML = ShiftTracker.templates.shift.error({errorMsg: 'Problem submitting the shift entries. Sorry.'});
                 });
         }

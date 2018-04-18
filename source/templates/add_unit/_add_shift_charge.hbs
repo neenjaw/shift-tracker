@@ -1,11 +1,16 @@
 <div class="staff">
     {{#if staffForChargePick.length}}
-        <div class="staff-search">
-            <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
+        <div class="staff-search-wrap">
+            <input class="staff-search-box form-control" data-staff-list="staffForChargePick" type="text" placeholder="Type to search for a staff to add..">
+            <ul class="staff-search-suggestions">
+            </ul>
         </div>
         <div class="staff-list mt-2">
-            <label for="charge-list-select">Select Shift Charge</label>
-            <select class="shift__charge form-control" id="charge-list-select" size="{{chooseMaxUpTo staffForChargePick.length 5 9}}">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <label for="charge-list-select">Select Shift Charge</label>
+                <p class="select-count small text-muted">&nbsp;</p>
+            </div>
+            <select class="shift__charge select-count-data form-control" id="charge-list-select" size="{{chooseMaxUpTo staffForChargePick.length 5 9}}">
                 {{#each staffForChargePick}}
                     <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @root.chargeId}}{{#ifMatch @root.chargeId this.id}}selected{{/ifMatch}}{{else}}{{#if @first}}selected{{/if}}{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
                 {{/each}}

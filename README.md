@@ -48,107 +48,106 @@ jsonResponse = {
 
 ## Progress - key
 
-- ✅ complete
-- ❌ not started
-- ➖ in progress
+- [x] complete
+- [ ] in progress
 
 ## Progress - backend
 
-- ✅ config
-  - ✅ authorization
-  - ✅ database
-- ✅ objects
-  - ✅ shift
-  - ✅ staff
-  - ✅ user
-  - ✅ assignment
-  - ✅ role
-  - ✅ mod
-- ✅ shift
-  - ✅ MariaDB Table
-  - ✅ foreign keys
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ read_one
-  - ✅ read_date_range
-  - ✅ read_one_staff
-  - ✅ update
-  - ✅ delete
-- ✅ staff_member
-  - ✅ MariaDB Table
-  - ✅ foreign keys
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ update
-  - ✅ delete
-- ✅ user
-  - ✅ MariaDB Table
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ check_password
-  - ✅ update
-  - ✅ delete
-  - ✅ login
-  - ✅ logout
-- ✅ category
-  - ✅ MariaDB Table
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ update
-  - ✅ delete
-- ✅ role
-  - ✅ MariaDB Table
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ update
-  - ✅ delete
-- ✅ assignment
-  - ✅ MariaDB Table
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ update
-  - ✅ delete
-- ✅ mod
-  - ✅ MariaDB Table
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ update
-  - ✅ delete
-- ✅ shift_to_mod
-  - ✅ MariaDB Table
-  - ✅ foreign keys
-  - ✅ unique index
-  - ✅ create
-  - ✅ read
-  - ✅ update
-  - ✅ delete
+- [x] config
+  - [x] authorization
+  - [x] database
+- [x] objects
+  - [x] shift
+  - [x] staff
+  - [x] user
+  - [x] assignment
+  - [x] role
+  - [x] mod
+- [x] shift
+  - [x] MariaDB Table
+  - [x] foreign keys
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] read_one
+  - [x] read_date_range
+  - [x] read_one_staff
+  - [x] update
+  - [x] delete
+- [x] staff_member
+  - [x] MariaDB Table
+  - [x] foreign keys
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] update
+  - [x] delete
+- [x] user
+  - [x] MariaDB Table
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] check_password
+  - [x] update
+  - [x] delete
+  - [x] login
+  - [x] logout
+- [x] category
+  - [x] MariaDB Table
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] update
+  - [x] delete
+- [x] role
+  - [x] MariaDB Table
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] update
+  - [x] delete
+- [x] assignment
+  - [x] MariaDB Table
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] update
+  - [x] delete
+- [x] mod
+  - [x] MariaDB Table
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] update
+  - [x] delete
+- [x] shift_to_mod
+  - [x] MariaDB Table
+  - [x] foreign keys
+  - [x] unique index
+  - [x] create
+  - [x] read
+  - [x] update
+  - [x] delete
 
 ## Progress - frontend
 
-- ✅ processes
-  - ✅ auth state
-  - ✅ axios
-  - ✅ handlebars / gulp
-- ✅ pages
-  - ✅ landing
-  - ✅ home
-    - ✅ date range table
-    - ✅ dynamic shift edit
-  - ✅ shifts
-    - ✅ add unit shift
-    - ✅ add single shift
-    - ✅ shift report
-  - ✅ staff member
-    - ✅ review
-  - ✅ admin panel
-    - ✅ add user
-    - ✅ change password
-    - ✅ remove user
-    - ✅ change auth
+- [x] processes
+  - [x] auth state
+  - [x] axios
+  - [x] handlebars / gulp
+- [x] pages
+  - [x] landing
+  - [x] home
+    - [x] date range table
+    - [x] dynamic shift edit
+  - [x] shifts
+    - [x] add unit shift
+    - [x] add single shift
+    - [x] shift report
+  - [x] staff member
+    - [x] review
+  - [x] admin panel
+    - [x] add user
+    - [x] change password
+    - [x] remove user
+    - [x] change auth

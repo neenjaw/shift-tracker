@@ -1,11 +1,16 @@
 <div class="staff">
     {{#if staffForOutreachPick.length}}
-        <div class="staff-search">
-            <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
+        <div class="staff-search-wrap">
+            <input class="staff-search-box form-control" data-staff-list="staffForOutreachPick" type="text" placeholder="Type to search for a staff to add..">
+            <ul class="staff-search-suggestions">
+            </ul>
         </div>
         <div class="staff-list mt-2">
-            <label for="outreach-list-select">Select Shift Outreach</label>
-            <select class="shift__outreach form-control" id="outreach-list-select" size="{{chooseMaxUpTo staffForOutreachPick.length 5 9}}">
+            <div class="d-flex justify-content-between align-items-baseline">
+                <label for="outreach-list-select">Select Shift Outreach</label>
+                <p class="select-count small text-muted">&nbsp;</p>
+            </div>
+            <select class="shift__outreach select-count-data form-control" id="outreach-list-select" size="{{chooseMaxUpTo staffForOutreachPick.length 5 9}}">
                 {{#each staffForOutreachPick}}
                     <option value="{{this.id}}" data-category="{{this.categoryName}}" {{#if @first}}selected{{/if}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
                 {{/each}}

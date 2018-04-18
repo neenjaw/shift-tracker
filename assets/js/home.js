@@ -106,7 +106,7 @@ var Shifts = (function () {
                 var hasVent = false;
                 var topChar = '';
                 var topRank = -1;
-                
+
                 for (var index = 0; index < mods.length; index++) {
                     var mod = mods[index];
 
@@ -188,7 +188,7 @@ var Shifts = (function () {
         for (var index = 0; index < records.length; index++) {
             var shift = records[index];
             var staffName = shift.staff_last_name + ', ' + shift.staff_first_name;
-            
+
             if(!(staffName in staffMembersIndex)) {
                 var newIndex = staffMembers.push({name: staffName, shifts:[]}) - 1;
                 staffMembersIndex[staffName] = newIndex;
@@ -198,9 +198,9 @@ var Shifts = (function () {
         }
 
         console.log(staffMembers);
-        
 
-        var formatted = { 
+
+        var formatted = {
             dates: [],
             groups: [
                 {
@@ -255,7 +255,7 @@ var Shifts = (function () {
 
             for (var j = 0; j < formatted.dates.length; j++) {
                 var date = formatted.dates[j];
-                
+
                 //check if the date matches the shift date, if it does then add it to the staff's group entry
                 if (shifts.length > 0 && shifts[0].date === date) {
                     formattedStaff.shifts.push(shifts.shift());
@@ -267,8 +267,8 @@ var Shifts = (function () {
         }
 
         console.log(formatted);
-        
-        return formatted;        
+
+        return formatted;
     }
 
     return {
@@ -291,6 +291,8 @@ $(function() {
 
                 // scroll to the farther right to show newest
                 document.querySelector('div.st-header-cell:last-of-type').scrollIntoView();
+                window.scrollTo(0,0);
+                
 
                 document.addEventListener('click', function (e) {
                     if (!e.target.classList.contains('st-link')) return;

@@ -72,6 +72,47 @@ var AddShift = function (steps, options) {
 
     state.classLists = classLists;
 
+    function displayStaffSearchResult(ev, data) {
+        function findMatches(wordToMatch, staff) {
+            return staff.filter(s => {
+                var re = new RegExp(wordToMatch, 'gi');
+                return (s.lastName + ', ' + s.firstName).match(re);
+            });
+        }
+
+        console.log({ev, data});
+
+        var searchBox = document.querySelector('.staff-search-box');
+        var staffList = searchBox.dataset.staffList;
+        var searchTerm = searchBox.value;
+        var matchArray = findMatches(searchTerm, data.prepared[staffList]);
+        var html = '';
+
+        if (searchTerm !== '') {
+            html = matchArray.map(function(staff) {
+                var re = new RegExp('('+searchTerm+')', 'gi');
+                var name = (staff.lastName + ', ' + staff.firstName).replace(re, '<span class="search-hl">$1</span>');
+
+                return '<li class="staff-search-item" data-staff-id="'+staff.id+'">'+name+'</li>\n';
+            }).join('');
+        }
+
+        document.querySelector('.staff-search-suggestions').innerHTML = html;
+    }
+
+    function selectStaffOption(id) {
+        var optionElem = container.querySelector('option[value="'+id+'"]');
+
+        if (optionElem) {
+            optionElem.selected = true;
+
+            //emit synthetic change event
+            var event = document.createEvent('Event');
+            event.initEvent('change', true, true);
+            optionElem.parentNode.dispatchEvent(event);
+        }
+    }
+
     //Set the click listeners
     if (!state.areClickListenersSet) {
 
@@ -98,13 +139,57 @@ var AddShift = function (steps, options) {
                     document.getElementById('clinician-pod-select').querySelector('option[data-assignment="A/B"]').selected = true;
                     // document.querySelector('.shift__clinician-pod option[data-assignment="A/B"]').selected = true;
                 }
+            } else if (ev.target.classList.contains('select-count-data')) {
+                var selectCount = ev.target.querySelectorAll('option:checked').length;
+
+                container.querySelector('.select-count').innerHTML = '('+selectCount+' staff selected)';
             }
+
+            // else if (ev.target.classList.contains('staff-search-box')) {
+            //    displayStaffSearchResult(ev, state.data);
+            // }
 
             return false;
         });
 
+        container.addEventListener('keyup', function(ev) {
+            if (ev.target.classList.contains('staff-search-box')) {
+                displayStaffSearchResult(ev, state.data);
+            }
+        });
+
+        document.addEventListener('click', function(ev) {
+            var target = ev.target;
+
+            if (target.classList.contains('staff-search-box')) {
+                displayStaffSearchResult(ev, state.data);
+            } else if (
+                target.classList.contains('staff-search-item') ||
+                target.classList.contains('search-hl')
+            ) {
+                if (target.classList.contains('search-hl')) {
+                    target = target.parentNode;
+                }
+
+                var staffId = target.dataset.staffId;
+
+                selectStaffOption(staffId);
+                var inputBox = document.querySelector('.staff-search-box');
+                inputBox.value = '';
+                inputBox.focus();
+
+                document.querySelector('.staff-search-suggestions').innerHTML = '';
+            } else {
+                var suggestions = document.querySelector('.staff-search-suggestions');
+
+                if (suggestions) {
+                    suggestions.innerHTML = '';
+                }
+            }
+        });
+
         container.addEventListener('click', function (ev) {
-            if (state.debug) console.log({event: ev, target: ev.target, classList: ev.target.classList});            
+            if (state.debug) console.log({event: ev, target: ev.target, classList: ev.target.classList});
 
             var target = ev.target;
 
@@ -116,37 +201,51 @@ var AddShift = function (steps, options) {
                 submit(state);
             } else if (target.classList.contains(classLists.mod)) {
                 target.parentNode.classList.toggle(classLists.activeMod);
-            } 
+            }
         });
 
         window.addEventListener('keydown', function(ev) {
-            console.log(ev);
+            // console.log(ev);
 
             if (ev.key === 'Enter') {
-                var isNextStep = !document.querySelector('.'+classLists.nextBtn).disabled;
 
-                if (isNextStep) {
-                    nextStep(state);
+                if (ev.target.classList.contains('staff-search-box') && (ev.target.value.length > 0)) {
+                    var staffItem = document.querySelector('.staff-search-suggestions li:first-child');
+
+                    if (staffItem) {
+                        selectStaffOption(staffItem.dataset.staffId);
+                        ev.target.value = '';
+                    }
                 } else {
-                    submit(state);                    
+                    var isNextStep = !document.querySelector('.'+classLists.nextBtn).disabled;
+
+                    if (isNextStep) {
+                        nextStep(state);
+                    } else {
+                        submit(state);
+                    }
                 }
-            }            
+            }
         });
 
         container.addEventListener('mousedown', function(ev) {
             if (ev.target.localName === 'option' && ev.target.parentNode.multiple) {
                 ev.preventDefault();
-                        
+
                 var originalScrollTop = ev.target.parentNode.scrollTop;
                 // console.log(originalScrollTop);
 
                 ev.target.selected = ev.target.selected ? false : true;
 
-                var self = this;
                 ev.target.parentNode.focus();
                 setTimeout(function () {
                     ev.target.parentNode.scrollTop = originalScrollTop;
                 }, 0);
+
+                //emit synthetic change event
+                var event = document.createEvent('Event');
+                event.initEvent('change', true, true);
+                ev.target.parentNode.dispatchEvent(event);
             }
 
             return false;
@@ -190,7 +289,7 @@ var AddShift = function (steps, options) {
         }
 
         function focusFirstInput() {
-            var firstInput = container.querySelector('input:nth-of-type(1):not([readonly]), select:nth-of-type(1)');
+            var firstInput = container.querySelector('input:nth-of-type(1):not([readonly]):not([type="hidden"]), select:nth-of-type(1)');
 
             if (firstInput) {
                 firstInput.focus();
@@ -218,6 +317,9 @@ var AddShift = function (steps, options) {
                 step: state.currentStep + 1,
                 totalSteps: state.steps.length
             }, data, state.data.prepared, state.data.validated));
+
+
+            window.scrollTo(0,0);
 
             focusFirstInput();
 
@@ -342,11 +444,3 @@ var AddShift = function (steps, options) {
         state: state
     };
 };
-
-
-
-
-
-
-
-

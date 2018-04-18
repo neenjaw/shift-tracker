@@ -1,11 +1,16 @@
 <div class="staff">
     {{#if staffForAttendantPick.length}}
-    <div class="staff-search">
-        <input class="staff-search-box form-control" type="text" placeholder="Future Search Feature" readonly>
+    <div class="staff-search-wrap">
+        <input class="staff-search-box form-control" data-staff-list="staffForAttendantPick" type="text" placeholder="Type to search for a staff to add..">
+        <ul class="staff-search-suggestions">
+        </ul>
     </div>
     <div class="attendant-list mt-2">
-        <label for="attendants-list-select">Select Shift Nurse Attendants</label>
-        <select class="shift__attendants form-control" id="attendants-list-select" size="{{chooseMaxUpTo staffForAttendantPick.length 5 9}}" multiple>
+        <div class="d-flex justify-content-between align-items-baseline">
+            <label for="attendants-list-select">Select Shift Nurse Attendants</label>
+            <p class="select-count small text-muted">&nbsp;</p>
+        </div>
+        <select class="shift__attendants select-count-data form-control" id="attendants-list-select" size="{{chooseMaxUpTo staffForAttendantPick.length 5 9}}" multiple>
             {{#each staffForAttendantPick}}
             <option value="{{this.id}}" {{checkIfIdSelected this.id @root.attendantIds}}>{{this.lastName}}, {{this.firstName}} ({{this.categoryName}})</option>
             {{/each}}

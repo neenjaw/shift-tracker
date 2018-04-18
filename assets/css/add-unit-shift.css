@@ -70,7 +70,7 @@
 .add-wrap input[type="radio"] {
     display: none;
     cursor: pointer;
-    
+
 }
 
 .add-wrap input[type="radio"]+label {
@@ -117,7 +117,7 @@
 .add-wrap input[type="checkbox"] {
     display: none;
     cursor: pointer;
-    
+
 }
 
 .add-wrap input[type="checkbox"]+label {
@@ -176,4 +176,41 @@
 
 .add-wrap .header {
     padding: 10px;
+}
+
+.add-wrap .hl {
+    background:#ffc600;
+}
+
+.staff-search-suggestions {
+    width: 70vw;
+    position: absolute;
+
+    z-index: 2;
+}
+
+.staff-search-suggestions li {
+      background:white;
+      list-style: none;
+      border-bottom: 1px solid #D8D8D8;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
+      width: 100%;
+      margin: 0 auto;
+      padding:20px;
+
+      text-align: left;
+      text-transform: capitalize;
+      transition: all 0.2s linear;
+}
+
+.staff-search-suggestions.active li:nth-child(-n+2) {
+      display: none;
+}
+
+.staff-search-suggestions li:hover {
+    background-color: #8ee0ff;
+}
+
+.search-hl {
+  background:#ffc600;
 }
