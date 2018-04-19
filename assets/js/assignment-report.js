@@ -73,7 +73,10 @@ var ReportGenerator = (function() {
     return {
         init: init,
         next: nextStep,
-        prev: prevStep
+        prev: prevStep,
+        getState: function() {
+            return state;
+        }
     };
 }());
 
@@ -331,6 +334,19 @@ $(function(){
 
     ReportGenerator.init(options);
 
+    function selectStaffOption(id) {
+        var optionElem = container.querySelector('option[value="'+id+'"]');
+
+        if (optionElem) {
+            optionElem.selected = true;
+
+            //emit synthetic change event
+            var event = document.createEvent('Event');
+            event.initEvent('change', true, true);
+            optionElem.parentNode.dispatchEvent(event);
+        }
+    }
+
     container.addEventListener('click', function(ev) {
         if (ev.target.id === 'prevBtn') {
             ReportGenerator.prev();
@@ -351,9 +367,105 @@ $(function(){
             setTimeout(function () {
                 ev.target.parentNode.scrollTop = originalScrollTop;
             }, 0);
+
+            //emit synthetic change event
+            var event = document.createEvent('Event');
+            event.initEvent('change', true, true);
+            ev.target.parentNode.dispatchEvent(event);
         }
 
         return false;
+    });
+
+    container.addEventListener('change', function(ev) {
+
+        if (ev.target.classList.contains('select-count-data')) {
+            var selectCount = ev.target.querySelectorAll('option:checked').length;
+
+            container.querySelector('.select-count').innerHTML = '('+selectCount+' staff selected)';
+        }
+
+    });
+
+    window.addEventListener('keydown', function(ev) {
+        // console.log(ev);
+
+        if (
+            ev.key === 'Enter' &&
+            ev.target.classList.contains('staff-search-box') &&
+            ev.target.value.length > 0
+        ) {
+            var staffItem = document.querySelector('.staff-search-suggestions li:first-child');
+
+            if (staffItem) {
+                selectStaffOption(staffItem.dataset.staffId);
+                ev.target.value = '';
+            }
+        }
+    });
+
+    container.addEventListener('keyup', function(ev) {
+        if (ev.target.classList.contains('staff-search-box')) {
+            displayStaffSearchResult(ev, ReportGenerator.getState().data);
+        }
+    });
+
+    function displayStaffSearchResult(ev, data) {
+        function findMatches(wordToMatch, staff) {
+            return staff.filter(s => {
+                var re = new RegExp(wordToMatch, 'gi');
+                return (s.last_name + ', ' + s.first_name).match(re);
+            });
+        }
+
+        console.log({ev, data});
+
+        var searchBox = document.querySelector('.staff-search-box');
+        var staffList = searchBox.dataset.staffList;
+        var searchTerm = searchBox.value;
+        var matchArray = findMatches(searchTerm, data[staffList]);
+        var html = '';
+
+        if (searchTerm !== '') {
+            html = matchArray.map(function(staff) {
+                var re = new RegExp('('+searchTerm+')', 'gi');
+                var name = (staff.last_name + ', ' + staff.first_name).replace(re, '<span class="search-hl">$1</span>');
+
+                return '<li class="staff-search-item" data-staff-id="'+staff.id+'">'+name+'</li>\n';
+            }).join('');
+        }
+
+        document.querySelector('.staff-search-suggestions').innerHTML = html;
+    }
+
+    document.addEventListener('click', function(ev) {
+        var target = ev.target;
+
+        if (target.classList.contains('staff-search-box')) {
+            displayStaffSearchResult(ev, ReportGenerator.getState().data);
+        } else if (
+            target.classList.contains('staff-search-item') ||
+            target.classList.contains('search-hl')
+        ) {
+            if (target.classList.contains('search-hl')) {
+                target = target.parentNode;
+            }
+
+            var staffId = target.dataset.staffId;
+
+            selectStaffOption(staffId);
+            var inputBox = document.querySelector('.staff-search-box');
+            inputBox.value = '';
+            inputBox.focus();
+
+            document.querySelector('.staff-search-suggestions').innerHTML = '';
+        } else {
+            var suggestions = document.querySelector('.staff-search-suggestions');
+
+            if (suggestions) {
+                suggestions.innerHTML = '';
+            }
+        }
     });
 });
 
