@@ -136,15 +136,15 @@ $(function() {
                                         }
 
                                         if (data.validated.category === 'RN') {
-                                            if (record.name === 'nursing attendant') {
+                                            if (record.name === 'health care attendant') {
                                                 return false;
                                             } else if (record.name === 'unit clerk') {
                                                 return false;
                                             }
                                         }
 
-                                        if (data.validated.category === 'LPN' || data.category === 'NA') {
-                                            if (record.name === 'nursing attendant') {
+                                        if (data.validated.category === 'LPN' || data.category === 'HCA') {
+                                            if (record.name === 'health care attendant') {
                                                 return true;
                                             } else {
                                                 return false;
@@ -253,7 +253,7 @@ $(function() {
 
                                         return false;
 
-                                    } else if (data.validated.roleName === 'nursing attendant') {
+                                    } else if (data.validated.roleName === 'health care attendant') {
                                         list = ['float'];
 
                                         if (list.includes(record.name)) {

@@ -1000,7 +1000,7 @@ $(function() {
                 validated.attendantIds.length > 0
             ) {
                 var attendantRoleId = prepared.roles.find(function(role) {
-                    return role.name === 'nursing attendant';
+                    return role.name === 'health care attendant';
                 }).id;
 
                 for (var i = 0; i < validated.attendantIds.length; i++) {

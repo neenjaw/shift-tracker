@@ -211,7 +211,7 @@ $(function(){
                             staff.roles[record.role_id] = staff.roles[record.role_id] || makeRoleEntry(record);
                             staff.roles[record.role_id].count += 1;
 
-                            if (['bedside', 'nursing attendant', 'unit clerk'].includes(record.role_name)) {
+                            if (['bedside', 'health care attendant', 'unit clerk'].includes(record.role_name)) {
                                 staff.assignments[record.assignment_id] = staff.assignments[record.assignment_id] || makeAssignmentEntry(record);
                                 staff.assignments[record.assignment_id].count += 1; 
                             }

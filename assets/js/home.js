@@ -9,7 +9,7 @@ var Shifts = (function () {
     var shiftContainer = document.querySelector('.shift-container');
     var numDaysSpan    = document.querySelector('.number-of-days');
 
-    var numberOfDaysToRetrieve = 15;
+    var numberOfDaysToRetrieve = 360;
 
     var aPodClass   = 'st-a-pod';
     var bPodClass   = 'st-b-pod';
@@ -94,9 +94,9 @@ var Shifts = (function () {
             } else if (shift.role_name === 'outreach') {
                 cell.char = 'O';
                 cell.charHover = 'Outreach';
-            } else if (shift.role_name === 'nursing attendant') {
+            } else if (shift.role_name === 'health care attendant') {
                 cell.char = '✔';
-                cell.charHover = 'NA Shift';
+                cell.charHover = 'HCA Shift';
             } else if (shift.role_name === 'unit clerk') {
                 cell.char = '✔';
                 cell.charHover = 'Unit Clerk Shift';
@@ -212,7 +212,7 @@ var Shifts = (function () {
                     staff: []
                 },
                 {
-                    name: 'NA',
+                    name: 'HCA',
                     staff: []
                 },
                 {
@@ -234,7 +234,7 @@ var Shifts = (function () {
         var group = {
             RN: formatted.groups[0].staff,
             LPN: formatted.groups[1].staff,
-            NA: formatted.groups[2].staff,
+            HCA: formatted.groups[2].staff,
             UC: formatted.groups[3].staff,
         };
 

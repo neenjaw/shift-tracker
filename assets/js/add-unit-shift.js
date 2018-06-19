@@ -450,10 +450,10 @@ $(function() {
             },
             prepare: function (data, callback) {
                 data.prepared.staffGroups.lpn = data.prepared.staffGroups.lpn || [];
-                data.prepared.staffGroups.na = data.prepared.staffGroups.na || [];
+                data.prepared.staffGroups.hca = data.prepared.staffGroups.hca || [];
 
                 return callback(null, {
-                    staffForAttendantPick: data.prepared.staffGroups.lpn.concat(data.prepared.staffGroups.na)
+                    staffForAttendantPick: data.prepared.staffGroups.lpn.concat(data.prepared.staffGroups.hca)
                 });
             },
             validate: function () {
@@ -485,13 +485,13 @@ $(function() {
                 return false;
             },
             prepare: function (data, callback) {
-                if (!(data.prepared.staffGroups.lpn || data.prepared.staffGroups.na)) {
+                if (!(data.prepared.staffGroups.lpn || data.prepared.staffGroups.hca)) {
                     return callback('no lpn or na, an error has occured.');
                 }
 
                 return callback(null, {
                     staffPickedForAttendants: data.prepared.staffGroups.lpn
-                        .concat(data.prepared.staffGroups.na)
+                        .concat(data.prepared.staffGroups.hca)
                         .filter(function(staff) {
                             if (data.validated.attendantIds.includes(staff.id)) {
                                 return true;
@@ -955,7 +955,7 @@ $(function() {
                 validated.attendantIds.length > 0
             ) {
                 var attendantRoleId = prepared.roles.find(function(role) {
-                    return role.name === 'nursing attendant';
+                    return role.name === 'health care attendant';
                 }).id;
 
                 for (var i = 0; i < validated.attendantIds.length; i++) {

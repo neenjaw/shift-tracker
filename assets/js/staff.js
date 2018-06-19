@@ -116,7 +116,7 @@ var StaffPage = (function () {
                     var groups = {
                         RN: {name: 'RN', staff: []},
                         LPN: {name: 'LPN', staff: []},
-                        NA: {name: 'NA', staff: []},
+                        HCA: {name: 'HCA', staff: []},
                         UC: {name: 'UC', staff: []}
                     };
 

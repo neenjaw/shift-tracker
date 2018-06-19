@@ -35,11 +35,11 @@
             {{/each}}
         {{/if}}
 
-        {{#if groups.na}}
+        {{#if groups.hca}}
             <tr>
-                <th scope="row" colspan="5">NA</th>
+                <th scope="row" colspan="5">HCA</th>
             </tr>
-            {{#each groups.na as |staff staffIndex|}}
+            {{#each groups.hca as |staff staffIndex|}}
             <tr>
                 {{printAssignmentReportRow staff @root.assignmentDictionary @root.modDictionary}}
             </tr>
