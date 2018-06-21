@@ -1,5 +1,5 @@
 <?php
-//skip require ../partials/01-prehead.php aince we need custom header
+//skip require ../partials/01-prehead.php since we need custom header
 session_start();
 
 include_once('assets/lib/flash.php');
