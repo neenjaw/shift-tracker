@@ -316,7 +316,7 @@ var ShiftEntryModal = (function(){
                 axios.get('/api/shift/read_one.php', {params: {id: options.shiftEntryId}})
             ])  
             .then(axios.spread(function (rResponse, aResponse, mResponse, sResponse) {
-                console.log({roles, assignments, mods, sResponse});
+                console.log({roles:roles, assignments:assignments, mods:mods, sResponse:sResponse});
 
                 var roles = [
                     { id: -1, name: 'no roles exist.' }
