@@ -30,6 +30,7 @@
     border-style: solid;
     border-width: 1px 0px 0px 0px;
     white-space: nowrap;
+    background-color: white;
 }
 
 .st-left-col .st-rowhead-cell:last-child {
