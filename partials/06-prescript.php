@@ -9,6 +9,19 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" integrity="sha256-9YAuB2VnFZNJ+lKfpaQ3dKQT9/C0j3VUla76hHbiVF8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.min.js" integrity="sha256-UoS1yAHj9HqfbFL+oYoF0gkPrJiMK9t4zeciRCafl8I=" crossorigin="anonymous"></script>
+
+    <?php
+        if (
+            preg_match('~MSIE|Internet Explorer~i', $_SERVER['HTTP_USER_AGENT']) || 
+            (strpos($_SERVER['HTTP_USER_AGENT'], 'Trident/7.0; rv:11.0') !== false)
+        ) {
+    ?>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script> 
+    <?php    
+        }
+    ?>
+        
     <!-- JS - Compiled HBS Template, Custom JS -->
     <script>
     <?php if (isset($_SESSION['user'])) { ?>
@@ -20,5 +33,6 @@
     var User = null;
     <?php } ?>
     </script>
+
     <script src="/assets/templates/templates.js<?php echoGetQueryWithDate(); ?>"></script>
     <script src="/assets/js/helpers.js<?php echoGetQueryWithDate(); ?>"></script>
